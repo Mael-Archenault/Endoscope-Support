@@ -1,0 +1,2 @@
+../Core/Src/IR_func.c:7:5:readPin	1
+../Core/Src/IR_func.c:13:5:detectSeq	4

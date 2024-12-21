@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;main_code/IR_emitter.ioc&apos; to &apos;main_code.ioc&apos;" description="Rename resource &apos;IR_emitter.ioc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="IR_emitter.ioc" name="main_code.ioc" stamp="1734632082754" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;main_code/IR_emitter Debug.launch&apos; to &apos;main_code Debug.launch&apos;" description="Rename resource &apos;IR_emitter Debug.launch&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="IR_emitter Debug.launch" name="main_code Debug.launch" stamp="1734632098200" updateReferences="true"/>
+</session>

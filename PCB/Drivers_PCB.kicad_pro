@@ -545,7 +545,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "V1.1.step",
+      "step": "../Solidworks/Motherboard_box/Pieces/driver_pcb.step",
       "svg": "",
       "vrml": ""
     },

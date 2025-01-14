@@ -1,4 +1,5 @@
 from customtkinter import *
+import tkinter as tk
 from PIL import Image
 
 
@@ -111,7 +112,7 @@ class PanelContainer(CTkFrame):
 
         self.configure(width = self.width, height = self.height , corner_radius=0)
         self.grid_columnconfigure(0, weight=1)
-        self.state = "Move"
+        self.state = "Capture"
         
 
 
@@ -227,8 +228,9 @@ class App(CTk):
 
         self.title("Endoscope Application")
         self.geometry("1600x900")
-        self.resizable(False, False)
         self.grid_columnconfigure(1, weight=1)
+
+        print(self.winfo_screenwidth(), self.winfo_width())
        
         self.grid_rowconfigure(0, weight=1)
 
@@ -242,7 +244,6 @@ class App(CTk):
         self.settings_button = SettingsButton(self)
         self.settings_button.place(relx=0.9, rely=0.9, anchor = "center")
         
-        
-        
+
 app = App()
 app.mainloop()

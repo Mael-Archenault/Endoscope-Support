@@ -22,6 +22,7 @@
 #include "stm32l4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,7 +42,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,8 +56,10 @@
 
 /* External variables --------------------------------------------------------*/
 
-/* USER CODE BEGIN EV */
+extern UART_HandleTypeDef huart2;
 
+/* USER CODE BEGIN EV */
+extern char receivedWord[4];
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -197,6 +199,33 @@ void SysTick_Handler(void)
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file (startup_stm32l4xx.s).                    */
 /******************************************************************************/
+
+/**
+  * @brief This function handles USART2 global interrupt.
+  */
+void USART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_IRQn 0 */
+
+  /* USER CODE END USART2_IRQn 0 */
+  HAL_UART_IRQHandler(&huart2);
+  /* USER CODE BEGIN USART2_IRQn 1 */
+  if (strcmp(receivedWord, "off")== 0){
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+  }
+  if (strcmp(receivedWord, "on ")== 0){
+  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+    }
+
+  HAL_UART_Receive_IT(&huart2, receivedWord, 4);
+
+
+//  char receivedCharacter;
+//
+//
+//  HAL_UART_Receive_IT(&huart2, &receivedCharacter, 1);
+  /* USER CODE END USART2_IRQn 1 */
+}
 
 /* USER CODE BEGIN 1 */
 

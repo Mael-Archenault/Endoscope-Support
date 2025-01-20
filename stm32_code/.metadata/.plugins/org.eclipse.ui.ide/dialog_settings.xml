@@ -9,6 +9,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Cloud\Endoscope-Support\stm32_code"/>
 			<item value="D:\Cloud\Projet 2A git\stm32_code"/>
 			<item value="D:\Cloud\Projet 2A git\stm32_code\main_code"/>
 		</list>

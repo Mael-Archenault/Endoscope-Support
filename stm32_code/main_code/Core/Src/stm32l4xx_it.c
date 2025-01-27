@@ -55,9 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
 extern UART_HandleTypeDef huart2;
-
 /* USER CODE BEGIN EV */
 extern char receivedWord[4];
 /* USER CODE END EV */
@@ -210,14 +208,14 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-  if (strcmp(receivedWord, "off")== 0){
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
-  }
-  if (strcmp(receivedWord, "on ")== 0){
-  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
-    }
-
-  HAL_UART_Receive_IT(&huart2, receivedWord, 4);
+//  if (strcmp(receivedWord, "off")== 0){
+//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+//  }
+//  if (strcmp(receivedWord, "on ")== 0){
+//  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+//    }
+//
+//  HAL_UART_Receive_IT(&huart2, receivedWord, 4);
 
 
 //  char receivedCharacter;

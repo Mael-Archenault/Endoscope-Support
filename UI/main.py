@@ -1,6 +1,7 @@
 from customtkinter import *
 import tkinter as tk
 from PIL import Image
+from classes import Test
 
 
 def testfunc():
@@ -88,16 +89,13 @@ class CapturePanel(Panel):
         self.info_label.grid(row = 0, column =0, padx=20, pady = 20)
         self.progress_bar.grid(row = 1, column = 0, padx=20, pady=20)
         self.number_frame.grid(row = 2, column = 0, padx=20, pady=20)
+        
 
         self.terminal = CTkTextbox(self,
                                     width = 1000,
                                     height = 400)
         self.terminal.place(x = 100, y = 400)
 
-class Panel(Panel):
-    def __init__(self, master):
-        super().__init__(master)
-        self.title.configure(text="Move")
 
         
 
@@ -227,7 +225,7 @@ class App(CTk):
         super().__init__()
 
         self.title("Endoscope Application")
-        self.geometry("1600x900")
+        self.geometry("1080x720")
         self.grid_columnconfigure(1, weight=1)
 
         print(self.winfo_screenwidth(), self.winfo_width())

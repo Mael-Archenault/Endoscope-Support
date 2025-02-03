@@ -139,7 +139,7 @@
 			(mirror no)
 			(drillshape 0)
 			(scaleselection 1)
-			(outputdirectory "")
+			(outputdirectory "Gerber files (and drill files)/")
 		)
 	)
 	(net 0 "")
@@ -9974,6 +9974,39 @@
 			)
 			(justify left bottom mirror)
 		)
+	)
+	(dimension
+		(type aligned)
+		(layer "F.Cu")
+		(uuid "b8e3b273-d7b5-4364-bf01-f9f61a7a5334")
+		(pts
+			(xy 92 94) (xy 146 94)
+		)
+		(height 13)
+		(gr_text "54.0000 mm"
+			(at 119 105.2 0)
+			(layer "F.Cu")
+			(uuid "b8e3b273-d7b5-4364-bf01-f9f61a7a5334")
+			(effects
+				(font
+					(size 1.5 1.5)
+					(thickness 0.3)
+				)
+			)
+		)
+		(format
+			(prefix "")
+			(suffix "")
+			(units 3)
+			(units_format 1)
+			(precision 4)
+		)
+		(style
+			(thickness 0.2)
+			(arrow_length 1.27)
+			(text_position_mode 0)
+			(extension_height 0.58642)
+			(extension_offset 0.5) keep_text_aligned)
 	)
 	(via
 		(at 131.75 72)

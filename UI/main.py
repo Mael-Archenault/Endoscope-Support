@@ -1,7 +1,6 @@
 from customtkinter import *
 import tkinter as tk
 from PIL import Image
-from classes import Test
 
 
 def testfunc():
@@ -11,11 +10,12 @@ def testfunc():
 class Panel(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.width = 1450
-        self.height = 850
-        self.x, self.y = 0,0
+        self.width = 100
+        self.height = 100
+        self.x, self.y = 100,100
         self.title = CTkLabel(self,width=int(self.width*0.9), text="",  fg_color="gray30", corner_radius=6, font=("Roboto", 20))
         self.title.place(relx =0.5, y = 50/2, anchor = "center")
+        # self.place(x=self.x, y=self.y)
         self.configure(width=self.width, height=self.height, corner_radius = 20, bg_color="transparent")
 
 
@@ -116,7 +116,7 @@ class PanelContainer(CTkFrame):
 
         self.panels = {"Move": MovePanel(self), "Test": TestPanel(self), "Settings": SettingsPanel(self), "Capture": CapturePanel(self)}
         for panel in self.panels.values():
-            panel.place(relx = 0.5, rely = 0.5, x=-self.width, y = 0, anchor = "center")
+            panel.place(x = 0, y = 0)
             panel.x, panel.y = -self.width, 0
         
         self.panels["Capture"].place(x =0)

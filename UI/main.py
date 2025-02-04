@@ -25,10 +25,135 @@ class MovePanel(Panel):
         super().__init__(master)
         self.title.configure(text="Move")
 
+
+
 class TestPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
         self.title.configure(text="Test")
+
+        
+        self.test_frame = CTkFrame(self)
+        self.test_frame.place(x =150,y =100)
+
+        self.translation_frame = CTkFrame(self.test_frame)
+        self.translation_label = CTkLabel(self.translation_frame,
+                                         text = "Translation",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        self.plus_1mm = CTkButton(self.translation_frame,
+                       text = "+ 1 mm",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")
+        self.plus_5mm = CTkButton(self.translation_frame,
+                       text = "+ 5 mm",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")
+        self.plus_10mm = CTkButton(self.translation_frame,
+                       text = "+ 10 mm",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")       
+        self.minus_1mm = CTkButton(self.translation_frame,
+                       text = "- 1 mm",
+                       height = 100,
+                       width = 100)
+        self.minus_5mm = CTkButton(self.translation_frame,
+                       text = "- 5 mm",
+                       height = 100,
+                       width = 100)
+        self.minus_10mm = CTkButton(self.translation_frame,
+                       text = "- 10 mm",
+                       height = 100,
+                       width = 100)       
+    
+        self.rotation_frame = CTkFrame(self.test_frame)
+        self.rotation_label = CTkLabel(self.rotation_frame,
+                                         text = "Rotation",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        self.plus_1degree = CTkButton(self.rotation_frame,
+                       text = "+ 1 °",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")
+        self.plus_5degree = CTkButton(self.rotation_frame,
+                       text = "+ 5 °",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")
+        self.plus_10degree = CTkButton(self.rotation_frame,
+                       text = "+ 10 °",
+                       height = 100,
+                       width = 100,
+                       fg_color= "red",
+                       hover_color= "orange")       
+        self.minus_1degree = CTkButton(self.rotation_frame,
+                       text = "- 1 °",
+                       height = 100,
+                       width = 100)
+        self.minus_5degree = CTkButton(self.rotation_frame,
+                       text = "- 5 °",
+                       height = 100,
+                       width = 100)
+        self.minus_10degree = CTkButton(self.rotation_frame,
+                       text = "- 10 °",
+                       height = 100,
+                       width = 100)       
+    
+
+        self.connection_button = CTkButton(self.test_frame,
+                                text="Connection",
+                                height = 120,
+                                width = 200,
+                                corner_radius= 50,
+                                fg_color= "red",
+                                hover_color= "orange")
+
+        self.test_sequence = CTkButton(self.test_frame,
+                                text = "Test sequence",
+                                height = 120,
+                                width = 200,
+                                corner_radius = 50)
+
+    
+        
+
+        self.translation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
+        self.rotation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
+        self.connection_button.grid(row = 1, column = 2,columnspan = 1, padx = 10, pady = 10)
+        self.test_sequence.grid(row = 2, column = 2, padx = 10, pady = 10)
+        self.minus_1mm.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.minus_5mm.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.minus_10mm.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.plus_1mm.grid(row = 1, column = 1, padx = 10, pady = 10)
+        self.plus_5mm.grid(row = 2, column = 1, padx = 10, pady = 10)
+        self.plus_10mm.grid(row = 3, column = 1, padx = 10, pady = 10)
+        self.translation_frame.grid(row = 1, rowspan= 2, column = 0, padx = 10, pady = 10)
+        self.minus_1degree.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.minus_5degree.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.minus_10degree.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.plus_1degree.grid(row = 1, column = 1, padx = 10, pady = 10)
+        self.plus_5degree.grid(row = 2, column = 1, padx = 10, pady = 10)
+        self.plus_10degree.grid(row = 3, column = 1, padx = 10, pady = 10)
+        self.rotation_frame.grid(row = 1,rowspan = 2,column = 1, padx = 10, pady = 10)
+
+
+
+
 
 class SettingsPanel(Panel):
     def __init__(self, master):
@@ -36,7 +161,7 @@ class SettingsPanel(Panel):
         self.title.configure(text="Capture Settings")
 
         self.settings_frame = CTkFrame(self)
-        self.settings_frame.place(x =100,y =100)
+        self.settings_frame.place(x =70,y =100)
 
         self.translation_label = CTkLabel(self.settings_frame,
                                          text = "Translation",
@@ -89,8 +214,118 @@ class SettingsPanel(Panel):
         self.numbervitesse.grid(row = 4, column = 1, padx = 10, pady = 10 )
         self.position_frame.grid(row = 1, column = 0, padx = 10, pady = 10)
 
-
+        self.rotation_label = CTkLabel(self.settings_frame,
+                                         text = "Rotation",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
         
+        self.angle_frame = CTkFrame(self.settings_frame)
+        self.angle_label = CTkLabel(self.angle_frame,
+                                         text = "Début\t\t        Fin",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        
+        self.pasangle = CTkLabel(self.angle_frame,
+                                         text = "Pas \t\t  Vitesse",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        self.numberdebut = CTkTextbox(self.angle_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numberfin = CTkTextbox(self.angle_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numberpas = CTkTextbox(self.angle_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numbervitesse = CTkTextbox(self.angle_frame,
+                                    width = 100,
+                                    height=30)
+        
+
+
+        self.angle_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
+        self.numberdebut.grid(row = 2, column = 0, padx = 10, pady = 10 )
+        self.numberfin.grid(row = 2, column = 1, padx = 10, pady = 10 )
+        self.rotation_label.grid(row = 0, column = 1, padx = 10, pady = 10)
+        self.pasangle.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
+        self.numberpas.grid(row = 4, column = 0, padx = 10, pady = 10 )
+        self.numbervitesse.grid(row = 4, column = 1, padx = 10, pady = 10 )
+        self.angle_frame.grid(row = 1, column = 1, padx = 10, pady = 10)
+
+        self.timings_label = CTkLabel(self.settings_frame,
+                                 text = "Timing",
+                                 font=("Roboto", 16),
+                                 fg_color = "grey30",
+                                 width = 300,
+                                 corner_radius=10
+                                 )
+        
+        self.timings_frame = CTkFrame(self.settings_frame)
+        self.exposition_label = CTkLabel(self.timings_frame,
+                                         text = "Temps expo",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        
+        self.enregistrement_label = CTkLabel(self.timings_frame,
+                                         text = "Temps enregistrement",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        self.marge_label = CTkLabel(self.timings_frame,
+                                 text = "Temps marge",
+                                 font=("Roboto", 16),
+                                 fg_color = "grey30",
+                                 width = 300,
+                                 corner_radius=10
+                                 )
+        self.numberexpo = CTkTextbox(self.timings_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numberenregistrement = CTkTextbox(self.timings_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numbermarge = CTkTextbox(self.timings_frame,
+                                    width = 100,
+                                    height=30)
+        
+
+
+        self.exposition_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
+        self.numberexpo.grid(row = 2, column = 0, columnspan = 2, padx = 10, pady = 10 )
+        self.timings_label.grid(row = 0, column = 2, padx = 10, pady = 10)
+        self.enregistrement_label.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
+        self.marge_label.grid(row = 5, column = 0, columnspan=2, padx = 10, pady =10)
+        self.numberenregistrement.grid(row = 4, column = 0, columnspan = 2, padx = 10, pady = 10 )
+        self.numbermarge.grid(row = 6, column = 0,columnspan = 2, padx = 10, pady = 10 )
+        self.timings_frame.grid(row = 1, column = 2, padx = 10, pady = 10)
+
+        self.validate_button = CTkButton(self.settings_frame,
+                                text="Valider",
+                                height = 100,
+                                width = 100)
+        
+        self.validate_button.grid(row = 2, column = 2,padx = 10, pady = 10)
+
 
 class CapturePanel(Panel):
     def __init__(self, master):

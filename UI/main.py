@@ -3,6 +3,7 @@ import tkinter as tk
 from PIL import Image
 
 
+
 def testfunc():
     print("Test function called")
 
@@ -10,12 +11,12 @@ def testfunc():
 class Panel(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.width = 100
-        self.height = 100
-        self.x, self.y = 100,100
+        self.width = 1150
+        self.height = 640
+        self.x, self.y = 0,0
         self.title = CTkLabel(self,width=int(self.width*0.9), text="",  fg_color="gray30", corner_radius=6, font=("Roboto", 20))
         self.title.place(relx =0.5, y = 50/2, anchor = "center")
-        # self.place(x=self.x, y=self.y)
+        self.place(x=self.x,y=self.y)
         self.configure(width=self.width, height=self.height, corner_radius = 20, bg_color="transparent")
 
 
@@ -33,6 +34,63 @@ class SettingsPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
         self.title.configure(text="Capture Settings")
+
+        self.settings_frame = CTkFrame(self)
+        self.settings_frame.place(x =100,y =100)
+
+        self.translation_label = CTkLabel(self.settings_frame,
+                                         text = "Translation",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        
+        self.position_frame = CTkFrame(self.settings_frame)
+        self.position_label = CTkLabel(self.position_frame,
+                                         text = "Début\t\t        Fin",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        
+        self.pasvitesse = CTkLabel(self.position_frame,
+                                         text = "Pas \t\t  Vitesse",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 300,
+                                         corner_radius=10
+                                         )
+        self.numberdebut = CTkTextbox(self.position_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numberfin = CTkTextbox(self.position_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numberpas = CTkTextbox(self.position_frame,
+                                    width = 100,
+                                    height=30)
+        
+        self.numbervitesse = CTkTextbox(self.position_frame,
+                                    width = 100,
+                                    height=30)
+        
+
+
+        self.position_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
+        self.numberdebut.grid(row = 2, column = 0, padx = 10, pady = 10 )
+        self.numberfin.grid(row = 2, column = 1, padx = 10, pady = 10 )
+        self.translation_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.pasvitesse.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
+        self.numberpas.grid(row = 4, column = 0, padx = 10, pady = 10 )
+        self.numbervitesse.grid(row = 4, column = 1, padx = 10, pady = 10 )
+        self.position_frame.grid(row = 1, column = 0, padx = 10, pady = 10)
+
+
+        
 
 class CapturePanel(Panel):
     def __init__(self, master):
@@ -63,7 +121,7 @@ class CapturePanel(Panel):
 
 
         self.info_frame = CTkFrame(self)
-        self.info_frame.place(x=700, y=100)
+        self.info_frame.place(x=500, y=100)
 
         self.info_label = CTkLabel(self.info_frame,
                                          text="Capture Status",
@@ -76,6 +134,15 @@ class CapturePanel(Panel):
         self.progress_bar = CTkProgressBar(self.info_frame,
                                             height = 30,
                                             width =500)
+        
+        self.position = CTkLabel(self.info_frame,
+                                 text="pos : ... / 180 cm   angle : ... / 290°",
+                                 font=("Roboto", 16),
+                                 fg_color = "grey30",
+                                 height= 50,
+                                 width = 100,
+                                 corner_radius=10
+                                )
 
         self.number_frame = CTkFrame(self.info_frame)
         self.number_label = CTkLabel(self.number_frame, text="Number of Pictures")
@@ -88,13 +155,14 @@ class CapturePanel(Panel):
 
         self.info_label.grid(row = 0, column =0, padx=20, pady = 20)
         self.progress_bar.grid(row = 1, column = 0, padx=20, pady=20)
-        self.number_frame.grid(row = 2, column = 0, padx=20, pady=20)
+        self.position.grid(row = 2, column =0, padx=20, pady = 20)
+        self.number_frame.grid(row = 3, column = 0, padx=20, pady=20)
         
 
         self.terminal = CTkTextbox(self,
                                     width = 1000,
-                                    height = 400)
-        self.terminal.place(x = 100, y = 400)
+                                    height = 200)
+        self.terminal.place(x = 100, y = 430)
 
 
         
@@ -110,17 +178,17 @@ class PanelContainer(CTkFrame):
 
         self.configure(width = self.width, height = self.height , corner_radius=0)
         self.grid_columnconfigure(0, weight=1)
-        self.state = "Capture"
+        self.state = "Settings"
         
 
 
         self.panels = {"Move": MovePanel(self), "Test": TestPanel(self), "Settings": SettingsPanel(self), "Capture": CapturePanel(self)}
         for panel in self.panels.values():
-            panel.place(x = 0, y = 0)
+            panel.place(x = -self.width, y = 0)
             panel.x, panel.y = -self.width, 0
         
-        self.panels["Capture"].place(x =0)
-        self.panels["Capture"].x = 0
+        self.panels["Settings"].place(x =0)
+        self.panels["Settings"].x = 0
         
         
         
@@ -239,8 +307,8 @@ class App(CTk):
         self.sidebar = Sidebar(self, self.panel_container)
         self.sidebar.place(x = 0, y = 0)
 
-        self.settings_button = SettingsButton(self)
-        self.settings_button.place(relx=0.9, rely=0.9, anchor = "center")
+        # self.settings_button = SettingsButton(self)
+        # self.settings_button.place(relx=0.9, rely=0.9, anchor = "center")
         
 
 app = App()

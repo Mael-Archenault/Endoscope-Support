@@ -23,6 +23,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include "drivers.h"
+#include "ir_led.h"
+#include "states.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +60,14 @@
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
-extern char receivedWord[4];
+
+
+extern int COMMAND_LENGTH;
+extern char command[32];
+
+int handled = 0;
+
+extern int state;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -208,14 +218,48 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-//  if (strcmp(receivedWord, "off")== 0){
-//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
-//  }
-//  if (strcmp(receivedWord, "on ")== 0){
-//  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
-//    }
+
+   if (state==LISTENING_STATE){
+    char command[] = "move 187 left right ss aa";
+    char* token;
+
+    int argc = 0;
+    char** argv = malloc(5*sizeof(char*));
+
+    const char delim[] = " ";
+    // Storing the command name
+    token = strtok(command, delim);
+    argv[argc] = token;
+    argc++;
+    
+    // Storing the command parameters
+    while(token!=NULL){
+        token = strtok(NULL, delim);
+        argv[argc] = token;
+        argc++;
+    }
+
+    if (argv[0]== "move"){
+      int distance = atoi(argv[1]);
+      translate(distance);
+    }
+
+
+  }
+  
+
+ 
+//  if (strcmp(command, "ste")== 0 && handled==0){
 //
-//  HAL_UART_Receive_IT(&huart2, receivedWord, 4);
+//	  sendNPulse(20);
+//  }
+
+
+//  else if (handled==1){
+//	  handled=0;
+//  }
+
+  HAL_UART_Receive_IT(&huart2, command, COMMAND_LENGTH);
 
 
 //  char receivedCharacter;

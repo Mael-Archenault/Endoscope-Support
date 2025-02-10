@@ -1,0 +1,17 @@
+#include "stm32l4xx.h"
+
+int step_time_us = 1000000; // minimum 1us
+
+void send1Pulse(void){
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+	delayMicroseconds(step_time_us);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+	delayMicroseconds(step_time_us);
+
+}
+
+void sendNPulse(int N){
+	for (inti = 0; i<N; i++){
+		send1Pulse();
+	}
+}

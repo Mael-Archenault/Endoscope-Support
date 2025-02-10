@@ -1,0 +1,2 @@
+void sendBit1();
+void sendBit0();

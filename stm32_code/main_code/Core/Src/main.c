@@ -24,6 +24,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stm32l4xx.h"
+#include "time.h"
+#include "states.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,13 +36,16 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#ifdef __GNUC__
-#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#define GETCHAR_PROTOTYPE int __io_getchar(void)
-#else
-#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#define GETCHAR_PROTOTYPE int fgetc(FILE *f)
-#endif
+
+// #ifdef __GNUC__
+// #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+// #define GETCHAR_PROTOTYPE int __io_getchar(void)
+// #else
+// #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+// #define GETCHAR_PROTOTYPE int fgetc(FILE *f)
+// #endif
+
+
 
 
 
@@ -59,7 +65,10 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char receivedWord[4];
+int COMMAND_LENGTH = 32;
+char command[32];
+
+int state = LISTENING_STATE;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,93 +80,15 @@ static void MX_TIM5_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
-PUTCHAR_PROTOTYPE
-{
-  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
-  return ch;
-}
+// PUTCHAR_PROTOTYPE
+// {
+//   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+//   return ch;
+// }
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t last_capture = 0;
-uint32_t period_length = 0;
-float period[500];
-
-
-void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) {
-
-    if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1) {
-        uint32_t capture_value = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-
-        float pulse_duration = (float)(capture_value-last_capture)/1000;
-
-        last_capture = capture_value;
-
-        if (pulse_duration>1000){
-        	period_length = 0;
-        }
-        else {
-        	period[period_length]=pulse_duration;
-        	period_length+=1;
-        }
-
-    }
-}
-
-void delayMicroseconds(int delay){
-	int startingValue = TIM5->CNT;
-	int readValue = startingValue;
-	while(readValue-startingValue<delay){
-		readValue =TIM5->CNT;
-	}
-}
-
-void sendBit1() {
-    // Start PWM for 1200 µs for logic "1" pulse
-    HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(1200);
-
-    // Stop PWM to represent "off" period of 600 µs
-    HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(600);
-}
-
-void sendBit0() {
-    // Start PWM for 600 µs for logic "0" pulse
-    HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(600);  // Custom microsecond delay function
-
-    // Stop PWM to represent "off" period of 600 µs
-    HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(600);  // Same low duration as the pulse for "0"
-}
-
-void sendSIRCSData(uint32_t data) {
-
-	// Start pulse
-    HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(2400);  // 2.4 ms "on" for start pulse
-    HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
-    delayMicroseconds(600);  // 0.6 ms "off" period
-
-    // Transmit 32 bits of data
-    for (int i = 0; i < 20; i++) {
-
-        if (data & (1UL << (19 - i))) {
-
-            sendBit1();
-
-        } else {
-
-            sendBit0();
-
-        }
-    }
-
-}
-
-
 
 /* USER CODE END 0 */
 
@@ -196,31 +127,38 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  printf("\n\n\r Starting\n\n\r");
 
-
+  // Initializing the time reference counter
   __HAL_TIM_SET_COUNTER(&htim5, 0);  // Reset the counter to 0
   HAL_TIM_Base_Start(&htim5);
 
+  // Initializing the IR emmition timer
   HAL_TIM_Base_Start(&htim16);
-  TIM16->CCR1 = 1052;
+  TIM16->CCR1 = 1000; // setting the compare register to half the period (to generate a square signal)
   HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
-//  uint32_t data = 0b10110100101110001111;
-//  for (int i = 0; i<3; i++){
-//	  sendSIRCSData(data);
-//  }
 
-  HAL_UART_Receive_IT(&huart2, &receivedWord, 4);
-  //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+  // Initializing the command buffer and receiving command over UART
+  HAL_UART_Receive_IT(&huart2, &command, COMMAND_LENGTH);
+
+
+
+
+  // Initializing all Capture Variables
+  int t_step = 0;
+  int r_step = 0;
+  int t_speed = 0;
+  int r_speed = 0;
+  int exposure_time = 0;
+  int saving_time = 0;
+  int margin_time = 0;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-
 
     /* USER CODE END WHILE */
 
@@ -337,7 +275,6 @@ static void MX_TIM3_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
 
   /* USER CODE BEGIN TIM3_Init 1 */
 
@@ -357,28 +294,15 @@ static void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_Init(&htim3) != HAL_OK)
-  {
-    Error_Handler();
-  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
   {
     Error_Handler();
   }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim3, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
-  HAL_TIM_MspPostInit(&htim3);
 
 }
 
@@ -542,8 +466,8 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_8|GPIO_PIN_9
-                          |GPIO_PIN_10, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_5|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5
@@ -558,17 +482,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA0 PA1 PA8 PA9
-                           PA10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_8|GPIO_PIN_9
-                          |GPIO_PIN_10;
+  /*Configure GPIO pins : PA0 PA1 PA5 PA7
+                           PA8 PA9 PA10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_5|GPIO_PIN_7
+                          |GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA4 PA5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+  /*Configure GPIO pin : PA4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);

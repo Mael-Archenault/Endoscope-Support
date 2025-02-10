@@ -1,0 +1,10 @@
+void send1Pulse(int n_driver);
+void sendNPulse(int N, int n_driver);
+void translate(int dx);
+void rotate(int dtheta);
+
+#define T_MOTOR 0
+#define R_MOTOR 1
+
+#define BACKWARD 0
+#define FORWARD 1

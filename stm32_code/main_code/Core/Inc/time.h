@@ -1,0 +1,1 @@
+void delayMicroseconds(int delay);

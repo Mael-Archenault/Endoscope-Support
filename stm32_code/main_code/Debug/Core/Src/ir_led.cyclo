@@ -1,0 +1,4 @@
+../Core/Src/ir_led.c:6:6:sendBit1	1
+../Core/Src/ir_led.c:16:6:sendBit0	1
+../Core/Src/ir_led.c:26:6:sendSIRCSData	3
+../Core/Src/ir_led.c:50:6:takePicture	2

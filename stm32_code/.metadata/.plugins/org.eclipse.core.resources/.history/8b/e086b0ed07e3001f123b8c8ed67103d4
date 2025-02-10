@@ -1,0 +1,8 @@
+#include "stm32l4xx.h"
+
+
+void send1Pulse(void){
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);
+	delayMicroseconds(1000000);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);
+}

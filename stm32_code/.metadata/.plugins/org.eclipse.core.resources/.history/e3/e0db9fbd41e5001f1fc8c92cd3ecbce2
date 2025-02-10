@@ -1,0 +1,2 @@
+void send1Pulse(void);
+void sendNPulse(int N);

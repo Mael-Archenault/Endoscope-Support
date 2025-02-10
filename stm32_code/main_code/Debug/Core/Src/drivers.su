@@ -1,0 +1,9 @@
+../Core/Src/drivers.c:12:6:send1Pulse	24	static
+../Core/Src/drivers.c:23:6:sendNPulse	24	static
+../Core/Src/drivers.c:30:6:translate	24	static
+../Core/Src/drivers.c:35:6:rotate	24	static
+../Core/Src/drivers.c:41:6:setMicrosteppingMode	32	static
+../Core/Src/drivers.c:75:6:setDirection	16	static
+../Core/Src/drivers.c:86:6:setEnable	16	static
+../Core/Src/drivers.c:96:6:setReset	16	static
+../Core/Src/drivers.c:106:6:setSleep	16	static

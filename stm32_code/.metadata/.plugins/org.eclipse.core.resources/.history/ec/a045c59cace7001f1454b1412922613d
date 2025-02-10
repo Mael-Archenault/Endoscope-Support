@@ -1,0 +1,2 @@
+void send1Pulse(int n_driver);
+void sendNPulse(int N, int n_driver);

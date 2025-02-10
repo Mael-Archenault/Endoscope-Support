@@ -1,0 +1,4 @@
+#define CAPTURING_STATE 1
+
+#define LISTENING_STATE 0
+

@@ -1,0 +1,4 @@
+../Core/Src/ir_led.c:6:6:sendBit1	8	static
+../Core/Src/ir_led.c:16:6:sendBit0	8	static
+../Core/Src/ir_led.c:26:6:sendSIRCSData	24	static
+../Core/Src/ir_led.c:50:6:takePicture	16	static

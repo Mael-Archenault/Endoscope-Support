@@ -1,6 +1,7 @@
 from customtkinter import *
 import tkinter as tk
 from PIL import Image
+from communication import *
 
 
 
@@ -44,37 +45,7 @@ class TestPanel(Panel):
                                          width = 300,
                                          corner_radius=10
                                          )
-        self.plus_1mm = CTkButton(self.translation_frame,
-                       text = "+ 1 mm",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")
-        self.plus_5mm = CTkButton(self.translation_frame,
-                       text = "+ 5 mm",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")
-        self.plus_10mm = CTkButton(self.translation_frame,
-                       text = "+ 10 mm",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")       
-        self.minus_1mm = CTkButton(self.translation_frame,
-                       text = "- 1 mm",
-                       height = 100,
-                       width = 100)
-        self.minus_5mm = CTkButton(self.translation_frame,
-                       text = "- 5 mm",
-                       height = 100,
-                       width = 100)
-        self.minus_10mm = CTkButton(self.translation_frame,
-                       text = "- 10 mm",
-                       height = 100,
-                       width = 100)       
-    
+        
         self.rotation_frame = CTkFrame(self.test_frame)
         self.rotation_label = CTkLabel(self.rotation_frame,
                                          text = "Rotation",
@@ -83,72 +54,77 @@ class TestPanel(Panel):
                                          width = 300,
                                          corner_radius=10
                                          )
-        self.plus_1degree = CTkButton(self.rotation_frame,
-                       text = "+ 1 °",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")
-        self.plus_5degree = CTkButton(self.rotation_frame,
-                       text = "+ 5 °",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")
-        self.plus_10degree = CTkButton(self.rotation_frame,
-                       text = "+ 10 °",
-                       height = 100,
-                       width = 100,
-                       fg_color= "red",
-                       hover_color= "orange")       
-        self.minus_1degree = CTkButton(self.rotation_frame,
-                       text = "- 1 °",
-                       height = 100,
-                       width = 100)
-        self.minus_5degree = CTkButton(self.rotation_frame,
-                       text = "- 5 °",
-                       height = 100,
-                       width = 100)
-        self.minus_10degree = CTkButton(self.rotation_frame,
-                       text = "- 10 °",
-                       height = 100,
-                       width = 100)       
-    
-
-        self.connection_button = CTkButton(self.test_frame,
-                                text="Connection",
-                                height = 120,
-                                width = 200,
-                                corner_radius= 50,
-                                fg_color= "red",
-                                hover_color= "orange")
-
-        self.test_sequence = CTkButton(self.test_frame,
-                                text = "Test sequence",
-                                height = 120,
-                                width = 200,
-                                corner_radius = 50)
-
-    
-        
 
         self.translation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
         self.rotation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
-        self.connection_button.grid(row = 1, column = 2,columnspan = 1, padx = 10, pady = 10)
-        self.test_sequence.grid(row = 2, column = 2, padx = 10, pady = 10)
-        self.minus_1mm.grid(row = 1, column = 0, padx = 10, pady = 10)
-        self.minus_5mm.grid(row = 2, column = 0, padx = 10, pady = 10)
-        self.minus_10mm.grid(row = 3, column = 0, padx = 10, pady = 10)
-        self.plus_1mm.grid(row = 1, column = 1, padx = 10, pady = 10)
-        self.plus_5mm.grid(row = 2, column = 1, padx = 10, pady = 10)
-        self.plus_10mm.grid(row = 3, column = 1, padx = 10, pady = 10)
+
+        self.translation_buttons = [[
+            {"name": "+ 1 mm","command": lambda:sendCommand("move 1")},
+            {"name": "+ 5 mm","command": lambda:sendCommand("move 5")},
+            {"name": "+ 10 mm","command": lambda:sendCommand("move 10")},
+        ],
+        [
+            {"name": "- 1 mm","command": lambda:sendCommand("move -1")},
+            {"name": "- 5 mm","command": lambda:sendCommand("move -5")},
+            {"name": "- 10 mm","command": lambda:sendCommand("move -10")},
+        ]]
+
+        self.rotation_buttons = [[
+            {"name": "+ 1 °","command": lambda:sendCommand("turn 1")},
+            {"name": "+ 5 °","command": lambda:sendCommand("turn 5")},
+            {"name": "+ 10 °","command": lambda:sendCommand("turn 10")},
+        ],
+        [
+            {"name": "- 1 °","command": lambda:sendCommand("turn -1")},
+            {"name": "- 5 °","command": lambda:sendCommand("turn -5")},
+            {"name": "- 10 °","command": lambda:sendCommand("turn -10")}
+        ]]
+                      
+        for i in range(len(self.translation_buttons)):
+            for j in range(len(self.translation_buttons[i])):
+                if i == 0:
+                    color = "blue"
+                else:
+                    color = "red"
+
+                button = CTkButton(self.translation_frame,
+                    text = self.translation_buttons[i][j]["name"],
+                    height = 100,
+                    width = 100,
+                    command = self.translation_buttons[i][j]["command"],
+                    fg_color= color,
+                    hover_color= "orange")
+                
+                button.grid(row=j+1, column=i,padx = 10, pady = 10)
+
+        for i in range(len(self.rotation_buttons)):
+            for j in range(len(self.rotation_buttons[i])):
+                if i == 0:
+                    color = "blue"
+                else:
+                    color = "red"
+
+                button = CTkButton(self.rotation_frame,
+                    text = self.rotation_buttons[i][j]["name"],
+                    height = 100,
+                    width = 100,
+                    command = self.rotation_buttons[i][j]["command"],
+                    fg_color= color,
+                    hover_color= "orange")
+                
+                button.grid(row=j+1, column=i,padx = 10, pady = 10)
+
+
+            
+
+    
+        
+    # Il faut refaire les boutons connection et sequence, on les a supprimé sans faire exprès (oupsi)
+        
+        # self.connection_button.grid(row = 1, column = 2,columnspan = 1, padx = 10, pady = 10)
+        # self.test_sequence.grid(row = 2, column = 2, padx = 10, pady = 10)
+
         self.translation_frame.grid(row = 1, rowspan= 2, column = 0, padx = 10, pady = 10)
-        self.minus_1degree.grid(row = 1, column = 0, padx = 10, pady = 10)
-        self.minus_5degree.grid(row = 2, column = 0, padx = 10, pady = 10)
-        self.minus_10degree.grid(row = 3, column = 0, padx = 10, pady = 10)
-        self.plus_1degree.grid(row = 1, column = 1, padx = 10, pady = 10)
-        self.plus_5degree.grid(row = 2, column = 1, padx = 10, pady = 10)
-        self.plus_10degree.grid(row = 3, column = 1, padx = 10, pady = 10)
         self.rotation_frame.grid(row = 1,rowspan = 2,column = 1, padx = 10, pady = 10)
 
 

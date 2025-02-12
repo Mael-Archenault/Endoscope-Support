@@ -5458,13 +5458,12 @@
 				)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "0.5"
 			(at 161.544 132.588 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -6210,13 +6209,12 @@
 				)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "0.5"
 			(at 265.684 132.588 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -6272,7 +6270,7 @@
 		(fields_autoplaced yes)
 		(uuid "1fd83beb-ce55-4ad9-a4cc-af23cf18cc25")
 		(property "Reference" "R1"
-			(at 100.33 115.5699 0)
+			(at 100.33 116.8399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6280,14 +6278,13 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "5k"
 			(at 100.33 118.1099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -6650,14 +6647,13 @@
 				(justify left)
 			)
 		)
-		(property "Value" "~"
-			(at 222.758 97.282 0)
+		(property "Value" "20k"
+			(at 227.076 106.426 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -7278,13 +7274,12 @@
 				)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "0.5"
 			(at 161.29 147.574 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -7418,14 +7413,13 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "5k"
 			(at 204.47 118.1099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -7699,14 +7693,13 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_Small"
-			(at 118.618 97.282 0)
+		(property "Value" "20k"
+			(at 123.19 106.172 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
@@ -7838,13 +7831,12 @@
 				)
 			)
 		)
-		(property "Value" "R_Small"
+		(property "Value" "0.5"
 			(at 265.43 147.574 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"

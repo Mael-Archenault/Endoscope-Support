@@ -1,7 +1,7 @@
 from customtkinter import *
 import tkinter as tk
 from PIL import Image
-from communication import *
+# from communication import *
 
 
 
@@ -251,7 +251,7 @@ class SettingsPanel(Panel):
         
         self.timings_frame = CTkFrame(self.settings_frame)
         self.exposition_label = CTkLabel(self.timings_frame,
-                                         text = "Temps expo",
+                                         text = "Exposure Time",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
                                          width = 300,
@@ -259,14 +259,14 @@ class SettingsPanel(Panel):
                                          )
         
         self.enregistrement_label = CTkLabel(self.timings_frame,
-                                         text = "Temps enregistrement",
+                                         text = "Saving Time",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
                                          width = 300,
                                          corner_radius=10
                                          )
         self.marge_label = CTkLabel(self.timings_frame,
-                                 text = "Temps marge",
+                                 text = "Margin Time",
                                  font=("Roboto", 16),
                                  fg_color = "grey30",
                                  width = 300,

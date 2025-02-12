@@ -23,9 +23,12 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "stm32l4xx.h"
 #include "time.h"
 #include "states.h"
+#include "drivers.h"
+#include "communication.h"
 
 /* USER CODE END Includes */
 
@@ -47,8 +50,6 @@
 
 
 
-
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -65,10 +66,13 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-int COMMAND_LENGTH = 32;
-char command[32];
+char command[BUFF_SIZE];
 
-int state = LISTENING_STATE;
+int argc = 0;
+char* argv[10];
+
+
+int state = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,6 +94,7 @@ static void MX_TIM3_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
 /* USER CODE END 0 */
 
 /**
@@ -100,7 +105,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -139,7 +143,7 @@ int main(void)
 
 
   // Initializing the command buffer and receiving command over UART
-  HAL_UART_Receive_IT(&huart2, &command, COMMAND_LENGTH);
+  HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
 
 
 
@@ -153,12 +157,27 @@ int main(void)
   int saving_time = 0;
   int margin_time = 0;
 
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    
+    if (state == MOVING_STATE){
+      int distance = atoi(argv[1]);
+      translate(distance);
+
+      state = LISTENING_STATE;
+    }
+
+    if (state == TURNING_STATE){
+      int angle = atoi(argv[1]);
+      rotate(angle);
+      
+      state = LISTENING_STATE;
+    }
 
     /* USER CODE END WHILE */
 

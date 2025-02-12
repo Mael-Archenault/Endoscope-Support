@@ -1,3 +1,4 @@
+"./Core/Src/communication.o"
 "./Core/Src/drivers.o"
 "./Core/Src/ir_led.o"
 "./Core/Src/main.o"

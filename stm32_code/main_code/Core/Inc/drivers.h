@@ -1,7 +1,7 @@
 void send1Pulse(int n_driver);
 void sendNPulse(int N, int n_driver);
-void translate(int dx);
-void rotate(int dtheta);
+void translate();
+void rotate();
 
 void setDirection(int n_driver, int direction);
 void setEnable(int n_driver, int state);
@@ -28,3 +28,5 @@ void setMicrosteppingMode(int n);
 
 #define ENABLE 0
 #define DISABLE 1
+
+

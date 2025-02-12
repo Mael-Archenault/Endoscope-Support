@@ -1,39 +1,222 @@
-23:33:28 **** Incremental Build of configuration Debug for project main_code ****
+18:27:36 **** Incremental Build of configuration Debug for project main_code ****
 make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:38:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   38 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:44:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   44 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:53:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   53 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:59:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   59 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:142:32: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
-  142 |   HAL_UART_Receive_IT(&huart2, &command, COMMAND_LENGTH);
-      |                                ^~~~~~~~
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
       |                                |
-      |                                char (*)[32]
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
 In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
                  from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
                  from ../Core/Inc/main.h:30,
                  from ../Core/Src/main.c:20:
-../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[32]'
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
  1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
       |                                                                  ~~~~~~~~~^~~~~
-../Core/Src/main.c:154:7: warning: unused variable 'margin_time' [-Wunused-variable]
-  154 |   int margin_time = 0;
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
       |       ^~~~~~~~~~~
-../Core/Src/main.c:153:7: warning: unused variable 'saving_time' [-Wunused-variable]
-  153 |   int saving_time = 0;
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
       |       ^~~~~~~~~~~
-../Core/Src/main.c:152:7: warning: unused variable 'exposure_time' [-Wunused-variable]
-  152 |   int exposure_time = 0;
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
       |       ^~~~~~~~~~~~~
-../Core/Src/main.c:151:7: warning: unused variable 'r_speed' [-Wunused-variable]
-  151 |   int r_speed = 0;
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
       |       ^~~~~~~
-../Core/Src/main.c:150:7: warning: unused variable 't_speed' [-Wunused-variable]
-  150 |   int t_speed = 0;
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
       |       ^~~~~~~
-../Core/Src/main.c:149:7: warning: unused variable 'r_step' [-Wunused-variable]
-  149 |   int r_step = 0;
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
       |       ^~~~~~
-../Core/Src/main.c:148:7: warning: unused variable 't_step' [-Wunused-variable]
-  148 |   int t_step = 0;
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
+      |       ^~~~~~
+../Core/Src/communication.c:60:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   60 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:67:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   67 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[3]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[3]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37208	    472	   2360	  40040	   9c68	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:27:40 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-size  main_code.elf 
+   text	   data	    bss	    dec	    hex	filename
+  37208	    472	   2360	  40040	   9c68	main_code.elf
+Finished building: default.size.stdout
+ 
+18:28:14 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:38:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   38 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:44:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   44 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:53:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   53 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:59:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   59 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
+      |                                |
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
+      |       ^~~~~~~~~~~~~
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
+      |       ^~~~~~
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
+      |       ^~~~~~
+../Core/Src/communication.c:60:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   60 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:67:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   67 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37208	    472	   2392	  40072	   9c88	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:30:31 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
+      |                                |
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
+      |       ^~~~~~~~~~~~~
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
+      |       ^~~~~~
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
       |       ^~~~~~
 arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: main_code.elf
@@ -41,7 +224,518 @@ Finished building target: main_code.elf
 arm-none-eabi-size  main_code.elf 
 arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
    text	   data	    bss	    dec	    hex	filename
-  37116	    480	   2384	  39980	   9c2c	main_code.elf
+  36816	    472	   2392	  39680	   9b00	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:32:16 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:39:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   39 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:45:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   45 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:54:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   54 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:60:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   60 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:61:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   61 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:68:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   68 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  36816	    472	   2392	  39680	   9b00	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:38:29 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:39:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   39 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:45:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   45 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:50:28: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   50 |             if (strcmp(argv[0],"move")==0){
+      |                        ~~~~^~~
+      |                            |
+      |                            char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:54:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   54 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:60:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   60 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:61:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   61 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:68:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   68 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  36824	    472	   2392	  39688	   9b08	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:39:24 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:38:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   38 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:44:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   44 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:49:28: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   49 |             if (strcmp(argv[0],"move")==0){
+      |                        ~~~~^~~
+      |                            |
+      |                            char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:53:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   53 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/communication.c:59:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   59 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
+      |                                |
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
+      |       ^~~~~~~~~~~~~
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
+      |       ^~~~~~
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
+      |       ^~~~~~
+../Core/Src/communication.c:60:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   60 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:67:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   67 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37208	    472	   2392	  40072	   9c88	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:40:59 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:38:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   38 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:44:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   44 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:49:28: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   49 |             if (strcmp(argv[0],"move")==0){
+      |                        ~~~~^~~
+      |                            |
+      |                            char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:54:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   54 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:60:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   60 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:61:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   61 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:68:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   68 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37216	    472	   2392	  40080	   9c90	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:43:51 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:39:24: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   39 |             argv[argc] = token;
+      |                        ^
+../Core/Src/communication.c:45:28: warning: assignment to 'char' from 'char *' makes integer from pointer without a cast [-Wint-conversion]
+   45 |                 argv[argc] = token;
+      |                            ^
+../Core/Src/communication.c:50:28: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   50 |             if (strcmp(argv[0],"move")==0){
+      |                        ~~~~^~~
+      |                            |
+      |                            char
+In file included from ../Core/Src/communication.c:6:
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:55:33: warning: passing argument 1 of 'strcmp' makes pointer from integer without a cast [-Wint-conversion]
+   55 |             else if (strcmp(argv[0],"turn")==0){
+      |                             ~~~~^~~
+      |                                 |
+      |                                 char
+C:\ST\STM32CubeIDE_1.16.1\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.1.0.202410251130\tools\bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/include/string.h:36:18: note: expected 'const char *' but argument is of type 'char'
+   36 | int      strcmp (const char *, const char *);
+      |                  ^~~~~~~~~~~~
+../Core/Src/communication.c:61:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   61 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:62:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   62 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:69:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   69 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37232	    472	   2392	  40096	   9ca0	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:45:34 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:61:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   61 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
+      |                                |
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
+      |       ^~~~~~~~~~~~~
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
+      |       ^~~~~~
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
+      |       ^~~~~~
+../Core/Src/communication.c:62:9: warning: implicit declaration of function 'delayMicroseconds' [-Wimplicit-function-declaration]
+   62 |         delayMicroseconds(1000000);
+      |         ^~~~~~~~~~~~~~~~~
+../Core/Src/communication.c:69:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   69 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37208	    472	   2432	  40112	   9cb0	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:48:44 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+arm-none-eabi-gcc "../Core/Src/drivers.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/drivers.d" -MT"Core/Src/drivers.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/drivers.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:59:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   59 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:66:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   66 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:146:32: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+  146 |   HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                ^~~~~~~
+      |                                |
+      |                                char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:30,
+                 from ../Core/Src/main.c:20:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/main.c:158:7: warning: unused variable 'margin_time' [-Wunused-variable]
+  158 |   int margin_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:157:7: warning: unused variable 'saving_time' [-Wunused-variable]
+  157 |   int saving_time = 0;
+      |       ^~~~~~~~~~~
+../Core/Src/main.c:156:7: warning: unused variable 'exposure_time' [-Wunused-variable]
+  156 |   int exposure_time = 0;
+      |       ^~~~~~~~~~~~~
+../Core/Src/main.c:155:7: warning: unused variable 'r_speed' [-Wunused-variable]
+  155 |   int r_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:154:7: warning: unused variable 't_speed' [-Wunused-variable]
+  154 |   int t_speed = 0;
+      |       ^~~~~~~
+../Core/Src/main.c:153:7: warning: unused variable 'r_step' [-Wunused-variable]
+  153 |   int r_step = 0;
+      |       ^~~~~~
+../Core/Src/main.c:152:7: warning: unused variable 't_step' [-Wunused-variable]
+  152 |   int t_step = 0;
+      |       ^~~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37240	    472	   2432	  40144	   9cd0	main_code.elf
+Finished building: default.size.stdout
+ 
+Finished building: main_code.list
+ 
+18:49:30 **** Incremental Build of configuration Debug for project main_code ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:58:38: warning: pointer targets in passing argument 2 of 'HAL_UART_Receive_IT' differ in signedness [-Wpointer-sign]
+   58 |         HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+      |                                      ^~~~~~~
+      |                                      |
+      |                                      char *
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char *'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c:65:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+   65 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[33]
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[33]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: main_code.elf
+ 
+arm-none-eabi-size  main_code.elf 
+arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
+   text	   data	    bss	    dec	    hex	filename
+  37232	    472	   2432	  40136	   9cc8	main_code.elf
 Finished building: default.size.stdout
  
 Finished building: main_code.list

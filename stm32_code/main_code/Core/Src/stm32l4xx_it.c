@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "drivers.h"
 #include "ir_led.h"
 #include "states.h"
@@ -62,12 +64,6 @@ extern UART_HandleTypeDef huart2;
 /* USER CODE BEGIN EV */
 
 
-extern int COMMAND_LENGTH;
-extern char command[32];
-
-int handled = 0;
-
-extern int state;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -211,61 +207,54 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles USART2 global interrupt.
   */
-void USART2_IRQHandler(void)
-{
+void USART2_IRQHandler(void){
   /* USER CODE BEGIN USART2_IRQn 0 */
-
+  
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
+  //sendNPulse(atoi("2"), T_MOTOR);
+  // if (handled == 1){
+  //   handled = 0;
+  //   HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);
+  //   return;
+  // }
 
-   if (state==LISTENING_STATE){
-    char command[] = "move 187 left right ss aa";
-    char* token;
+  // char* token;
+  // nb_params = 0;
+  // const char delim[] = " ";
+  // Storing the command name
+  // token = strtok(command, delim);
+  // params[nb_params] = token;
+  // nb_params++;
+  
+  // Storing the command parameters
+  // while(token!=NULL){
+  //     token = strtok(NULL, delim);
+  //     params[nb_params] = token;
+  //     nb_params++;
+  // }
 
-    int argc = 0;
-    char** argv = malloc(5*sizeof(char*));
+  // if (state==LISTENING_STATE){
+  
+  //   if (strcmp(token,"move")==0){
+  //     state = MOVING_STATE;
+  //     *parameter = '4';
+      //send1Pulse(T_MOTOR);
+    // }
 
-    const char delim[] = " ";
-    // Storing the command name
-    token = strtok(command, delim);
-    argv[argc] = token;
-    argc++;
-    
-    // Storing the command parameters
-    while(token!=NULL){
-        token = strtok(NULL, delim);
-        argv[argc] = token;
-        argc++;
-    }
+    // else if (strcmp(params[0],"turn")==0){
+    //   state = TURNING_STATE;
+    // }
+  // }
 
-    if (argv[0]== "move"){
-      int distance = atoi(argv[1]);
-      translate(distance);
-    }
+  // handled = 1;
 
+  // HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
+  // delayMicroseconds(1000000);
 
-  }
   
 
- 
-//  if (strcmp(command, "ste")== 0 && handled==0){
-//
-//	  sendNPulse(20);
-//  }
-
-
-//  else if (handled==1){
-//	  handled=0;
-//  }
-
-  HAL_UART_Receive_IT(&huart2, command, COMMAND_LENGTH);
-
-
-//  char receivedCharacter;
-//
-//
-//  HAL_UART_Receive_IT(&huart2, &receivedCharacter, 1);
   /* USER CODE END USART2_IRQn 1 */
 }
 

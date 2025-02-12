@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-int step_time_us = 50000; // minimum 1us
+int step_time_us = 500000; // minimum 1us
 
 int t_pulse_length = 1; //length moved with 1 pulse (in mm)
 int r_pulse_angle = 1; //angle turned with 1 pulse (in °)
@@ -28,17 +28,26 @@ void sendNPulse(int N, int n_driver){
 
 
 void translate(int dx){
-	int nb_pulses = (int)((float)dx/(float)t_pulse_length);
-	sendNPulse(nb_pulses, T_MOTOR);
+	sendNPulse(1, T_MOTOR);
+	delayMicroseconds(1000000);
+	sendNPulse(dx, T_MOTOR);
+	
+
+	// int nb_pulses = (int)((float)dx/(float)t_pulse_length);
+	// sendNPulse(nb_pulses, T_MOTOR);
 }
 
 void rotate(int dtheta){
-	int nb_pulses = (int)((float)dtheta/(float)r_pulse_angle);
-	sendNPulse(nb_pulses, R_MOTOR);
+	sendNPulse(2, T_MOTOR);
+	delayMicroseconds(1000000);
+	sendNPulse(dtheta, T_MOTOR);
+	// int nb_pulses = (int)((float)dtheta/(float)r_pulse_angle);
+	// sendNPulse(nb_pulses, R_MOTOR);
 }
 
 
 void setMicrosteppingMode(int stepping_mode){
+
 	// Parameter n define the stepping mode
 	// The step is 1/n
 	// with n in {1,2,4,8,16}

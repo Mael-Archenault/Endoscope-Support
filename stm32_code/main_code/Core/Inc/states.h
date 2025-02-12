@@ -1,4 +1,10 @@
-#define CAPTURING_STATE 1
 
 #define LISTENING_STATE 0
+
+#define CAPTURING_STATE 1
+
+
+
+#define MOVING_STATE 2
+#define TURNING_STATE 3
 

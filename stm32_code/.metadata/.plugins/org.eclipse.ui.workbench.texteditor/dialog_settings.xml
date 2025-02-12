@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="#ifdef __GNUC__"/>
+		<item key="selection" value="PUTCHAR_PROTOTYPE"/>
 		<list key="findhistory">
+			<item value="PUTCHAR_PROTOTYPE"/>
 			<item value="#ifdef __GNUC__"/>
 		</list>
 	</section>

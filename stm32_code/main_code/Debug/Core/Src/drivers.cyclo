@@ -1,9 +1,9 @@
 ../Core/Src/drivers.c:12:6:send1Pulse	2
 ../Core/Src/drivers.c:23:6:sendNPulse	2
 ../Core/Src/drivers.c:30:6:translate	1
-../Core/Src/drivers.c:35:6:rotate	1
-../Core/Src/drivers.c:41:6:setMicrosteppingMode	1
-../Core/Src/drivers.c:75:6:setDirection	3
-../Core/Src/drivers.c:86:6:setEnable	3
-../Core/Src/drivers.c:96:6:setReset	3
-../Core/Src/drivers.c:106:6:setSleep	3
+../Core/Src/drivers.c:40:6:rotate	1
+../Core/Src/drivers.c:49:6:setMicrosteppingMode	1
+../Core/Src/drivers.c:84:6:setDirection	3
+../Core/Src/drivers.c:95:6:setEnable	3
+../Core/Src/drivers.c:105:6:setReset	3
+../Core/Src/drivers.c:115:6:setSleep	3

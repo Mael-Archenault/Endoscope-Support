@@ -22,12 +22,7 @@
 #include "stm32l4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "drivers.h"
-#include "ir_led.h"
-#include "states.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -213,47 +208,6 @@ void USART2_IRQHandler(void){
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-  //sendNPulse(atoi("2"), T_MOTOR);
-  // if (handled == 1){
-  //   handled = 0;
-  //   HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);
-  //   return;
-  // }
-
-  // char* token;
-  // nb_params = 0;
-  // const char delim[] = " ";
-  // Storing the command name
-  // token = strtok(command, delim);
-  // params[nb_params] = token;
-  // nb_params++;
-  
-  // Storing the command parameters
-  // while(token!=NULL){
-  //     token = strtok(NULL, delim);
-  //     params[nb_params] = token;
-  //     nb_params++;
-  // }
-
-  // if (state==LISTENING_STATE){
-  
-  //   if (strcmp(token,"move")==0){
-  //     state = MOVING_STATE;
-  //     *parameter = '4';
-      //send1Pulse(T_MOTOR);
-    // }
-
-    // else if (strcmp(params[0],"turn")==0){
-    //   state = TURNING_STATE;
-    // }
-  // }
-
-  // handled = 1;
-
-  // HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
-  // delayMicroseconds(1000000);
-
-  
 
   /* USER CODE END USART2_IRQn 1 */
 }

@@ -21,15 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "stm32l4xx.h"
-#include "time.h"
-#include "states.h"
-#include "drivers.h"
-#include "communication.h"
-
+#include "init.h"
+#include "mainloop.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,13 +59,7 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-char command[BUFF_SIZE];
 
-int argc = 0;
-char* argv[10];
-
-
-int state = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -132,55 +119,16 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  // Initializing the time reference counter
-  __HAL_TIM_SET_COUNTER(&htim5, 0);  // Reset the counter to 0
-  HAL_TIM_Base_Start(&htim5);
-
-  // Initializing the IR emmition timer
-  HAL_TIM_Base_Start(&htim16);
-  TIM16->CCR1 = 1000; // setting the compare register to half the period (to generate a square signal)
-  HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-
-
-  // Initializing the command buffer and receiving command over UART
-  HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
-
-
-
-
-  // Initializing all Capture Variables
-  int t_step = 0;
-  int r_step = 0;
-  int t_speed = 0;
-  int r_speed = 0;
-  int exposure_time = 0;
-  int saving_time = 0;
-  int margin_time = 0;
-
-
+  init();
+  run();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    
-    if (state == MOVING_STATE){
-      int distance = atoi(argv[1]);
-      translate(distance);
-
-      state = LISTENING_STATE;
-    }
-
-    if (state == TURNING_STATE){
-      int angle = atoi(argv[1]);
-      rotate(angle);
-      
-      state = LISTENING_STATE;
-    }
 
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

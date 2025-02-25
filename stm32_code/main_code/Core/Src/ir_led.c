@@ -23,7 +23,7 @@ void sendBit0() {
     delayMicroseconds(600);  // Same low duration as the pulse for "0"
 }
 
-void sendSIRCSData(uint32_t data) {
+void sendSIRCSData(int data) {
 
 	// Start pulse
     HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
@@ -48,7 +48,7 @@ void sendSIRCSData(uint32_t data) {
 }
 
 void takePicture(){
-	uint32_t data = 0b10110100101110001111;
+	int data = 0b10110100101110001111;
 	for (int i = 0; i<3; i++){
 	  sendSIRCSData(data);
 	}

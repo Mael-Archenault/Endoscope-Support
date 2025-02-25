@@ -9,6 +9,10 @@ int step_time_us = 500000; // minimum 1us
 int t_pulse_length = 1; //length moved with 1 pulse (in mm)
 int r_pulse_angle = 1; //angle turned with 1 pulse (in °)
 
+
+int current_x = 0;
+int current_theta = 0;
+
 void send1Pulse(int n_driver){
 
 	uint16_t GPIO_PIN;
@@ -28,29 +32,63 @@ void sendNPulse(int N, int n_driver){
 
 
 void translate(int dx){
-	sendNPulse(1, T_MOTOR);
-	delayMicroseconds(1000000);
-	sendNPulse(dx, T_MOTOR);
-	
 
-	// int nb_pulses = (int)((float)dx/(float)t_pulse_length);
-	// sendNPulse(nb_pulses, T_MOTOR);
+	int coeff;
+	if (dx >= 0){
+        coeff = 1;
+    } else {
+        coeff = -1;
+		setDirection(T_MOTOR, BACKWARD);
+    }
+	
+	int nb_pulses = (int)((float)(coeff*dx)/(float)t_pulse_length);
+	sendNPulse(nb_pulses, T_MOTOR);
+	
+	if (dx < 0){
+		setDirection(T_MOTOR, FORWARD);
+	}
+
+	
+}
+
+void move_to(int x, int theta){
+	int dx = x - current_x;
+    int dtheta = theta - current_theta;
+
+    translate(dx);
+    rotate(dtheta);
+
+	current_x = x;
+	current_theta = theta;
+
 }
 
 void rotate(int dtheta){
-	sendNPulse(2, T_MOTOR);
-	delayMicroseconds(1000000);
-	sendNPulse(dtheta, T_MOTOR);
-	// int nb_pulses = (int)((float)dtheta/(float)r_pulse_angle);
-	// sendNPulse(nb_pulses, R_MOTOR);
+	int coeff;
+	if (dtheta >= 0){
+        coeff = 1;
+    } else {
+		coeff = -1;
+		setDirection(R_MOTOR, BACKWARD);
+    }
+	
+	int nb_pulses = (int)((float)(coeff*dtheta)/(float)t_pulse_length);
+	sendNPulse(nb_pulses, R_MOTOR);
+	
+	if (dtheta < 0){
+		setDirection(R_MOTOR, FORWARD);
+	}
 }
 
 
 void setMicrosteppingMode(int stepping_mode){
 
-	// Parameter n define the stepping mode
-	// The step is 1/n
-	// with n in {1,2,4,8,16}
+	// Possible Parameters:
+	//  -FULL_STEP
+	//  -HALF_STEP
+	//  -QUARTER_STEP
+	//  -EIGHT_STEP
+	//  -SIXTEENTH_STEP
 
 	/*
 	   Microstepping Resolution Truth Table
@@ -90,6 +128,9 @@ void setDirection(int n_driver, int direction){
 	else if (n_driver==R_MOTOR){
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, direction);
 	}
+
+	// Required time to wait before sending a step : 200 ns
+	delayMicroseconds(1);
 }
 
 void setEnable(int n_driver, int state){
@@ -110,6 +151,9 @@ void setReset(int n_driver, int state){
     else if (n_driver==T_MOTOR){
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, state);
     }
+
+	// Required time to wait before sending a step : 200 ns
+	delayMicroseconds(1);
 }
 
 void setSleep(int n_driver, int state){
@@ -120,5 +164,40 @@ void setSleep(int n_driver, int state){
     else if (n_driver==T_MOTOR){
         HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, state);
     }
+	
+	// Required time to wait before sending a step : 1 ms
+	delayMicroseconds(2000);
+}
+
+
+void initializeDrivers(){
+	setMicrosteppingMode(HALF_STEP);
+
+	setReset(T_MOTOR, DISABLE);
+	setReset(R_MOTOR, DISABLE);
+
+	setSleep(T_MOTOR, DISABLE);
+	setSleep(R_MOTOR, DISABLE);
+
+	setDirection(T_MOTOR, FORWARD);
+	setDirection(R_MOTOR, FORWARD);
+
+	setEnable(T_MOTOR, ENABLE);
+	setEnable(R_MOTOR, ENABLE);
+
+}
+
+void home_motors(){
+	setDirection(T_MOTOR, BACKWARD);
+
+	int flag = 0;
+
+
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 0){
+		send1Pulse(T_MOTOR);
+	}
+
+	current_x = 0;
+	current_theta = 0;
 }
 

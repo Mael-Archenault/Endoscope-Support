@@ -70,6 +70,12 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 
+typedef struct {
+  char name[32];    
+  int value;
+} VAR;
+
+#define NB_VAR 9
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

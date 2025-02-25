@@ -3,17 +3,20 @@ import tkinter as tk
 from PIL import Image
 # from communication import *
 
+def sendCommand():
+    pass
 
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
 
-def testfunc():
-    print("Test function called")
+SIDEBAR_WIDTH = 100
 
 
 class Panel(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.width = 1150
-        self.height = 640
+        self.width = WINDOW_WIDTH-SIDEBAR_WIDTH
+        self.height = WINDOW_HEIGHT
         self.x, self.y = 0,0
         self.title = CTkLabel(self,width=int(self.width*0.9), text="",  fg_color="gray30", corner_radius=6, font=("Roboto", 20))
         self.title.place(relx =0.5, y = 50/2, anchor = "center")
@@ -136,171 +139,245 @@ class SettingsPanel(Panel):
         super().__init__(master)
         self.title.configure(text="Capture Settings")
 
-        self.settings_frame = CTkFrame(self)
-        self.settings_frame.place(x =70,y =100)
+        self.section_width = 300
+        self.section_height = 300
 
-        self.translation_label = CTkLabel(self.settings_frame,
+
+        ## Box that contains a section "Translation", a section "Rotation", and a section "Timing"
+        self.settings_frame = CTkFrame(self,
+                                            fg_color = "#333333"
+                                            )
+        self.settings_frame.place(relx=0.5, rely=0.4, anchor = "center")
+    
+
+        ## Box of the section "Translation"
+        self.translation_frame = CTkFrame(self.settings_frame,
+                                            fg_color = "#2B2B2B",
+                                            bg_color = "#333333",
+                                            corner_radius=10,
+                                            )
+        self.translation_frame.grid(row =0, column = 0, padx = 10, sticky = "ns")
+
+        self.translation_label = CTkLabel(self.translation_frame,
                                          text = "Translation",
+                                         font=("Roboto", 20),
+                                         fg_color = "grey20",
+                                         corner_radius=10,
+                                         height = 75,
+                                         width = self.section_width
+                                         )
+        
+    
+        self.translation_start_label = CTkLabel(self.translation_frame,
+                                         text = "Starting Point (mm)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
+                                         corner_radius=10
+                                         )
+        self.translation_end_label = CTkLabel(self.translation_frame,
+                                         text = "Ending Point (mm)",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         
-        self.position_frame = CTkFrame(self.settings_frame)
-        self.position_label = CTkLabel(self.position_frame,
-                                         text = "Début\t\t        Fin",
+        self.translation_step_label = CTkLabel(self.translation_frame,
+                                         text = "Step (mm)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
-        
-        self.pasvitesse = CTkLabel(self.position_frame,
-                                         text = "Pas \t\t  Vitesse",
+        self.translation_speed_label = CTkLabel(self.translation_frame,
+                                         text = "Speed (%)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
-        self.numberdebut = CTkTextbox(self.position_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numberfin = CTkTextbox(self.position_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numberpas = CTkTextbox(self.position_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numbervitesse = CTkTextbox(self.position_frame,
-                                    width = 100,
-                                    height=30)
+
+        self.translation_start_textbox = CTkTextbox(self.translation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.translation_end_textbox = CTkTextbox(self.translation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.translation_step_textbox = CTkTextbox(self.translation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.translation_speed_textbox = CTkTextbox(self.translation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+
+        self.translation_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
+        self.translation_start_label.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.translation_end_label.grid(row = 1, column = 2, padx = 10, pady = 10)
+        self.translation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.translation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = 10)
+
+        self.translation_step_label.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.translation_speed_label.grid(row = 3, column = 2, padx = 10, pady = 10)
+        self.translation_step_textbox.grid(row = 4, column = 0, padx = 10, pady = 10)
+        self.translation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = 10)
         
 
+        ## Box of the section "Rotation"
 
-        self.position_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
-        self.numberdebut.grid(row = 2, column = 0, padx = 10, pady = 10 )
-        self.numberfin.grid(row = 2, column = 1, padx = 10, pady = 10 )
-        self.translation_label.grid(row = 0, column = 0, padx = 10, pady = 10)
-        self.pasvitesse.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
-        self.numberpas.grid(row = 4, column = 0, padx = 10, pady = 10 )
-        self.numbervitesse.grid(row = 4, column = 1, padx = 10, pady = 10 )
-        self.position_frame.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.rotation_frame = CTkFrame(self.settings_frame,
+                                            fg_color = "#2B2B2B",
+                                            bg_color = "#333333",
+                                            corner_radius=10
+                                            )
 
-        self.rotation_label = CTkLabel(self.settings_frame,
+        self.rotation_frame.grid(row =0, column = 1, padx = 10, sticky = "ns")
+
+        self.rotation_label = CTkLabel(self.rotation_frame,
                                          text = "Rotation",
+                                         font=("Roboto", 20),
+                                         fg_color = "grey20",
+                                         corner_radius=10,
+                                         height = 75,
+                                         width = self.section_width
+                                         )
+        
+    
+        self.rotation_start_label = CTkLabel(self.rotation_frame,
+                                         text = "Starting Point (°)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
+                                         corner_radius=10
+                                         )
+        self.rotation_end_label = CTkLabel(self.rotation_frame,
+                                         text = "Ending Point (°)",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         
-        self.angle_frame = CTkFrame(self.settings_frame)
-        self.angle_label = CTkLabel(self.angle_frame,
-                                         text = "Début\t\t        Fin",
+        self.rotation_step_label = CTkLabel(self.rotation_frame,
+                                         text = "Step (°)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
+                                         corner_radius=10
+                                         )
+        self.rotation_speed_label = CTkLabel(self.rotation_frame,
+                                         text = "Speed (%)",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = self.section_width/2*0.8,
+                                         corner_radius=10
+                                         )
+
+        self.rotation_start_textbox = CTkTextbox(self.rotation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.rotation_end_textbox = CTkTextbox(self.rotation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.rotation_step_textbox = CTkTextbox(self.rotation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.rotation_speed_textbox = CTkTextbox(self.rotation_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+
+        self.rotation_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
+        self.rotation_start_label.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.rotation_end_label.grid(row = 1, column = 2, padx = 10, pady = 10)
+        self.rotation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.rotation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = 10)
+
+        self.rotation_step_label.grid(row = 3, column = 0, padx = 10, pady = 10)
+        self.rotation_speed_label.grid(row = 3, column = 2, padx = 10, pady = 10)
+        self.rotation_step_textbox.grid(row = 4, column = 0, padx = 10, pady = 10)
+        self.rotation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = 10)
+
+    
+        ## Box of the section "Timings"
+        self.timing_frame = CTkFrame(self.settings_frame,
+                                            fg_color = "#2B2B2B",
+                                            bg_color = "#333333",
+                                            corner_radius=10,
+                                            )
+
+        self.timing_frame.grid(row =0, column = 2, padx = 10, sticky = "ns")
+
+        self.timing_label = CTkLabel(self.timing_frame,
+                                         text = "Timings",
+                                         font=("Roboto", 20),
+                                         fg_color = "grey20",
+                                         corner_radius=10,
+                                         height = 75,
+                                         width = self.section_width
+                                         )
+        
+    
+        self.exposure_time_label = CTkLabel(self.timing_frame,
+                                         text = "Exposure Time (s)",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = self.section_width/2*0.8,
+                                         corner_radius=10
+                                         )
+        self.saving_time_label = CTkLabel(self.timing_frame,
+                                         text = "Saving Time (s)",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         
-        self.pasangle = CTkLabel(self.angle_frame,
-                                         text = "Pas \t\t  Vitesse",
+        self.margin_time_label = CTkLabel(self.timing_frame,
+                                         text = "Margin Time (s)",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
-        self.numberdebut = CTkTextbox(self.angle_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numberfin = CTkTextbox(self.angle_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numberpas = CTkTextbox(self.angle_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numbervitesse = CTkTextbox(self.angle_frame,
-                                    width = 100,
-                                    height=30)
-        
+        self.exposure_time_textbox = CTkTextbox(self.timing_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.saving_time_textbox = CTkTextbox(self.timing_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
+        self.margin_time_textbox = CTkTextbox(self.timing_frame,
+                                    width = self.section_width/2*0.6,
+                                    height = 20)
 
+        self.timing_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
 
-        self.angle_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
-        self.numberdebut.grid(row = 2, column = 0, padx = 10, pady = 10 )
-        self.numberfin.grid(row = 2, column = 1, padx = 10, pady = 10 )
-        self.rotation_label.grid(row = 0, column = 1, padx = 10, pady = 10)
-        self.pasangle.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
-        self.numberpas.grid(row = 4, column = 0, padx = 10, pady = 10 )
-        self.numbervitesse.grid(row = 4, column = 1, padx = 10, pady = 10 )
-        self.angle_frame.grid(row = 1, column = 1, padx = 10, pady = 10)
+        self.exposure_time_label.grid(row = 1, column = 1, padx = 10, pady = 10)
+        self.exposure_time_textbox.grid(row = 2, column = 1, padx = 10, pady = 10)
 
-        self.timings_label = CTkLabel(self.settings_frame,
-                                 text = "Timing",
-                                 font=("Roboto", 16),
-                                 fg_color = "grey30",
-                                 width = 300,
-                                 corner_radius=10
-                                 )
-        
-        self.timings_frame = CTkFrame(self.settings_frame)
-        self.exposition_label = CTkLabel(self.timings_frame,
-                                         text = "Exposure Time",
-                                         font=("Roboto", 16),
-                                         fg_color = "grey30",
-                                         width = 300,
-                                         corner_radius=10
-                                         )
-        
-        self.enregistrement_label = CTkLabel(self.timings_frame,
-                                         text = "Saving Time",
-                                         font=("Roboto", 16),
-                                         fg_color = "grey30",
-                                         width = 300,
-                                         corner_radius=10
-                                         )
-        self.marge_label = CTkLabel(self.timings_frame,
-                                 text = "Margin Time",
-                                 font=("Roboto", 16),
-                                 fg_color = "grey30",
-                                 width = 300,
-                                 corner_radius=10
-                                 )
-        self.numberexpo = CTkTextbox(self.timings_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numberenregistrement = CTkTextbox(self.timings_frame,
-                                    width = 100,
-                                    height=30)
-        
-        self.numbermarge = CTkTextbox(self.timings_frame,
-                                    width = 100,
-                                    height=30)
-        
+        self.saving_time_label.grid(row = 3, column = 1, padx = 10, pady = 10)
+        self.saving_time_textbox.grid(row = 4, column = 1, padx = 10, pady = 10)
 
+        self.margin_time_label.grid(row = 5, column = 1, padx = 10, pady = 10)
+        self.margin_time_textbox.grid(row = 6, column = 1, padx = 10, pady = 10)
 
-        self.exposition_label.grid(row = 1, column = 0, columnspan=2, padx = 10, pady = 10)
-        self.numberexpo.grid(row = 2, column = 0, columnspan = 2, padx = 10, pady = 10 )
-        self.timings_label.grid(row = 0, column = 2, padx = 10, pady = 10)
-        self.enregistrement_label.grid(row = 3, column = 0, columnspan=2, padx = 10, pady =10)
-        self.marge_label.grid(row = 5, column = 0, columnspan=2, padx = 10, pady =10)
-        self.numberenregistrement.grid(row = 4, column = 0, columnspan = 2, padx = 10, pady = 10 )
-        self.numbermarge.grid(row = 6, column = 0,columnspan = 2, padx = 10, pady = 10 )
-        self.timings_frame.grid(row = 1, column = 2, padx = 10, pady = 10)
+        ## Validation Button
 
-        self.validate_button = CTkButton(self.settings_frame,
-                                text="Valider",
-                                height = 100,
-                                width = 100)
+        self.confirmation_button = CTkButton(self,
+                                text="Send Configuration",
+                                font = ("Roboto", 20),
+                                height = 75,
+                                width = 400)
         
-        self.validate_button.grid(row = 2, column = 2,padx = 10, pady = 10)
+        self.confirmation_button.place(relx = 0.3, rely = 0.8, anchor = "center")
+
+        ## Panel to verify changes made to the STM32 data
+
+        self.verification_frame = CTkTextbox(self,
+                                                width = 500,
+                                                height = 150,
+                                                font=("Roboto", 16)
+                                                )
+        self.verification_frame.place(relx = 0.7, rely = 0.8, anchor = "center")
 
 
 class CapturePanel(Panel):
@@ -425,7 +502,7 @@ class Sidebar(CTkFrame):
         super().__init__(master)
 
 
-        self.width = 100
+        self.width = SIDEBAR_WIDTH
         self.button_height = 100
         self.button_spacing = 10
 
@@ -504,8 +581,9 @@ class App(CTk):
         super().__init__()
 
         self.title("Endoscope Application")
-        self.geometry("1080x720")
+        self.geometry(str(WINDOW_WIDTH)+ "x"+ str(WINDOW_HEIGHT))
         self.grid_columnconfigure(1, weight=1)
+        self.resizable(False, False)
 
         print(self.winfo_screenwidth(), self.winfo_width())
        

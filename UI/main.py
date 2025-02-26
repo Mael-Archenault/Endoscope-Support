@@ -1,5 +1,7 @@
 from customtkinter import *
 import tkinter as tk
+from tkinter import ttk
+
 from PIL import Image
 # from communication import *
 
@@ -15,8 +17,8 @@ SIDEBAR_WIDTH = 100
 class Panel(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.width = WINDOW_WIDTH-SIDEBAR_WIDTH
-        self.height = WINDOW_HEIGHT
+        self.width = (WINDOW_WIDTH-SIDEBAR_WIDTH)*0.97
+        self.height = WINDOW_HEIGHT*0.97
         self.x, self.y = 0,0
         self.title = CTkLabel(self,width=int(self.width*0.9), text="",  fg_color="gray30", corner_radius=6, font=("Roboto", 20))
         self.title.place(relx =0.5, y = 50/2, anchor = "center")
@@ -24,12 +26,150 @@ class Panel(CTkFrame):
         self.configure(width=self.width, height=self.height, corner_radius = 20, bg_color="transparent")
 
 
-class MovePanel(Panel):
+class ConnectionPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
-        self.title.configure(text="Move")
+        self.title.configure(text="Connection")
+
+        ## Box for the section "Connection Status"
+
+        self.connection_status_frame = CTkFrame(self,
+                                                width = 600,
+                                                height = 340)
+        self.connection_status_frame.place(relx = 0.69, rely = 0.32, anchor = "center")
+
+        self.connection_status_label = CTkLabel(self.connection_status_frame,
+                                         text = "Connection Status",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 580,
+                                         corner_radius=10
+                                         )
+        
+        self.connection_status_label.place(relx = 0.5, rely = 0.07, anchor = "center")
+        self.indicator_radius = 10
+        self.connection_status_indicator = CTkLabel(self.connection_status_frame,
+                                         text = "",
+                                         fg_color = "red",
+                                         width = 2*self.indicator_radius,
+                                         height = 2*self.indicator_radius,
+                                         corner_radius=self.indicator_radius
+                                         )
+        self.connection_status_indicator.place(relx = 0.4, rely = 0.25, anchor = "center")
+    
+        self.connection_status_text = CTkLabel(self.connection_status_frame,
+                                         text = "Disconnected",
+                                         font = ("Roboto", 16)
+                                         )
+        self.connection_status_text.place(relx = 0.55, rely = 0.25, anchor = "center")
+
+        
+        self.connected_device_frame = CTkFrame(self.connection_status_frame)
+        self.connected_device_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
+
+        self.connected_device_label = CTkLabel(self.connected_device_frame, 
+                                    text="Connected Device :",
+                                     font=("Roboto", 16),
+                                     )
+        self.connected_device_value = CTkTextbox(self.connected_device_frame,
+                                    width = 300,
+                                    height=30)
+
+        self.connected_device_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.connected_device_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
 
 
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+        self.firmware_version_frame.place(relx = 0.5, rely = 0.8, anchor = "center")
+
+        self.firmware_version_label = CTkLabel(self.firmware_version_frame, 
+                                    text="Firmware Version :",
+                                     font=("Roboto", 16),
+                                     )
+        self.firmware_version_value = CTkTextbox(self.firmware_version_frame,
+                                    width = 300,
+                                    height=30)
+
+        self.firmware_version_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.firmware_version_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+       
+        
+        
+
+        ## box for the section "Connection"
+
+        self.connection_frame = CTkFrame(self)
+        self.connection_label = CTkLabel(self.connection_frame,
+                                          text = "Connection",
+                                          font=("Roboto", 16),
+                                          fg_color = "grey30",
+                                          width = 400,
+                                          corner_radius=10
+                                          )
+        self.connection_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
+        
+        self.connection_frame.place(relx = 0.23, rely = 0.32, anchor = "center")
+        
+        
+        self.available_ports = CTkComboBox(self.connection_frame, 
+                                               values = ["COM1", "COM2", "COM3", "COM4"],
+                                               )
+        self.available_ports.grid(row = 1, column = 0, padx = (50,0), pady = 10)
+
+        image = Image.open("./img/reset_icon.png")
+        icon = CTkImage(light_image = image,
+                        dark_image=image,
+                        size=(20,20))
+        
+
+        self.search_connections_button = CTkButton(self.connection_frame,
+                            width = 20,
+                            height = 20,
+                            corner_radius= 10,
+                            text = "",
+                            image=icon,
+                            compound="top",
+                            fg_color = "#2B2B2B",
+                            hover_color="gray30")
+        self.search_connections_button.grid(row = 1, column = 1, padx = (0,50), pady = 10)
+        
+        
+        
+        self.connect_button = CTkButton(self.connection_frame,
+                                        text = "Connect",
+                                        font = ("Roboto", 20),
+                                        width = 250,
+                                        height = 100)
+        self.connect_button.grid(row = 2, column = 0, columnspan = 2, padx = 10, pady = 10)
+        
+        
+        self.disconnect_button = CTkButton(self.connection_frame,
+                                        text = "Disconnect",
+                                        font = ("Roboto", 20),
+                                        width = 250,
+                                        height = 100,
+                                        fg_color = "#8E0217",
+                                        hover_color="#582139")
+        self.disconnect_button.grid(row = 3, column = 0,columnspan = 2, padx = 10, pady = 10)
+       
+
+
+        ## Panel of logs
+
+        self.logs_frame = CTkTextbox(self,
+                                        width = 1040,
+                                        height = 260,
+                                        font=("Roboto", 16)
+                                        )
+        self.logs_frame.place(relx = 0.5, rely = 0.78, anchor = "center")
+
+
+        
 
 class TestPanel(Panel):
     def __init__(self, master):
@@ -39,7 +179,7 @@ class TestPanel(Panel):
         ## Box for the section "Test of the Movement"
 
         self.movement_test_frame = CTkFrame(self)
-        self.movement_test_frame.place(relx = 0.35, rely = 0.4, anchor = "center")
+        self.movement_test_frame.place(relx = 0.35, rely = 0.42, anchor = "center")
 
         self.movement_test_label = CTkLabel(self.movement_test_frame,
                                             text = "Movement Test",
@@ -97,7 +237,7 @@ class TestPanel(Panel):
                     color = "#1F6AA5"
                     hover_color = "#144870"
                 else:
-                    color = "#8f2d56"
+                    color = "#8E0217"
                     hover_color="#582139"
 
                 button = CTkButton(self.translation_frame,
@@ -116,7 +256,7 @@ class TestPanel(Panel):
                     color = "#1F6AA5"
                     hover_color = "#144870"
                 else:
-                    color = "#8f2d56"
+                    color = "#8E0217"
                     hover_color="#582139"
 
                 button = CTkButton(self.rotation_frame,
@@ -171,11 +311,11 @@ class TestPanel(Panel):
         ## Panel of logs
 
         self.logs_frame = CTkTextbox(self,
-                                        width = 1000,
+                                        width = 1040,
                                         height = 150,
                                         font=("Roboto", 16)
                                         )
-        self.logs_frame.place(relx = 0.5, rely = 0.87, anchor = "center")
+        self.logs_frame.place(relx = 0.5, rely = 0.88, anchor = "center")
 
 
 
@@ -196,7 +336,7 @@ class SettingsPanel(Panel):
         self.settings_frame = CTkFrame(self,
                                             fg_color = "#333333"
                                             )
-        self.settings_frame.place(relx=0.5, rely=0.4, anchor = "center")
+        self.settings_frame.place(relx=0.5, rely=0.35, anchor = "center")
     
 
         ## Box of the section "Translation"
@@ -436,7 +576,7 @@ class SettingsPanel(Panel):
                                 font = ("Roboto", 20),
                                 height = 50,
                                 width = 400,
-                                fg_color = "#8f2d56",
+                                fg_color = "#8E0217",
                                 hover_color="#582139"
                                 )
         
@@ -447,7 +587,7 @@ class SettingsPanel(Panel):
 
         self.logs_frame = CTkTextbox(self,
                                         width = 575,
-                                        height = 150,
+                                        height = 220,
                                         font=("Roboto", 16)
                                         )
         self.logs_frame.place(relx = 0.7, rely = 0.8, anchor = "center")
@@ -464,7 +604,7 @@ class CapturePanel(Panel):
                                         width = 400,
                                         height = 200,
                                         )
-        self.control_frame.place(relx = 0.25, rely = 0.2, anchor = "center")
+        self.control_frame.place(relx = 0.24, rely = 0.22, anchor = "center")
 
         self.control_label = CTkLabel(self.control_frame,
                                          text="Control",
@@ -509,7 +649,7 @@ class CapturePanel(Panel):
                                         width = 400,
                                         height = 200,
                                         )
-        self.position_frame.place(relx = 0.25, rely = 0.5, anchor = "center")
+        self.position_frame.place(relx = 0.24, rely = 0.52, anchor = "center")
 
         self.position_label = CTkLabel(self.position_frame,
                                          text="Position and Angle",
@@ -566,7 +706,7 @@ class CapturePanel(Panel):
                                         height = 415,
                                 
         )
-        self.status_frame.place(relx = 0.69, rely = 0.35, anchor = "center")
+        self.status_frame.place(relx = 0.69, rely = 0.37, anchor = "center")
 
         self.status_label = CTkLabel(self.status_frame,
                                          text="Capture Status",
@@ -677,9 +817,9 @@ class CapturePanel(Panel):
         # Box for the logs
 
         self.logs_frame = CTkTextbox(self,
-                                    width = 1000,
+                                    width = 990,
                                     height = 200)
-        self.logs_frame.place(relx = 0.5, rely = 0.8, anchor = "center")
+        self.logs_frame.place(relx = 0.5, rely = 0.82, anchor = "center")
 
 
         
@@ -689,8 +829,8 @@ class PanelContainer(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
 
-        self.width = 1500
-        self.height = 900
+        self.width = WINDOW_WIDTH - SIDEBAR_WIDTH
+        self.height = WINDOW_HEIGHT
         
 
         self.configure(width = self.width, height = self.height , corner_radius=0)
@@ -699,12 +839,12 @@ class PanelContainer(CTkFrame):
         
 
 
-        self.panels = {"Move": MovePanel(self), "Test": TestPanel(self), "Settings": SettingsPanel(self), "Capture": CapturePanel(self)}
+        self.panels = {"Connection": ConnectionPanel(self), "Test": TestPanel(self), "Settings": SettingsPanel(self), "Capture": CapturePanel(self)}
         for panel in self.panels.values():
-            panel.place(x = -self.width, y = 0)
+            panel.place(relx = -1, rely = 0.5, anchor = "center")
             panel.x, panel.y = -self.width, 0
         
-        self.panels["Settings"].place(x =0)
+        self.panels["Settings"].place(relx = 0.5, rely = 0.5, anchor = "center")
         self.panels["Settings"].x = 0
         
         
@@ -717,8 +857,8 @@ class PanelContainer(CTkFrame):
 
         current_panel = self.panels[self.state]
         new_panel = self.panels[panel_name]
-        current_panel.place(x=-self.width)
-        new_panel.place(x=0)
+        current_panel.place(relx = -1)
+        new_panel.place(relx = 0.5)
 
         self.state = panel_name
 
@@ -745,7 +885,7 @@ class Sidebar(CTkFrame):
     
 
         self.buttons = [
-            {"name": "Move", "icon": "move_icon.png", "command": lambda:self.panel_container.setPanel("Move")},
+            {"name": "Connection", "icon": "usb_icon.png", "command": lambda:self.panel_container.setPanel("Connection")},
             {"name": "Test", "icon": "test_icon.png", "command": lambda:self.panel_container.setPanel("Test")},
             {"name": "Capture\nSettings", "icon": "settings_icon.png", "command": lambda:self.panel_container.setPanel("Settings")},
             {"name": "Capture", "icon": "capture_icon.png", "command": lambda:self.panel_container.setPanel("Capture")},
@@ -760,9 +900,9 @@ class Sidebar(CTkFrame):
             
 
             button = CTkButton(self,
-                               width = self.width,
+                               width = self.width*0.8,
                                height = self.button_height,
-                               corner_radius= 0,
+                               corner_radius= 10,
                                text=element["name"],
                                image=icon,
                                compound="top",

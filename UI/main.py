@@ -365,10 +365,24 @@ class SettingsPanel(Panel):
         self.confirmation_button = CTkButton(self,
                                 text="Send Configuration",
                                 font = ("Roboto", 20),
-                                height = 75,
+                                height = 50,
                                 width = 400)
         
-        self.confirmation_button.place(relx = 0.3, rely = 0.8, anchor = "center")
+        self.confirmation_button.place(relx = 0.3, rely = 0.85, anchor = "center")
+
+        ## Reset Button
+
+        self.reset_button = CTkButton(self,
+                                text="Reset Configuration",
+                                font = ("Roboto", 20),
+                                height = 50,
+                                width = 400,
+                                fg_color = "#8f2d56",
+                                hover_color="#582139"
+                                )
+        
+        self.reset_button.place(relx = 0.3, rely = 0.75, anchor = "center")
+
 
         ## Panel to verify changes made to the STM32 data
 

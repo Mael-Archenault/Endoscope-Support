@@ -458,72 +458,228 @@ class CapturePanel(Panel):
         super().__init__(master)
         self.title.configure(text="Capture")
 
-        self.control_frame = CTkFrame(self)
-        self.control_frame.place(x =100, y = 100)
+        
+        ## Box for the section "Control of the capture"
+        self.control_frame = CTkFrame(self,
+                                        width = 400,
+                                        height = 200,
+                                        )
+        self.control_frame.place(relx = 0.25, rely = 0.2, anchor = "center")
 
         self.control_label = CTkLabel(self.control_frame,
                                          text="Control",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = 380,
                                          corner_radius=10
                                          )
-        self.start_button = CTkButton(self.control_frame,
-                                        text="Start Capture",
-                                        height = 100,
-                                        width = 100)
-        self.stop_button = CTkButton(self.control_frame,
-                                        text="Stop Capture",
-                                        height = 100,
-                                        width = 100)
-        self.control_label.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = 20)
-        self.start_button.grid(row = 1, column = 0, padx = 20, pady = 20)
-        self.stop_button.grid(row = 1, column = 1, padx = 20, pady = 20)
+        self.control_label.place(relx = 0.5, rely = 0.1, anchor = "center")
+
+        self.control_buttons = [
+            {"name": "Play", "icon": "play_icon.png", "command": sendCommand("play")},
+            {"name": "Pause", "icon": "pause_icon.png", "command": sendCommand("pause")},
+            {"name": "Stop", "icon": "stop_icon.png", "command": sendCommand("stop")}
+            ]
+        for i in range(len(self.control_buttons)):
+            element = self.control_buttons[i]
+            
+            image = Image.open("./img/"+element["icon"])
+            icon = CTkImage(light_image = image,
+                                dark_image=image,
+                                size=(75,75))
+                
+
+            button = CTkButton(self.control_frame,
+                                corner_radius= 10,
+                                width = 75,
+                                height = 75,
+                                text=element["name"],
+                                image=icon,
+                                compound="top",
+                                command = element["command"],
+                                font=("Roboto", 16),
+                                text_color="#D9D9D9",
+                                fg_color = "#2B2B2B",
+                                hover_color="gray30")
+
+            button.place(relx = 0.2 + i*0.3, rely = 0.6, anchor = "center")
+        
+        ## Box for the section "Position and Angle"
+        self.position_frame = CTkFrame(self,
+                                        width = 400,
+                                        height = 200,
+                                        )
+        self.position_frame.place(relx = 0.25, rely = 0.5, anchor = "center")
+
+        self.position_label = CTkLabel(self.position_frame,
+                                         text="Position and Angle",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 380,
+                                         corner_radius=10
+                                         )
+        self.position_label.place(relx = 0.5, rely = 0.1, anchor = "center")
+
+        self.x_frame = CTkFrame(self.position_frame)
+        self.x_label = CTkLabel(self.x_frame, 
+                                    text="x :",
+                                     font=("Roboto", 16),
+                                     )
+        self.x_value = CTkTextbox(self.x_frame,
+                                    width = 100,
+                                    height=30)
+        self.x_label_mm = CTkLabel(self.x_frame, 
+                                    text="mm",
+                                     font=("Roboto", 16),
+                                     )
+
+        self.x_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.x_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+        self.x_label_mm.grid(row = 0, column = 2, padx =(5,10),pady = 10)
+
+        self.x_frame.place(relx = 0.5, rely = 0.35, anchor = "center")
+
+        self.theta_frame = CTkFrame(self.position_frame)
+        self.theta_label = CTkLabel(self.theta_frame, 
+                                    text="Theta :",
+                                     font=("Roboto", 16),
+                                     )
+        self.theta_value = CTkTextbox(self.theta_frame,
+                                    width = 100,
+                                    height=30)
+        self.theta_label_mm = CTkLabel(self.theta_frame, 
+                                    text="°",
+                                     font=("Roboto", 16),
+                                     )
+
+        self.theta_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.theta_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+        self.theta_label_mm.grid(row = 0, column = 2, padx =(5,10),pady = 10)
+
+        self.theta_frame.place(relx = 0.5, rely = 0.7, anchor = "center")
 
 
-        self.info_frame = CTkFrame(self)
-        self.info_frame.place(x=500, y=100)
 
-        self.info_label = CTkLabel(self.info_frame,
+        ## Box for the section "Status of the Capture"
+        self.status_frame = CTkFrame(self,
+                                        width = 550,
+                                        height = 415,
+                                
+        )
+        self.status_frame.place(relx = 0.69, rely = 0.35, anchor = "center")
+
+        self.status_label = CTkLabel(self.status_frame,
                                          text="Capture Status",
                                          font=("Roboto", 16),
                                          fg_color = "grey30",
-                                         width = 300,
+                                         width = 530,
                                          corner_radius=10
                                          )
 
-        self.progress_bar = CTkProgressBar(self.info_frame,
-                                            height = 30,
-                                            width =500)
-        
-        self.position = CTkLabel(self.info_frame,
-                                 text="pos : ... / 180 cm   angle : ... / 290°",
-                                 font=("Roboto", 16),
-                                 fg_color = "grey30",
-                                 height= 50,
-                                 width = 100,
-                                 corner_radius=10
-                                )
+        self.status_label.place(relx = 0.5, rely = 0.05, anchor = "center")
 
-        self.number_frame = CTkFrame(self.info_frame)
-        self.number_label = CTkLabel(self.number_frame, text="Number of Pictures")
-        self.number = CTkTextbox(self.number_frame,
+        
+        self.progress_bar = CTkProgressBar(self.status_frame,
+                                            height = 20,
+                                            width =400)
+        self.progress_percentage = CTkLabel(self.status_frame,
+                                                font = ("Roboto", 15),
+                                                text = "50%")
+        self.progress_bar.place(relx = 0.45, rely = 0.2, anchor = "center")
+        self.progress_percentage.place(relx = 0.9, rely = 0.2, anchor = "center")
+
+
+        self.time_frame = CTkFrame(self.status_frame)
+        self.time_frame.place(relx = 0.25, rely = 0.35, anchor = "center")
+
+        self.time_label = CTkLabel(self.time_frame, 
+                                    text="Capture Time :",
+                                     font=("Roboto", 15),
+                                     )
+        self.time_value = CTkTextbox(self.time_frame,
                                     width = 100,
                                     height=30)
 
-        self.number_label.grid(row = 0, column = 0, padx = 10, pady = 10)
-        self.number.grid(row = 0, column = 1, padx = 10, pady = 10)
+        self.time_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.time_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
 
-        self.info_label.grid(row = 0, column =0, padx=20, pady = 20)
-        self.progress_bar.grid(row = 1, column = 0, padx=20, pady=20)
-        self.position.grid(row = 2, column =0, padx=20, pady = 20)
-        self.number_frame.grid(row = 3, column = 0, padx=20, pady=20)
-        
+        self.estimated_time_frame = CTkFrame(self.status_frame)
+        self.estimated_time_frame.place(relx = 0.75, rely = 0.35, anchor = "center")
 
-        self.terminal = CTkTextbox(self,
+        self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
+                                    text="Estimated Time\nLeft :",
+                                     font=("Roboto", 15),
+                                     )
+        self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
+                                    width = 100,
+                                    height=30)
+
+        self.estimated_time_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.estimated_time_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+
+        self.nb_pictures_frame = CTkFrame(self.status_frame)
+        self.nb_pictures_frame.place(relx = 0.5, rely = 0.55, anchor = "center")
+
+        self.nb_pictures_label = CTkLabel(self.nb_pictures_frame, 
+                                    text="Total Pictures Taken :",
+                                     font=("Roboto", 15),
+                                     )
+        self.nb_pictures_value = CTkTextbox(self.nb_pictures_frame,
+                                    width = 100,
+                                    height=30)
+        self.total_nb_pictures_label = CTkLabel(self.nb_pictures_frame, 
+                                    text="/ 100",
+                                     font=("Roboto", 15),
+                                     )
+
+        self.nb_pictures_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.nb_pictures_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+        self.total_nb_pictures_label.grid(row = 0, column = 2, padx =(5,10),pady = 10)
+
+        self.nb_pictures_angle_frame = CTkFrame(self.status_frame)
+        self.nb_pictures_angle_frame.place(relx = 0.5, rely = 0.7, anchor = "center")
+
+        self.nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame, 
+                                    text="Pictures taken for this angle :",
+                                     font=("Roboto", 15),
+                                     )
+        self.nb_pictures_angle_value = CTkTextbox(self.nb_pictures_angle_frame,
+                                    width = 100,
+                                    height=30)
+        self.total_nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame, 
+                                    text="/ 100",
+                                     font=("Roboto", 15),
+                                     )
+
+        self.nb_pictures_angle_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.nb_pictures_angle_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+        self.total_nb_pictures_angle_label.grid(row = 0, column = 2, padx =(5,10),pady = 10)
+
+        self.explored_angles_frame = CTkFrame(self.status_frame)
+        self.explored_angles_frame.place(relx = 0.5, rely = 0.85, anchor = "center")
+
+        self.explored_angles_label = CTkLabel(self.explored_angles_frame, 
+                                    text="Number of angles completed :",
+                                     font=("Roboto", 15),
+                                     )
+        self.explored_angles_value = CTkTextbox(self.explored_angles_frame,
+                                    width = 100,
+                                    height=30)
+        self.total_explored_angles_label = CTkLabel(self.explored_angles_frame, 
+                                    text="/ 100",
+                                     font=("Roboto", 15),
+                                     )
+
+        self.explored_angles_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.explored_angles_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+        self.total_explored_angles_label.grid(row = 0, column = 2, padx =(5,10),pady = 10)
+
+        # Box for the logs
+
+        self.logs_frame = CTkTextbox(self,
                                     width = 1000,
                                     height = 200)
-        self.terminal.place(x = 100, y = 430)
+        self.logs_frame.place(relx = 0.5, rely = 0.8, anchor = "center")
 
 
         

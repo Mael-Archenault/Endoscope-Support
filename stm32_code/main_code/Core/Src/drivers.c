@@ -2,13 +2,16 @@
 #include "time.h"
 #include "drivers.h"
 #include <math.h>
+#include "communication.h"
 
 
-int step_time_us = 500000; // minimum 1us
+int step_time_us = 5; // minimum 1us
 
-int t_pulse_length = 1; //length moved with 1 pulse (in mm)
-int r_pulse_angle = 1; //angle turned with 1 pulse (in °)
+int t_wait_between_steps_us = 10;	//variable controlling the speed of the translation
+int r_wait_between_steps_us = 10;	//variable controlling the speed of the rotation
 
+int t_pulse_nb = 1; //number of pulse to move 1mm
+int r_pulse_nb = 1; //number of pulse to move 1°
 
 int current_x = 0;
 int current_theta = 0;
@@ -31,6 +34,7 @@ void sendNPulse(int N, int n_driver){
 }
 
 
+// ------------ Moving functions ---------------------------
 void translate(int dx){
 
 	int coeff;
@@ -41,25 +45,14 @@ void translate(int dx){
 		setDirection(T_MOTOR, BACKWARD);
     }
 	
-	int nb_pulses = (int)((float)(coeff*dx)/(float)t_pulse_length);
+	int nb_pulses = coeff*dx*t_pulse_nb;
 	sendNPulse(nb_pulses, T_MOTOR);
 	
 	if (dx < 0){
 		setDirection(T_MOTOR, FORWARD);
 	}
 
-	
-}
-
-void move_to(int x, int theta){
-	int dx = x - current_x;
-    int dtheta = theta - current_theta;
-
-    translate(dx);
-    rotate(dtheta);
-
-	current_x = x;
-	current_theta = theta;
+	current_x += dx;
 
 }
 
@@ -72,14 +65,73 @@ void rotate(int dtheta){
 		setDirection(R_MOTOR, BACKWARD);
     }
 	
-	int nb_pulses = (int)((float)(coeff*dtheta)/(float)t_pulse_length);
+	int nb_pulses = coeff*dtheta*r_pulse_nb;
 	sendNPulse(nb_pulses, R_MOTOR);
 	
 	if (dtheta < 0){
 		setDirection(R_MOTOR, FORWARD);
 	}
+
+	current_theta += dtheta;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+
 }
 
+void move(int dx, int dtheta, int capture){
+	translate(dx);
+	rotate(dtheta);
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+	memset(message, 0, BUFF_SIZE);
+	
+	if (capture == 1){
+		snprintf(message, sizeof(message), "logCapture Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	else{
+		snprintf(message, sizeof(message), "logTest Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	
+	
+}
+
+void move_to(int x, int theta, int capture){
+	int dx = x - current_x;
+    int dtheta = theta - current_theta;
+
+    translate(dx);
+    rotate(dtheta);
+
+	current_x = x;
+	current_theta = theta;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+	memset(message, 0, BUFF_SIZE);
+
+	if (capture == 1){
+		snprintf(message, sizeof(message), "logCapture Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	else{
+		snprintf(message, sizeof(message), "logTest Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+}
+
+
+// ------------ Mode functions ---------------------------
 
 void setMicrosteppingMode(int stepping_mode){
 
@@ -170,6 +222,8 @@ void setSleep(int n_driver, int state){
 }
 
 
+// ------------ Initialization functions ---------------------------
+
 void initializeDrivers(){
 	setMicrosteppingMode(HALF_STEP);
 
@@ -199,5 +253,32 @@ void home_motors(){
 
 	current_x = 0;
 	current_theta = 0;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+
 }
 
+
+int get_translation_time(int dx){
+	int nb_pulses = t_pulse_nb*dx; // number of pulses to move of dx
+
+	int pulse_time_us = step_time_us + t_wait_between_steps_us;
+
+	return (int)(float)(pulse_time_us*nb_pulses)/(float)(1000000);
+}
+
+int get_rotation_time(int dtheta){
+	int nb_pulses = r_pulse_nb*dtheta; // number of pulses to rotate of dtheta
+
+    int pulse_time_us = step_time_us + r_wait_between_steps_us;
+
+    return (int)(float)(pulse_time_us*nb_pulses)/(float)(1000000);
+}
+
+
+void update_speeds(int t_speed, int r_speed){
+	t_wait_between_steps_us = TRANSLATION_MAX_WAITING_TIME + (float)(t_speed)/(float)(100)*(TRANSLATION_MIN_WAITING_TIME-TRANSLATION_MAX_WAITING_TIME);
+	r_wait_between_steps_us = ROTATION_MAX_WAITING_TIME + (float)(r_speed)/(float)(100)*(ROTATION_MIN_WAITING_TIME-ROTATION_MAX_WAITING_TIME);
+}

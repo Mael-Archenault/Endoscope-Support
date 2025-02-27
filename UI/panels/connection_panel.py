@@ -1,0 +1,221 @@
+from panels.panel import Panel
+from customtkinter import *
+from PIL import Image
+from communication import initialize_connection, get_available_ports, close_connection, send_command
+
+import tkinter as tk
+
+
+class ConnectionPanel(Panel):
+    def __init__(self, master):
+        super().__init__(master)
+        self.title.configure(text="Connection")
+
+        ## Box for the section "Connection Status"
+
+        self.connection_status_frame = CTkFrame(self,
+                                                width = 600,
+                                                height = 340)
+        self.connection_status_frame.place(relx = 0.69, rely = 0.32, anchor = "center")
+
+        self.connection_status_label = CTkLabel(self.connection_status_frame,
+                                         text = "Connection Status",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 580,
+                                         corner_radius=10
+                                         )
+        
+        self.connection_status_label.place(relx = 0.5, rely = 0.07, anchor = "center")
+        self.indicator_radius = 10
+        self.connection_status_indicator = CTkLabel(self.connection_status_frame,
+                                         text = "",
+                                         fg_color = "red",
+                                         width = 2*self.indicator_radius,
+                                         height = 2*self.indicator_radius,
+                                         corner_radius=self.indicator_radius
+                                         )
+        self.connection_status_indicator.place(relx = 0.4, rely = 0.25, anchor = "center")
+    
+        self.connection_status_text = CTkLabel(self.connection_status_frame,
+                                         text = "Disconnected",
+                                         font = ("Roboto", 16)
+                                         )
+        self.connection_status_text.place(relx = 0.55, rely = 0.25, anchor = "center")
+
+        
+        self.connected_device_frame = CTkFrame(self.connection_status_frame)
+        self.connected_device_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
+
+        self.connected_device_label = CTkLabel(self.connected_device_frame, 
+                                    text="Connected Device :",
+                                     font=("Roboto", 16),
+                                     )
+        self.connected_device_value = CTkTextbox(self.connected_device_frame,
+                                    width = 300,
+                                    height=30,
+                                    state = "disabled")
+
+        self.connected_device_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.connected_device_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+
+
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+        self.firmware_version_frame.place(relx = 0.5, rely = 0.8, anchor = "center")
+
+        self.firmware_version_label = CTkLabel(self.firmware_version_frame, 
+                                    text="Firmware Version :",
+                                     font=("Roboto", 16),
+                                     )
+        self.firmware_version_value = CTkTextbox(self.firmware_version_frame,
+                                    width = 300,
+                                    height=30,
+                                    state = "disabled")
+
+        self.firmware_version_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.firmware_version_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
+
+        self.firmware_version_frame = CTkFrame(self.connection_status_frame)
+       
+        
+        
+
+        ## box for the section "Connection"
+
+        self.connection_frame = CTkFrame(self)
+        self.connection_label = CTkLabel(self.connection_frame,
+                                          text = "Connection",
+                                          font=("Roboto", 16),
+                                          fg_color = "grey30",
+                                          width = 400,
+                                          corner_radius=10
+                                          )
+        self.connection_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
+        
+        self.connection_frame.place(relx = 0.23, rely = 0.32, anchor = "center")
+        
+        
+        self.available_ports = CTkComboBox(self.connection_frame, 
+                                               values = get_available_ports(), 
+                                               )
+        self.available_ports.grid(row = 1, column = 0, padx = (50,0), pady = 10)
+
+        image = Image.open("./img/reset_icon.png")
+        icon = CTkImage(light_image = image,
+                        dark_image=image,
+                        size=(20,20))
+        
+
+        self.refresh_ports_button = CTkButton(self.connection_frame,
+                            width = 20,
+                            height = 20,
+                            corner_radius= 10,
+                            text = "",
+                            image=icon,
+                            compound="top",
+                            fg_color = "#2B2B2B",
+                            hover_color="gray30",
+                            command= self.refresh_ports)
+        self.refresh_ports_button.grid(row = 1, column = 1, padx = (0,50), pady = 10)
+        
+        
+        
+        self.connect_button = CTkButton(self.connection_frame,
+                                        text = "Connect",
+                                        font = ("Roboto", 20),
+                                        width = 250,
+                                        height = 100,
+                                        command = self.connect)
+        self.connect_button.grid(row = 2, column = 0, columnspan = 2, padx = 10, pady = 10)
+        
+        
+        self.disconnect_button = CTkButton(self.connection_frame,
+                                        text = "Disconnect",
+                                        font = ("Roboto", 20),
+                                        width = 250,
+                                        height = 100,
+                                        fg_color = "#8E0217",
+                                        hover_color="#582139",
+                                        command = self.disconnect)
+        self.disconnect_button.grid(row = 3, column = 0,columnspan = 2, padx = 10, pady = 10)
+       
+
+
+        ## Panel of logs
+
+        self.logs_frame = CTkTextbox(self,
+                                        width = 1040,
+                                        height = 260,
+                                        font=("Roboto", 16),
+                                        state="disabled"
+                                        )
+        self.logs_frame.place(relx = 0.5, rely = 0.78, anchor = "center")
+
+        # Setting the default values
+        self.reset_values()
+    
+    def reset_values(self):
+        self.connection_status_indicator.configure(fg_color = "red")
+        self.connection_status_text.configure(text = "Disconnected")
+
+        self.connected_device_value.configure(state = "normal")
+        self.connected_device_value.delete(1.0, tk.END)
+        self.connected_device_value.configure(state = "disabled")
+        
+        self.firmware_version_value.configure(state = "normal")
+        self.firmware_version_value.delete(1.0, tk.END)
+        self.firmware_version_value.configure(state = "disabled")
+
+        self.logs_frame.delete(1.0, tk.END)
+        
+        available_ports = get_available_ports()
+        if len(available_ports)>0:
+            self.available_ports.set(available_ports[0])
+        else:
+            self.available_ports.set("")
+        self.available_ports.configure(values = available_ports)
+
+    def refresh_ports(self):
+        available_ports = get_available_ports()
+        if len(available_ports)>0:
+            self.available_ports.set(available_ports[0])
+        else:
+            self.available_ports.set("")
+            
+        self.available_ports.configure(values = available_ports)
+        self.display_log("Refreshed available COM ports : " + str(available_ports))
+    def connect(self):
+        com_port = self.available_ports.get().split('(')[-1][:-1] # a bit ugly, but works
+        device = self.available_ports.get().split('(')[0]
+
+        res, err = initialize_connection(com_port)
+
+        if (res==-1):
+            self.display_log(err)
+        
+        else:
+            self.connection_status_indicator.configure(fg_color = "green")
+            self.connection_status_text.configure(text = "Connected")
+
+            self.connected_device_value.configure(state = "normal")
+            self.connected_device_value.delete(1.0, tk.END)
+            self.connected_device_value.insert(tk.END, device)
+            self.connected_device_value.configure(state = "disabled")
+
+            send_command("getFirmware")
+            self.display_log("Connected to port : "+com_port)
+    def disconnect(self):
+        res, err = close_connection()
+        if res == -1:
+            self.display_log(err)
+        else:
+            self.connection_status_indicator.configure(fg_color = "red")
+            self.connection_status_text.configure(text = "Disconnected")
+            self.reset_values()
+            self.display_log("Disconnected")
+
+        
+        

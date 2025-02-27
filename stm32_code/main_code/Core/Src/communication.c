@@ -59,6 +59,28 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
             else if (strcmp(argv[0],"home")==0){
                 state = HOMING_STATE;
             }
+            else if (strcmp(argv[0],"picture")==0){
+                state = PICTURING_STATE;
+            }
+
+            else if (strcmp(argv[0],"getFirmware")==0){
+                state = FIRMWARE_SENDING_STATE;
+            }
+
+            else if (strcmp(argv[0],"moveTo")==0){
+                state = MOVING_TO_STATE;
+            }
+            else if (strcmp(argv[0], "testSequence")== 0){
+                state = TESTING_SEQUENCE_STATE; 
+            }
+            else if (strcmp(argv[0],"computeStep")==0){
+                state = STEP_COMPUTING_STATE;
+            }
+            else if (strcmp(argv[0],"play")==0){
+                state = CAPTURING_STATE;
+                
+            }
+
     
         }
 
@@ -67,21 +89,30 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
                 state = STOPPING_STATE;
             }
             if (strcmp(argv[0],"pause")==0){
+                // Notifying pc of the change of steps
+                char message[BUFF_SIZE] = {" "};
+                snprintf(message, sizeof(message), "logCapture Paused capture");
+                transmit_to_pc(&message);
                 state = PAUSED_STATE;
             }
     
         }
         if (state == PAUSED_STATE){
-            if (strcmp(argv[0],"resume")==0){
+            if (strcmp(argv[0],"play")==0){
                 state = CAPTURING_STATE;
             }
             if (strcmp(argv[0],"stop")==0){
-                state = LISTENING_STATE;
+                state = STOPPING_STATE;
             }
         }
         
 
 
         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+
     }
+}
+
+void transmit_to_pc(char** message){
+    HAL_UART_Transmit(&huart2, message, BUFF_SIZE, 1000);
 }

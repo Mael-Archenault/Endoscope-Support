@@ -1,4 +1,5 @@
 #include "stm32l4xx.h"
+#include "communication.h"
 
 extern TIM_HandleTypeDef htim16;
 
@@ -47,9 +48,22 @@ void sendSIRCSData(int data) {
 
 }
 
-void takePicture(){
+void takePicture(int capture){
 	int data = 0b10110100101110001111;
 	for (int i = 0; i<3; i++){
 	  sendSIRCSData(data);
 	}
+
+    if (capture == 1){
+        char message[BUFF_SIZE] = {" "};
+        snprintf(message, sizeof(message), "logCapture Picture taken");
+        transmit_to_pc(&message);
+    }
+    else{
+        char message[BUFF_SIZE] = {" "};
+        snprintf(message, sizeof(message), "logTest Picture taken");
+        transmit_to_pc(&message);
+    }
+
+
 }

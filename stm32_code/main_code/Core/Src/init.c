@@ -14,15 +14,17 @@ extern UART_HandleTypeDef huart2;
 extern command[BUFF_SIZE];
 
 VAR variables[NB_VAR]= {
-        {"t_step", 0},
-        {"r_step", 0},
-        {"t_speed",0},
-        {"r_speed",0},
-        {"exposure_time",0},
-        {"saving_time",0},
-        {"margin_time",0},
-        {"final_x", 0},
-        {"final_theta", 0}
+        {"translation_starting_point", 0, "mm"},
+        {"translation_ending_point", 0, "mm"},
+        {"translation_number_of_points",0, ""},
+        {"translation_speed",0, "%"},
+        {"rotation_starting_point", 0, "°"},
+        {"rotation_ending_point", 0, "°"},
+        {"rotation_number_of_points",0, ""},
+        {"rotation_speed",0,"%"},
+        {"exposure_time",0, "s"},
+        {"saving_time",0, "s"},
+        {"margin_time",0,"s"}
     };
 
 int find_value(char* name){

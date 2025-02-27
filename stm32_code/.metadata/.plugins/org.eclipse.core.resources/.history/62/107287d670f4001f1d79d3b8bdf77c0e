@@ -1,0 +1,130 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#include "drivers.h"
+#include "communication.h"
+#include "ir_led.h"
+
+#include "main.h"
+#include "mainloop.h"
+
+#include "time.h"
+#include "states.h"
+
+
+
+extern VAR variables[NB_VAR];
+
+char command[BUFF_SIZE];
+
+int argc = 0;
+char* argv[10];
+
+
+int state = 0;
+
+// Capturing temporary variables
+
+extern int current_x;
+extern int current_theta;
+
+
+void run(){
+    while (1){
+        if (state == MOVING_STATE){
+            int distance = atoi(argv[1]);
+            translate(distance);
+
+            char message[33] = {0};  // Initialize the entire array to 0
+            snprintf(message, sizeof(message), "displayLog testing message");
+
+            HAL_UART_Transmit(&huart2, &message, 33, 1000);
+
+            // transmit_to_pc(message);
+            state = LISTENING_STATE;
+            
+        }
+      
+        if (state == TURNING_STATE){
+            int angle = atoi(argv[1]);
+            rotate(angle);
+            
+            state = LISTENING_STATE;
+        }
+
+        if (state == VARIABLE_CHANGE_STATE){
+            for (int i = 0; i < NB_VAR; i++){
+                if (strcmp(argv[1], variables[i].name) == 0){
+                    variables[i].value = atoi(argv[2]);
+                    break;
+                }
+            }
+
+            state = LISTENING_STATE;
+        }
+
+        if (state == CAPTURING_STATE){
+
+            takePicture();
+
+            int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
+            delayMicroseconds(total_time*1000000);
+
+            if (current_x == find_value("final_distance")){
+                move_to(0, current_theta+find_value("r_step"));
+            }
+
+            else if (current_theta == find_value("final_theta")){
+                move_to(0,0);
+
+                state = LISTENING_STATE;
+            }
+
+            else{
+                move_to(current_x + find_value("t_step"), current_theta);
+            }
+
+        }
+
+        if (state == TESTING_SEQUENCE_STATE){
+
+            int total_time = 1;
+            delayMicroseconds(total_time*1000000);
+
+            if (current_x == find_value("final_distance")){
+                move_to(0, current_theta+find_value("r_step"));
+            }
+
+            else if (current_theta == find_value("final_theta")){
+                move_to(0,0);
+
+                state = LISTENING_STATE;
+            }
+
+            else{
+                move_to(current_x + find_value("t_step"), current_theta);
+            }
+
+        }
+
+        if (state == HOMING_STATE){
+            home_motors();
+
+            state = LISTENING_STATE;
+        }
+
+        if (state == STOPPING_STATE){
+            move_to(0,0);
+
+            state = LISTENING_STATE;
+        }
+
+        if (state == PICTURING_STATE) {
+            takePicture();
+            state = LISTENING_STATE;
+        }
+
+    }
+}
+

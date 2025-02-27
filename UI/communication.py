@@ -1,40 +1,64 @@
 import serial
 import time
+from const import *
 
-# Replace 'COM3' with the correct port for your USB device
-PORT = 'COM3'
+import serial.tools.list_ports
+
+
 BAUD_RATE = 115200  # Common baud rate; adjust as needed
 TIMEOUT = 1  # Timeout in seconds
+ser = None
 
-try:
-    # Open the serial port
-    ser = serial.Serial(PORT, BAUD_RATE, timeout=TIMEOUT)
-    print(f"Connected to {PORT} at {BAUD_RATE} baud.")
+def initialize_connection(port):
+    try:
+        # Open the serial port
+        global ser
+        ser = serial.Serial(port, BAUD_RATE, timeout=TIMEOUT)
+        # Wait for the connection to initialize
+        time.sleep(2)
+        return (0, "")
 
-    # Wait for the connection to initialize
-    time.sleep(2)
+    except serial.SerialException as e:
+        return (-1, str(e))     
 
-    while True:
-        # Get a string input from the user
-        string_to_send = input("Enter a string to send via USB (type 'exit' to quit): ")
-        while len(string_to_send) <32:
-            string_to_send += ' '  # Add spaces to fill up to 32 characters
-        # Exit condition
-        if string_to_send.lower() == 'exit':
-            print("Exiting...")
-            break
+def get_available_ports():
+    ports = serial.tools.list_ports.comports()
+    return [port.description for port in ports]
 
-        # Send the string with a newline character
-        encoded_string = (string_to_send + '\0').encode('utf-8')
-        
+def close_connection():
+    global ser
+    if ser == None:
+        return (-1, "No connection is established")
+    if ser.is_open:
+        try:
+            ser.close()
+            ser = None
+            return (0,"")
+        except serial.SerialException as e:
+            return (-1, str(e))
+    return (-1, "No connection is established")
+
+
+def send_command(command):
+    global ser
+    if ser == None:
+        return (-1, "No connection is established")
+    
+    while len(command) <BUFF_SIZE-1:
+       
+        command += ' '  # Add spaces to fill up to 32 characters
+
+    encoded_string = (command + '\0').encode('utf-8')
+    try:
         ser.write(encoded_string)
-        print(f"Sent {len(encoded_string)} bytes: {string_to_send}")
-
-except serial.SerialException as e:
-    print(f"Error: {e}")
-
-finally:
-    # Close the serial port when done
-    if 'ser' in locals() and ser.is_open:
-        ser.close()
-        print(f"Disconnected from {PORT}.")
+        time.sleep(0.05) # Necessary time for the stm to gather all data before sending another command
+        return (0,"")
+    except serial.SerialException as e:
+        return (-1, str(e))
+   
+def receive_data():
+    if ser == None:
+        return None
+    if ser.in_waiting >= BUFF_SIZE:  # Check if data is available to read
+        data = ser.read(BUFF_SIZE)  # Read a full line of data
+        return data.decode('utf-8').strip("\x00")

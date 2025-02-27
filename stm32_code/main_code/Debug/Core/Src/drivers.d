@@ -27,7 +27,7 @@ Core/Src/drivers.o: ../Core/Src/drivers.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/time.h ../Core/Inc/drivers.h
+ ../Core/Inc/time.h ../Core/Inc/drivers.h ../Core/Inc/communication.h
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h:
 ../Drivers/CMSIS/Include/core_cm4.h:
@@ -58,3 +58,4 @@ Core/Src/drivers.o: ../Core/Src/drivers.c \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 ../Core/Inc/time.h:
 ../Core/Inc/drivers.h:
+../Core/Inc/communication.h:

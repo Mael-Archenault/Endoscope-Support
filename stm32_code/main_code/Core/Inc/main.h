@@ -71,11 +71,12 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 
 typedef struct {
-  char name[32];    
+  char name[64];    
   int value;
+  char unit[10];
 } VAR;
 
-#define NB_VAR 9
+#define NB_VAR 20
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

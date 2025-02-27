@@ -1,1 +1,2 @@
-../Core/Src/communication.c:25:6:HAL_UART_RxCpltCallback	24	static
+../Core/Src/communication.c:25:6:HAL_UART_RxCpltCallback	152	static
+../Core/Src/communication.c:116:6:transmit_to_pc	16	static

@@ -1,0 +1,94 @@
+#include "communication.h"
+#include "stm32l4xx.h"
+#include "drivers.h"
+#include "states.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+
+extern UART_HandleTypeDef huart2;
+
+
+extern char command[BUFF_SIZE];
+
+int handled = 0;
+
+extern int state;
+
+extern int argc;
+extern char* argv[10];
+
+
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == USART2) {  // Check which UART triggered the callback
+        // Process received data
+    	char* token;
+        argc = 0;
+        const char delim[] = " ";
+
+        // Storing the command name
+        token = strtok(command, delim);
+        argv[argc] = token;
+        argc++;
+
+        // Storing the command parameters
+        while(token!=NULL){
+            token = strtok(NULL, delim);
+            argv[argc] = token;
+            argc++;
+        }
+
+        
+        if (state==LISTENING_STATE){
+
+            if (strcmp(argv[0],"move")==0){
+                state = MOVING_STATE;
+            }
+
+            else if (strcmp(argv[0],"turn")==0){
+                state = TURNING_STATE;
+            }
+
+            else if (strcmp(argv[0],"change")==0){
+                state = VARIABLE_CHANGE_STATE;
+            }
+
+            else if (strcmp(argv[0],"home")==0){
+                state = HOMING_STATE;
+            }
+            else if (strcmp(argv[0],"picture")==0){
+                state = PICTURING_STATE;
+            }
+    
+        }
+
+        if (state == CAPTURING_STATE){
+            if (strcmp(argv[0],"stop")==0){
+                state = STOPPING_STATE;
+            }
+            if (strcmp(argv[0],"pause")==0){
+                state = PAUSED_STATE;
+            }
+    
+        }
+        if (state == PAUSED_STATE){
+            if (strcmp(argv[0],"resume")==0){
+                state = CAPTURING_STATE;
+            }
+            if (strcmp(argv[0],"stop")==0){
+                state = LISTENING_STATE;
+            }
+        }
+        
+
+
+        HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+
+        char test[32] = "bonjour";
+
+        HAL_UART_Transmit(&huart2, &test, 32, 1000);
+    }
+}

@@ -3,6 +3,8 @@ void sendNPulse(int N, int n_driver);
 void translate();
 void rotate();
 
+void move();
+void move_to();
 void home_motors();
 
 void setDirection(int n_driver, int direction);
@@ -11,6 +13,10 @@ void setReset(int n_driver, int state);
 void setSleep(int n_driver, int state);
 
 void setMicrosteppingMode(int n);
+
+
+int get_translation_time();
+int get_rotation_time();
 
 
 
@@ -31,5 +37,12 @@ void setMicrosteppingMode(int n);
 
 #define ENABLED 0
 #define DISABLED 1
+
+#define TRANSLATION_MIN_WAITING_TIME 10
+#define TRANSLATION_MAX_WAITING_TIME 100000
+
+#define ROTATION_MIN_WAITING_TIME 10
+#define ROTATION_MAX_WAITING_TIME 100000
+
 
 

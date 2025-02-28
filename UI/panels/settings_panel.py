@@ -240,7 +240,7 @@ class SettingsPanel(Panel):
                                 width = 400,
                                 command = self.send_values)
         
-        self.confirmation_button.place(relx = 0.25, rely = 0.85, anchor = "center")
+        self.confirmation_button.place(relx = 0.25, rely = 0.9, anchor = "center")
 
         ## Reset Button
 
@@ -254,8 +254,23 @@ class SettingsPanel(Panel):
                                 command = lambda:self.reset_values(False)
                                 )
         
-        self.reset_button.place(relx = 0.25, rely = 0.75, anchor = "center")
+        self.reset_button.place(relx = 0.25, rely = 0.8, anchor = "center")
 
+        ## Estimation of time :
+        self.estimated_time_frame = CTkFrame(self)
+        self.estimated_time_frame.place(relx = 0.25, rely = 0.7, anchor = "center")
+
+        self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
+                                    text="Estimated Time :",
+                                     font=("Roboto", 15),
+                                     )
+        self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
+                                    width = 100,
+                                    height=30,
+                                    state = "disabled")
+
+        self.estimated_time_label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        self.estimated_time_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
 
         ## Panel of logs
 
@@ -288,6 +303,9 @@ class SettingsPanel(Panel):
         self.change_value("exposure_time_textbox", "1", "normal")
         self.change_value("saving_time_textbox", "1", "normal")
         self.change_value("margin_time_textbox", "1", "normal")
+
+        # Estimated time
+        self.change_value("estimated_time_value", "00:00:00", "disabled")
 
         # Logs
         if initialization:

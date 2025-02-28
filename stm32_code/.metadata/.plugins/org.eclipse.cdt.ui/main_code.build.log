@@ -1,51 +1,10 @@
-23:29:31 **** Incremental Build of configuration Debug for project main_code ****
+19:06:39 **** Incremental Build of configuration Debug for project main_code ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
-../Core/Src/mainloop.c: In function 'run':
-../Core/Src/mainloop.c:72:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
-   72 |                 if (strcmp(argv[1], variables[i].name) == 0){
-      |                     ^~~~~~
-../Core/Src/mainloop.c:14:1: note: include '<string.h>' or provide a declaration of 'strcmp'
-   13 | #include "states.h"
-  +++ |+#include <string.h>
-   14 | 
-../Core/Src/mainloop.c:74:21: warning: implicit declaration of function 'strncpy' [-Wimplicit-function-declaration]
-   74 |                     strncpy(unit, variables[i].unit, sizeof(unit));
-      |                     ^~~~~~~
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:74:21: warning: incompatible implicit declaration of built-in function 'strncpy' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:92:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
-   92 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:92:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:104:30: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-  104 |             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
-      |                              ^~~~~~~~~~
-../Core/Src/mainloop.c:173:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  173 |                     memset(message, 0, BUFF_SIZE);
-      |                     ^~~~~~
-../Core/Src/mainloop.c:173:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:262:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  262 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:280:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  280 |             memset(message, 0, sizeof(message));
-      |             ^~~~~~
-../Core/Src/mainloop.c:280:13: note: include '<string.h>' or provide a declaration of 'memset'
-arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: main_code.elf
- 
 arm-none-eabi-size  main_code.elf 
-arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
    text	   data	    bss	    dec	    hex	filename
-  44456	   2104	   2560	  49120	   bfe0	main_code.elf
+  44912	   2104	   2560	  49576	   c1a8	main_code.elf
 Finished building: default.size.stdout
  
-Finished building: main_code.list
- 
 
-23:29:33 Build Finished. 0 errors, 9 warnings. (took 1s.742ms)
+19:06:39 Build Finished. 0 errors, 0 warnings. (took 483ms)
 

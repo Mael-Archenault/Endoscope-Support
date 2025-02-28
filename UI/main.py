@@ -10,13 +10,25 @@ import time
 from PIL import Image
 from communication import receive_data
 
+import PIL
+
+# screen_width, screen_height = pyautogui.size()
+# print(f"Screen size: {screen_width}x{screen_height}")
+
 
 class App(CTk):
     def __init__(self):
         super().__init__()
 
         self.title("Endoscope Application")
-        self.geometry(str(WINDOW_WIDTH)+ "x"+ str(WINDOW_HEIGHT))
+
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        x = (screen_width - WINDOW_WIDTH) // 2
+        y = (screen_height - WINDOW_HEIGHT) // 2
+
+        self.geometry(str(WINDOW_WIDTH)+ "x"+ str(WINDOW_HEIGHT) +"+"+ str(x)+"+"+str(y))
         self.resizable(False, False)
 
         self.panel_container = PanelContainer(self)
@@ -65,6 +77,9 @@ def update():
         capture.change_value("estimated_time_value", str(hours).zfill(2)+":"+str(minutes).zfill(2)+":"+str(seconds).zfill(2), "disabled")
         
     app.after(UPDATE_PERIOD, update)
+
+
+
 
 
 

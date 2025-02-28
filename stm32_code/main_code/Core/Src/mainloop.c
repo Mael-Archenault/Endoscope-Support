@@ -90,6 +90,12 @@ void run(){
             snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_angle, angles_explored);
             transmit_to_pc(&message);
             memset(message, 0, BUFF_SIZE);
+
+            int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
+            int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
+            move_to(x, theta,1);
+            translation_index ++;
+
             
             takePicture(1);
             pictures_taken++;
@@ -117,6 +123,7 @@ void run(){
                     angles_explored ++;
                     snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_angle, angles_explored);
                     transmit_to_pc(&message);
+                    memset(message, 0, BUFF_SIZE);
 
                     move_to(0,0,1);
                     angles_explored = 0;
@@ -125,6 +132,10 @@ void run(){
 
                     translation_index = 0;
                     rotation_index = 0;
+
+                    snprintf(message, sizeof(message), "end capture");
+                    transmit_to_pc(&message);
+                    memset(message, 0, BUFF_SIZE);
                     
                     
                     state = LISTENING_STATE;
@@ -133,40 +144,26 @@ void run(){
                     translation_index = 0;
                     rotation_index++;
 
-                    int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
-                    int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
-                    move_to(x, theta,1);
-                    translation_index ++;
-
-
                     angles_explored++;
                     pictures_taken_for_this_angle = 0;
                 }
-            }
-
-            else{
-                
-                
-
-                int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
-                int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
-                move_to(x, theta,1);
-                translation_index ++;
-
-                
-            }
-
-            
+            }  
 
         }
 
         if (state == TESTING_SEQUENCE_STATE){
 
+            int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
+            int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
+            move_to(x, theta,0);
+            translation_index ++;
+            
             int total_time = 1;
             delayMicroseconds(total_time*1000000);
 
             if (current_x >= find_value("translation_ending_point")){
                 if (current_theta >= find_value("rotation_ending_point")){
+                    
                     char message[BUFF_SIZE] = {0};
                     snprintf(message, sizeof(message), "logTest End of the Sequence Test");
                     transmit_to_pc(&message);
@@ -178,8 +175,14 @@ void run(){
                     
                     move_to(0,0,0);
 
+                    
+
                     translation_index = 0;
                     rotation_index = 0;
+
+                    snprintf(message, sizeof(message), "end testSequence");
+                    transmit_to_pc(&message);
+                    memset(message, 0, BUFF_SIZE);
                     
                     state = LISTENING_STATE;
                 }
@@ -187,22 +190,9 @@ void run(){
                     translation_index = 0;
                     rotation_index++;
 
-                    int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
-                    int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
-                    move_to(x, theta,0);
-                    translation_index ++;
-
                 }
             }
 
-            else{
-                
-
-                int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
-                int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
-                move_to(x, theta,0);
-                translation_index ++;
-            }
 
         }
 
@@ -222,12 +212,44 @@ void run(){
             char message[BUFF_SIZE] = {" "};
             snprintf(message, sizeof(message), "logCapture Stopped capture | return to home position");
             transmit_to_pc(&message);
+            memset(message, 0, BUFF_SIZE);
+
+            
 
             move_to(0,0,1);
+
+            snprintf(message, sizeof(message), "end capture");
+            transmit_to_pc(&message);
+            memset(message, 0, BUFF_SIZE);
 
             angles_explored = 0;
             pictures_taken = 0;
             pictures_taken_for_this_angle = 0;
+
+            translation_index = 0;
+            rotation_index = 0;
+
+            state = LISTENING_STATE;
+        }
+
+        if (state == STOPPING_SEQUENCE_STATE){
+            // Notifying pc of the successful homing
+            char message[BUFF_SIZE] = {" "};
+            snprintf(message, sizeof(message), "logTest Stopped the test of the capture sequence | return to home position");
+            transmit_to_pc(&message);
+            memset(message, 0, BUFF_SIZE);
+
+            
+
+
+            move_to(0,0,0);
+
+            snprintf(message, sizeof(message), "end testSequence");
+            transmit_to_pc(&message);
+            memset(message, 0, BUFF_SIZE);
+
+            translation_index = 0;
+            rotation_index = 0;
 
             state = LISTENING_STATE;
         }
@@ -264,21 +286,27 @@ void run(){
             /////////////////// Evaluating the capture time //////////////////////////////////
             total_time_seconds = 0;
             // time of translations
-            total_time_seconds += get_translation_time((int)t_step)*(find_value("translation_number_of_points")-1)*find_value("rotation_number_of_points");
-            total_time_seconds += get_translation_time(find_value("translation_ending_point")-find_value("translation_starting_point"))*find_value("rotation_number_of_points");
+            total_time_seconds += 2*get_translation_time((int)t_step)*(find_value("translation_number_of_points")-1)*find_value("rotation_number_of_points");
+            
             // time of rotations
-            total_time_seconds += get_rotation_time((int)r_step)*(find_value("rotation_number_of_points")-1);
-            total_time_seconds += get_rotation_time(find_value("rotation_ending_point")-find_value("rotation_starting_point"));
+            total_time_seconds += 2*get_rotation_time((int)r_step)*(find_value("rotation_number_of_points")-1);
+            
             // time of waiting
             total_time_seconds += (find_value("exposure_time")+find_value("saving_time")+find_value("margin_time"))*total_picture_number;
 
             // Notifying pc of the change of steps
+
             char message[BUFF_SIZE] = {" "};
+            snprintf(message, sizeof(message), "estimatedTime %d",total_time_seconds);
+            transmit_to_pc(&message);
+            memset(message, 0, sizeof(message));
+
+            
             snprintf(message, sizeof(message), "logSettings Changed steps | Translation step : %f mm, Rotation step : %f°", t_step, r_step);
             transmit_to_pc(&message);
-
             memset(message, 0, sizeof(message));
-            snprintf(message, sizeof(message), "total %d %d %d %d %d %d",find_value("translation_ending_point"),find_value("rotation_ending_point"), find_value("translation_number_of_points"), find_value("rotation_number_of_points"), total_picture_number, total_time_seconds);
+
+            snprintf(message, sizeof(message), "total %d %d %d %d %d",find_value("translation_ending_point"),find_value("rotation_ending_point"), find_value("translation_number_of_points"), find_value("rotation_number_of_points"), total_picture_number);
             transmit_to_pc(&message);
 
             state = LISTENING_STATE;

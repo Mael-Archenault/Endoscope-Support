@@ -1,11 +1,16 @@
+import time
 from panels.panel import Panel
 from customtkinter import *
 import tkinter as tk
 from communication import send_command
 
+from PIL import Image
+
 class TestPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
+
+        self.state = "STOPPED"
         self.title.configure(text="Test")
 
         ## Box for the section "Test of the Movement"
@@ -222,17 +227,54 @@ class TestPanel(Panel):
 
 
 
-        ## Button for sequence test
+        ## Buttons for sequence test
 
-        self.sequence_test_button = CTkButton(self,
-                    text = "Sequence Test",
-                    font = ("Roboto", 20),
-                    width = 200,
-                    height = 50,
-                    command = lambda : send_command("testSequence"))
+        
+        self.control_frame = CTkFrame(self,
+                                        width = 340,
+                                        height = 120
+                                        )
+        self.control_frame.place(relx = 0.8, rely = 0.47, anchor = "center")
 
+        self.sequence_test_label = CTkLabel(self.control_frame,
+                                         text="Sequence Test",
+                                         font=("Roboto", 16),
+                                         fg_color = "grey30",
+                                         width = 320,
+                                         corner_radius=10
+                                         )
+        self.sequence_test_label.place(relx = 0.5, rely = 0.15, anchor = "center")
+
+
+        self.control_buttons = [
+            {"name": "Play", "icon": "play_icon.png", "command": self.playTestSequence},
+            {"name": "Pause", "icon": "pause_icon.png", "command": self.pauseTestSequence},
+            {"name": "Stop", "icon": "stop_icon.png", "command": self.stopTestSequence}
+            ]
+        for i in range(len(self.control_buttons)):
+            element = self.control_buttons[i]
+            
+            image = Image.open("./img/"+element["icon"])
+            icon = CTkImage(light_image = image,
+                                dark_image=image,
+                                size=(20,20))
                 
-        self.sequence_test_button.place(relx = 0.8, rely = 0.45, anchor = "center")
+
+            button = CTkButton(self.control_frame,
+                                corner_radius= 10,
+                                width = 20,
+                                height = 20,
+                                text=element["name"],
+                                image=icon,
+                                compound="top",
+                                command = element["command"],
+                                font=("Roboto", 16),
+                                text_color="#D9D9D9",
+                                fg_color = "#2B2B2B",
+                                hover_color="gray30")
+
+            button.place(relx = 0.2 + i*0.3, rely = 0.7, anchor = "center")
+        
 
         ## Button for Photo test
 
@@ -244,7 +286,7 @@ class TestPanel(Panel):
                     command = lambda : send_command("picture"))
 
                 
-        self.photo_test_button.place(relx = 0.8, rely = 0.55, anchor = "center")
+        self.photo_test_button.place(relx = 0.8, rely = 0.62, anchor = "center")
 
         ## Button for homing translation
 
@@ -256,10 +298,7 @@ class TestPanel(Panel):
                     command = lambda : send_command("home"))
 
                 
-        self.homing_button.place(relx = 0.8, rely = 0.65, anchor = "center")
-
-
-
+        self.homing_button.place(relx = 0.8, rely = 0.72, anchor = "center")
         
         ## Panel of logs
 
@@ -295,4 +334,21 @@ class TestPanel(Panel):
 
 
 
+    def playTestSequence(self):
 
+        if self.state == "STOPPED":
+            self.state = "RUNNING"
+            send_command("playTestSequence")
+
+        if self.state == "PAUSED":
+            self.state = "RUNNING"
+            send_command("playTestSequence")
+    def pauseTestSequence(self):
+        if self.state == "RUNNING":
+            self.state = "PAUSED"
+            send_command("pauseTestSequence")
+
+    def stopTestSequence(self):
+        if self.state == "RUNNING" or self.state=="PAUSED":
+            self.state = "STOPPED"
+            send_command("stopTestSequence")

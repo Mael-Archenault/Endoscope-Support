@@ -14,7 +14,7 @@ from panels.capture_panel import CapturePanel
 class PanelContainer(CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-
+        self.app = master
         self.width = WINDOW_WIDTH - SIDEBAR_WIDTH
         self.height = WINDOW_HEIGHT
         
@@ -30,8 +30,8 @@ class PanelContainer(CTkFrame):
             panel.place(relx = -1, rely = 0.5, anchor = "center")
             panel.x, panel.y = -self.width, 0
         
-        self.panels["Settings"].place(relx = 0.5, rely = 0.5, anchor = "center")
-        self.panels["Settings"].x = 0
+        self.panels["Connection"].place(relx = 0.5, rely = 0.5, anchor = "center")
+        self.panels["Connection"].x = 0
         
         
         
@@ -45,7 +45,6 @@ class PanelContainer(CTkFrame):
         new_panel = self.panels[panel_name]
         current_panel.place(relx = -1)
         new_panel.place(relx = 0.5)
-
         self.state = panel_name
 
         return 1
@@ -72,7 +71,7 @@ class PanelContainer(CTkFrame):
             self.panels["Test"].change_value("x_value", content.split(" ")[0] + " mm", "disabled")
             self.panels["Test"].change_value("theta_value", content.split(" ")[1] + " °", "disabled")
         if target == "total":
-            t_end, r_end, nb_pictures_for_one_angle, nb_angles, nb_total_pictures, total_time = content.split(" ")
+            t_end, r_end, nb_pictures_for_one_angle, nb_angles, nb_total_pictures = content.split(" ")
             capture = self.panels["Capture"]
             capture.x_label_mm.configure(text = "/" + t_end + " mm")
             capture.theta_label_degree.configure(text = "/" + r_end + "°")
@@ -83,7 +82,7 @@ class PanelContainer(CTkFrame):
 
             capture.total_pictures = nb_total_pictures
 
-            capture.total_time = int(total_time)
+            
         if target == "progress":
             pictures_taken, pictures_taken_from_this_angle, angles_explored = content.split(" ")
             
@@ -95,13 +94,27 @@ class PanelContainer(CTkFrame):
 
             progress = float(pictures_taken) / float(capture.total_pictures)
             capture.progress_bar.set(progress)
-            capture.progress_percentage.configure(text = str(round(progress * 100, 2)) + "%")
-            if progress == 1:
-                capture.state = "STOPPED"
-
-
+            capture.progress_percentage.configure(text = str(round(progress * 100, 2)) + "%")     
             
+        if target == "end":
+            capture = self.panels["Capture"]
+            test = self.panels["Test"]
+            if content == "capture":
+                capture.state = "STOPPED"
+                test.state = "STOPPED"
+                capture.change_value("estimated_time_value", "00:00:00", "disabled")
+            if content == "testSequence":
+                capture.state = "STOPPED"
+                test.state = "STOPPED"
 
 
+        if target == "estimatedTime":
+            local_time = int(content)
+            self.panels["Capture"].total_time = int(local_time)
 
-          
+            hours = int(local_time/3600)
+            local_time%=3600
+            minutes = int(local_time/60)
+            local_time%=60
+            seconds = int(local_time)
+            self.panels["Settings"].change_value("estimated_time_value", str(hours).zfill(2)+":"+str(minutes).zfill(2)+":"+str(seconds).zfill(2), "disabled")

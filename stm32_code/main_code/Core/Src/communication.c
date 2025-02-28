@@ -70,15 +70,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
             else if (strcmp(argv[0],"moveTo")==0){
                 state = MOVING_TO_STATE;
             }
-            else if (strcmp(argv[0], "testSequence")== 0){
-                state = TESTING_SEQUENCE_STATE; 
-            }
+            
             else if (strcmp(argv[0],"computeStep")==0){
                 state = STEP_COMPUTING_STATE;
             }
             else if (strcmp(argv[0],"play")==0){
                 state = CAPTURING_STATE;
                 
+            }
+            else if (strcmp(argv[0], "playTestSequence")== 0){
+                state = TESTING_SEQUENCE_STATE; 
             }
 
     
@@ -97,12 +98,32 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
             }
     
         }
+        if (state == TESTING_SEQUENCE_STATE){
+            if (strcmp(argv[0],"stopTestSequence")==0){
+                state = STOPPING_SEQUENCE_STATE;
+            }
+            if (strcmp(argv[0],"pauseTestSequence")==0){
+                // Notifying pc of the change of steps
+                char message[BUFF_SIZE] = {" "};
+                snprintf(message, sizeof(message), "logTest Paused the test of the capture sequence");
+                transmit_to_pc(&message);
+                state = PAUSED_STATE;
+            }
+    
+        }
         if (state == PAUSED_STATE){
             if (strcmp(argv[0],"play")==0){
                 state = CAPTURING_STATE;
             }
             if (strcmp(argv[0],"stop")==0){
                 state = STOPPING_STATE;
+            }
+
+            if (strcmp(argv[0],"playTestSequence")==0){
+                state = TESTING_SEQUENCE_STATE;
+            }
+            if (strcmp(argv[0],"stopTestSequence")==0){
+                state = STOPPING_SEQUENCE_STATE;
             }
         }
         

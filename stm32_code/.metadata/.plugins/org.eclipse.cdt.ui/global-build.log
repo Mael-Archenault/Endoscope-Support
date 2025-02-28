@@ -1,5 +1,6 @@
-23:15:50 **** Incremental Build of configuration Debug for project main_code ****
+19:06:35 **** Incremental Build of configuration Debug for project main_code ****
 make -j8 all 
+arm-none-eabi-gcc "../Core/Src/communication.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/communication.d" -MT"Core/Src/communication.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/communication.o"
 arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
 ../Core/Src/mainloop.c: In function 'run':
 ../Core/Src/mainloop.c:72:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
@@ -21,186 +22,65 @@ arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBU
 ../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
 ../Core/Src/mainloop.c:92:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
 ../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:104:30: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-  104 |             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
-      |                              ^~~~~~~~~~
-../Core/Src/mainloop.c:169:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  169 |                     memset(message, 0, BUFF_SIZE);
+../Core/Src/communication.c: In function 'HAL_UART_RxCpltCallback':
+../Core/Src/communication.c:132:38: warning: passing argument 2 of 'HAL_UART_Receive_IT' from incompatible pointer type [-Wincompatible-pointer-types]
+  132 |         HAL_UART_Receive_IT(&huart2, &command, BUFF_SIZE);  // Restart reception
+      |                                      ^~~~~~~~
+      |                                      |
+      |                                      char (*)[128]
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:450,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:288,
+                 from ../Core/Src/communication.c:2:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1699:75: note: expected 'uint8_t *' {aka 'unsigned char *'} but argument is of type 'char (*)[128]'
+ 1699 | HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size);
+      |                                                                  ~~~~~~~~~^~~~~
+../Core/Src/communication.c: In function 'transmit_to_pc':
+../Core/Src/communication.c:138:32: warning: passing argument 2 of 'HAL_UART_Transmit' from incompatible pointer type [-Wincompatible-pointer-types]
+  138 |     HAL_UART_Transmit(&huart2, message, BUFF_SIZE, 1000);
+      |                                ^~~~~~~
+      |                                |
+      |                                char **
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h:1696:79: note: expected 'const uint8_t *' {aka 'const unsigned char *'} but argument is of type 'char **'
+ 1696 | HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
+      |                                                                ~~~~~~~~~~~~~~~^~~~~
+../Core/Src/mainloop.c:94:21: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
+   94 |             int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
+      |                     ^~~~~~~~~~
+../Core/Src/mainloop.c:170:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+  170 |                     memset(message, 0, BUFF_SIZE);
       |                     ^~~~~~
-../Core/Src/mainloop.c:169:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:257:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  257 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:275:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  275 |             memset(message, 0, sizeof(message));
+../Core/Src/mainloop.c:170:21: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/mainloop.c:215:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+  215 |             memset(message, 0, BUFF_SIZE);
       |             ^~~~~~
-../Core/Src/mainloop.c:275:13: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/mainloop.c:215:13: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/mainloop.c:240:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+  240 |             memset(message, 0, BUFF_SIZE);
+      |             ^~~~~~
+../Core/Src/mainloop.c:240:13: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/mainloop.c:284:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
+  284 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
+      |             ^~~~~~~~~~~~~
+../Core/Src/mainloop.c:302:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+  302 |             memset(message, 0, sizeof(message));
+      |             ^~~~~~
+../Core/Src/mainloop.c:302:13: note: include '<string.h>' or provide a declaration of 'memset'
 arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: main_code.elf
  
 arm-none-eabi-size  main_code.elf 
 arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
    text	   data	    bss	    dec	    hex	filename
-  44448	   2104	   2560	  49112	   bfd8	main_code.elf
+  44912	   2104	   2560	  49576	   c1a8	main_code.elf
 Finished building: default.size.stdout
  
 Finished building: main_code.list
  
-23:15:53 **** Incremental Build of configuration Debug for project main_code ****
+19:06:39 **** Incremental Build of configuration Debug for project main_code ****
 make -j8 all 
 arm-none-eabi-size  main_code.elf 
    text	   data	    bss	    dec	    hex	filename
-  44448	   2104	   2560	  49112	   bfd8	main_code.elf
+  44912	   2104	   2560	  49576	   c1a8	main_code.elf
 Finished building: default.size.stdout
- 
-23:18:59 **** Incremental Build of configuration Debug for project main_code ****
-make -j8 all 
-arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
-../Core/Src/mainloop.c: In function 'run':
-../Core/Src/mainloop.c:72:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
-   72 |                 if (strcmp(argv[1], variables[i].name) == 0){
-      |                     ^~~~~~
-../Core/Src/mainloop.c:14:1: note: include '<string.h>' or provide a declaration of 'strcmp'
-   13 | #include "states.h"
-  +++ |+#include <string.h>
-   14 | 
-../Core/Src/mainloop.c:74:21: warning: implicit declaration of function 'strncpy' [-Wimplicit-function-declaration]
-   74 |                     strncpy(unit, variables[i].unit, sizeof(unit));
-      |                     ^~~~~~~
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:74:21: warning: incompatible implicit declaration of built-in function 'strncpy' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:92:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
-   92 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:92:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:104:30: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-  104 |             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
-      |                              ^~~~~~~~~~
-../Core/Src/mainloop.c:172:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  172 |                     memset(message, 0, BUFF_SIZE);
-      |                     ^~~~~~
-../Core/Src/mainloop.c:172:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:260:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  260 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:278:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  278 |             memset(message, 0, sizeof(message));
-      |             ^~~~~~
-../Core/Src/mainloop.c:278:13: note: include '<string.h>' or provide a declaration of 'memset'
-arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: main_code.elf
- 
-arm-none-eabi-size  main_code.elf 
-arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
-   text	   data	    bss	    dec	    hex	filename
-  44448	   2104	   2560	  49112	   bfd8	main_code.elf
-Finished building: default.size.stdout
- 
-Finished building: main_code.list
- 
-23:23:05 **** Incremental Build of configuration Debug for project main_code ****
-make -j8 all 
-arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
-../Core/Src/mainloop.c: In function 'run':
-../Core/Src/mainloop.c:72:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
-   72 |                 if (strcmp(argv[1], variables[i].name) == 0){
-      |                     ^~~~~~
-../Core/Src/mainloop.c:14:1: note: include '<string.h>' or provide a declaration of 'strcmp'
-   13 | #include "states.h"
-  +++ |+#include <string.h>
-   14 | 
-../Core/Src/mainloop.c:74:21: warning: implicit declaration of function 'strncpy' [-Wimplicit-function-declaration]
-   74 |                     strncpy(unit, variables[i].unit, sizeof(unit));
-      |                     ^~~~~~~
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:74:21: warning: incompatible implicit declaration of built-in function 'strncpy' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:92:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
-   92 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:92:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:104:30: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-  104 |             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
-      |                              ^~~~~~~~~~
-../Core/Src/mainloop.c:173:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  173 |                     memset(message, 0, BUFF_SIZE);
-      |                     ^~~~~~
-../Core/Src/mainloop.c:173:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:262:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  262 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:280:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  280 |             memset(message, 0, sizeof(message));
-      |             ^~~~~~
-../Core/Src/mainloop.c:280:13: note: include '<string.h>' or provide a declaration of 'memset'
-arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: main_code.elf
- 
-arm-none-eabi-size  main_code.elf 
-arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
-   text	   data	    bss	    dec	    hex	filename
-  44448	   2104	   2560	  49112	   bfd8	main_code.elf
-Finished building: default.size.stdout
- 
-Finished building: main_code.list
- 
-23:25:48 **** Incremental Build of configuration Debug for project main_code ****
-make -j8 all 
-arm-none-eabi-size  main_code.elf 
-   text	   data	    bss	    dec	    hex	filename
-  44448	   2104	   2560	  49112	   bfd8	main_code.elf
-Finished building: default.size.stdout
- 
-23:29:31 **** Incremental Build of configuration Debug for project main_code ****
-make -j8 all 
-arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
-../Core/Src/mainloop.c: In function 'run':
-../Core/Src/mainloop.c:72:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
-   72 |                 if (strcmp(argv[1], variables[i].name) == 0){
-      |                     ^~~~~~
-../Core/Src/mainloop.c:14:1: note: include '<string.h>' or provide a declaration of 'strcmp'
-   13 | #include "states.h"
-  +++ |+#include <string.h>
-   14 | 
-../Core/Src/mainloop.c:74:21: warning: implicit declaration of function 'strncpy' [-Wimplicit-function-declaration]
-   74 |                     strncpy(unit, variables[i].unit, sizeof(unit));
-      |                     ^~~~~~~
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:74:21: warning: incompatible implicit declaration of built-in function 'strncpy' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:74:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:92:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
-   92 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:92:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:92:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:104:30: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-  104 |             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
-      |                              ^~~~~~~~~~
-../Core/Src/mainloop.c:173:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  173 |                     memset(message, 0, BUFF_SIZE);
-      |                     ^~~~~~
-../Core/Src/mainloop.c:173:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:262:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  262 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:280:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  280 |             memset(message, 0, sizeof(message));
-      |             ^~~~~~
-../Core/Src/mainloop.c:280:13: note: include '<string.h>' or provide a declaration of 'memset'
-arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: main_code.elf
- 
-arm-none-eabi-size  main_code.elf 
-arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
-   text	   data	    bss	    dec	    hex	filename
-  44456	   2104	   2560	  49120	   bfe0	main_code.elf
-Finished building: default.size.stdout
- 
-Finished building: main_code.list
  

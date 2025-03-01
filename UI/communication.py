@@ -13,6 +13,8 @@ def initialize_connection(port):
     try:
         # Open the serial port
         global ser
+        if ser != None:
+            return (-1, "A connection is already established")
         ser = serial.Serial(port, BAUD_RATE, timeout=TIMEOUT)
         # Wait for the connection to initialize
         time.sleep(2)

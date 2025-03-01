@@ -10,10 +10,13 @@ class Panel(CTkFrame):
         self.width = (WINDOW_WIDTH-SIDEBAR_WIDTH)*0.97
         self.height = WINDOW_HEIGHT*0.97
         self.x, self.y = 0,0
-        self.title = CTkLabel(self,width=int(self.width*0.9), text="",  fg_color="gray30", corner_radius=6, font=("Roboto", 20))
+        self.title = CTkLabel(self,width=self.width*0.97,
+                                text="",
+                                corner_radius=6,
+                                font=("Roboto", 20))
         self.title.place(relx =0.5, y = 50/2, anchor = "center")
         self.place(x=self.x,y=self.y)
-        self.configure(width=self.width, height=self.height, corner_radius = 20, bg_color="transparent")
+        self.configure(width=self.width, height=self.height, corner_radius = 20)
         self.logs_frame = CTkTextbox(self)
 
     def display_log(self, message):
@@ -41,5 +44,11 @@ class Panel(CTkFrame):
 
         if state == "disabled":
             attr.configure(state = "disabled")
+
+    def set_theme(self, theme):
+        colors = themes[theme]
+        self.configure(bg_color=colors["window_bg"], fg_color=colors["panel_bg"])
+        self.title.configure(fg_color = colors["panel_title"],text_color=colors["panel_title_text_color"])
+        self.logs_frame.configure(bg_color=colors["textbox_bg"], fg_color=colors["textbox_text_color"])
 
 

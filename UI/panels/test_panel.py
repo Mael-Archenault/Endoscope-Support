@@ -3,13 +3,15 @@ from panels.panel import Panel
 from customtkinter import *
 import tkinter as tk
 from communication import send_command
+from const import *
+
+from color import color
 
 from PIL import Image
 
 class TestPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
-
         self.state = "STOPPED"
         self.title.configure(text="Test")
 
@@ -21,7 +23,6 @@ class TestPanel(Panel):
         self.movement_test_label = CTkLabel(self.movement_test_frame,
                                             text = "Movement Test",
                                             font=("Roboto", 20),
-                                            fg_color = "grey30",
                                             corner_radius=10)
         self.movement_test_label.grid(row = 0, column =0, columnspan = 2, sticky = "ew", padx = 10, pady = 10)
 
@@ -29,23 +30,21 @@ class TestPanel(Panel):
         self.translation_label = CTkLabel(self.translation_frame,
                                          text = "Translation",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 300,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         
         self.rotation_frame = CTkFrame(self.movement_test_frame)
         self.rotation_label = CTkLabel(self.rotation_frame,
                                          text = "Rotation",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 300,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
 
         self.translation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
         self.rotation_label.grid(row = 0, column = 0, columnspan = 2, padx = 10, pady = 10)
 
+        self.blue_buttons = []
+        self.red_buttons = []
         self.translation_buttons = [[
             {"name": "+ 1 mm","command": lambda:send_command("move 1")},
             {"name": "+ 5 mm","command": lambda:send_command("move 5")},
@@ -70,40 +69,28 @@ class TestPanel(Panel):
                       
         for i in range(len(self.translation_buttons)):
             for j in range(len(self.translation_buttons[i])):
-                if i == 0:
-                    color = "#1F6AA5"
-                    hover_color = "#144870"
-                else:
-                    color = "#8E0217"
-                    hover_color="#582139"
-
                 button = CTkButton(self.translation_frame,
                     text = self.translation_buttons[i][j]["name"],
                     height = 50,
                     width = 100,
-                    command = self.translation_buttons[i][j]["command"],
-                    fg_color= color,
-                    hover_color= hover_color)
-                
+                    command = self.translation_buttons[i][j]["command"])
+                if i == 0:
+                    self.blue_buttons.append(button)
+                else:
+                    self.red_buttons.append(button)
                 button.grid(row=j+1, column=i,padx = 10, pady = 10)
 
         for i in range(len(self.rotation_buttons)):
             for j in range(len(self.rotation_buttons[i])):
-                if i == 0:
-                    color = "#1F6AA5"
-                    hover_color = "#144870"
-                else:
-                    color = "#8E0217"
-                    hover_color="#582139"
-
                 button = CTkButton(self.rotation_frame,
                     text = self.rotation_buttons[i][j]["name"],
                     height = 50,
                     width = 100,
-                    command = self.rotation_buttons[i][j]["command"],
-                    fg_color= color,
-                    hover_color= hover_color)
-                
+                    command = self.rotation_buttons[i][j]["command"])
+                if i == 0:
+                    self.blue_buttons.append(button)
+                else:
+                    self.red_buttons.append(button)
                 button.grid(row=j+1, column=i,padx = 10, pady = 10)
 
 
@@ -113,29 +100,24 @@ class TestPanel(Panel):
         ## Box for the section "Position and Angle"
         self.position_frame = CTkFrame(self,
                                         width = 340,
-                                        height = 200,
-                                        )
+                                        height = 200)
         self.position_frame.place(relx = 0.8, rely = 0.22, anchor = "center")
 
         self.position_label = CTkLabel(self.position_frame,
                                          text="Position and Angle",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 320,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10,)
         self.position_label.place(relx = 0.5, rely = 0.1, anchor = "center")
 
         self.x_frame = CTkFrame(self.position_frame)
         self.x_label = CTkLabel(self.x_frame, 
                                     text="x :",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         self.x_value = CTkTextbox(self.x_frame,
                                     width = 100,
                                     height=30,
-                                    state = "disabled"
-                                    )
+                                    state = "disabled")
 
         self.x_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.x_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -145,8 +127,7 @@ class TestPanel(Panel):
         self.theta_frame = CTkFrame(self.position_frame)
         self.theta_label = CTkLabel(self.theta_frame, 
                                     text="Theta :",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         self.theta_value = CTkTextbox(self.theta_frame,
                                     width = 100,
                                     height=30,
@@ -162,32 +143,26 @@ class TestPanel(Panel):
         ## Section for the Move To
         self.move_to_frame = CTkFrame(self,
                                         width = 680,
-                                        height = 140,
-                                        )
+                                        height = 140)
         self.move_to_frame.place(relx = 0.35, rely = 0.66, anchor = "center")
 
         self.move_to_label = CTkLabel(self.move_to_frame,
                                          text="Move to absolute position",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 660,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.move_to_label.place(relx = 0.5, rely = 0.15, anchor = "center")
 
         self.move_to_x_frame = CTkFrame(self.move_to_frame)
         self.move_to_x_label = CTkLabel(self.move_to_x_frame, 
-                                    text="x :",
-                                     font=("Roboto", 16),
-                                     )
+                                        text="x :",
+                                        font=("Roboto", 16))
         self.move_to_x_value = CTkTextbox(self.move_to_x_frame,
                                     width = 100,
-                                    height=30
-                                    )
+                                    height=30)
         self.move_to_x_label_mm = CTkLabel(self.move_to_x_frame, 
                                     text="mm",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
 
         self.move_to_x_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.move_to_x_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -198,16 +173,13 @@ class TestPanel(Panel):
         self.move_to_theta_frame = CTkFrame(self.move_to_frame)
         self.move_to_theta_label = CTkLabel(self.move_to_theta_frame, 
                                     text="Theta :",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         self.move_to_theta_value = CTkTextbox(self.move_to_theta_frame,
                                     width = 100,
-                                    height=30
-                                    )
+                                    height=30)
         self.move_to_theta_label_degree = CTkLabel(self.move_to_theta_frame, 
                                     text="°",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         
 
         self.move_to_theta_label.grid(row = 0, column = 0, padx = 10, pady = 10)
@@ -232,25 +204,23 @@ class TestPanel(Panel):
         
         self.control_frame = CTkFrame(self,
                                         width = 340,
-                                        height = 120
-                                        )
+                                        height = 120)
         self.control_frame.place(relx = 0.8, rely = 0.47, anchor = "center")
 
         self.sequence_test_label = CTkLabel(self.control_frame,
                                          text="Sequence Test",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 320,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.sequence_test_label.place(relx = 0.5, rely = 0.15, anchor = "center")
 
-
+        self.transparent_buttons = []
         self.control_buttons = [
             {"name": "Play", "icon": "play_icon.png", "command": self.playTestSequence},
             {"name": "Pause", "icon": "pause_icon.png", "command": self.pauseTestSequence},
             {"name": "Stop", "icon": "stop_icon.png", "command": self.stopTestSequence}
             ]
+        
         for i in range(len(self.control_buttons)):
             element = self.control_buttons[i]
             
@@ -268,11 +238,8 @@ class TestPanel(Panel):
                                 image=icon,
                                 compound="top",
                                 command = element["command"],
-                                font=("Roboto", 16),
-                                text_color="#D9D9D9",
-                                fg_color = "#2B2B2B",
-                                hover_color="gray30")
-
+                                font=("Roboto", 16))
+            self.transparent_buttons.append(button)
             button.place(relx = 0.2 + i*0.3, rely = 0.7, anchor = "center")
         
 
@@ -306,8 +273,7 @@ class TestPanel(Panel):
                                         width = 1040,
                                         height = 150,
                                         font=("Roboto", 16),
-                                        state = "disabled"
-                                        )
+                                        state = "disabled")
         self.logs_frame.place(relx = 0.5, rely = 0.88, anchor = "center")
 
         # Setting the default values
@@ -352,3 +318,80 @@ class TestPanel(Panel):
         if self.state == "RUNNING" or self.state=="PAUSED":
             self.state = "STOPPED"
             send_command("stopTestSequence")
+
+    def set_theme(self, theme):
+        super().set_theme(theme)
+        colors = themes[theme]
+
+        self.movement_test_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.movement_test_label.configure(bg_color="transparent", fg_color=colors["section_title"], text_color=colors["section_title_text_color"])
+
+        self.translation_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+        self.translation_label.configure(bg_color="transparent", fg_color=colors["sub_section_title"], text_color=colors["sub_section_title_text_color"])
+
+        self.rotation_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+        self.rotation_label.configure(bg_color="transparent", fg_color=colors["sub_section_title"], text_color=colors["sub_section_title_text_color"])
+
+
+        self.translation_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+        self.rotation_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+
+        self.position_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.position_label.configure(bg_color="transparent", fg_color=colors["section_title"], text_color=colors["section_title_text_color"])
+
+        self.x_frame.configure(bg_color="transparent", fg_color=colors["panel_bg"])
+        self.x_label.configure(bg_color="transparent", fg_color="transparent", text_color=colors["section_text_color"])
+        self.x_value.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        self.theta_frame.configure(bg_color="transparent", fg_color=colors["panel_bg"])
+        self.theta_label.configure(bg_color="transparent", fg_color="transparent", text_color=colors["section_text_color"])
+        self.theta_value.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        self.move_to_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.move_to_label.configure(bg_color="transparent", fg_color=colors["section_title"], text_color=colors["section_title_text_color"])
+
+        self.move_to_x_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+        self.move_to_x_label.configure(bg_color="transparent", fg_color="transparent", text_color=colors["section_text_color"])
+        self.move_to_x_value.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.move_to_x_label_mm.configure(bg_color="transparent", fg_color="transparent", text_color=colors["section_text_color"])
+
+        self.move_to_theta_frame.configure(bg_color="transparent", fg_color=colors["sub_section_bg"])
+        self.move_to_theta_label.configure(bg_color="transparent", fg_color="transparent", text_color=colors["sub_section_text_color"])
+        self.move_to_theta_value.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.move_to_theta_label_degree.configure(bg_color="transparent", fg_color="transparent", text_color=colors["sub_section_text_color"])
+
+        self.apply_move_to_button.configure(bg_color="transparent", fg_color=colors["blue_button"], hover_color=colors["blue_button_hover"])
+
+        self.control_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.sequence_test_label.configure(bg_color="transparent", fg_color=colors["section_title"], text_color=colors["section_title_text_color"])
+
+        self.photo_test_button.configure(bg_color="transparent", fg_color=colors["blue_button"], hover_color=colors["blue_button_hover"])
+        self.homing_button.configure(bg_color="transparent", fg_color=colors["blue_button"], hover_color=colors["blue_button_hover"])
+
+        self.logs_frame.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        for button in self.blue_buttons:
+            button.configure(bg_color="transparent", fg_color=colors["blue_button"], hover_color=colors["blue_button_hover"])
+        for button in self.red_buttons:
+            button.configure(bg_color="transparent", fg_color=colors["red_button"], hover_color=colors["red_button_hover"])
+
+
+
+        self.control_buttons = [
+            {"name": "Play", "icon": "play_icon.png", "command": self.playTestSequence},
+            {"name": "Pause", "icon": "pause_icon.png", "command": self.pauseTestSequence},
+            {"name": "Stop", "icon": "stop_icon.png", "command": self.stopTestSequence}
+            ]
+        
+        for i in range(len(self.control_buttons)):
+            element = self.control_buttons[i]
+            
+            if (i < 2):
+                image = Image.open("./img/"+element["icon"])
+                image = color(image, colors["control_button"])
+                icon = CTkImage(light_image = image,
+                                    dark_image=image,
+                                    size=(20,20))
+                self.transparent_buttons[i].configure(image=icon)
+    
+            self.transparent_buttons[i].configure(fg_color = "transparent",hover_color = colors["section_button_hover"], text_color=colors["section_text_color"])

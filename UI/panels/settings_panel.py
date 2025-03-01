@@ -1,6 +1,7 @@
 from panels.panel import Panel
 from customtkinter import *
 import tkinter as tk
+from const import *
 
 from communication import send_command
 
@@ -14,16 +15,12 @@ class SettingsPanel(Panel):
 
 
         ## Box that contains a section "Translation", a section "Rotation", and a section "Timing"
-        self.settings_frame = CTkFrame(self,
-                                            fg_color = "#333333"
-                                            )
+        self.settings_frame = CTkFrame(self)
         self.settings_frame.place(relx=0.5, rely=0.35, anchor = "center")
     
 
         ## Box of the section "Translation"
         self.translation_frame = CTkFrame(self.settings_frame,
-                                            fg_color = "#2B2B2B",
-                                            bg_color = "#333333",
                                             corner_radius=10,
                                             )
         self.translation_frame.grid(row =0, column = 0, padx = 10, sticky = "ns")
@@ -31,24 +28,20 @@ class SettingsPanel(Panel):
         self.translation_label = CTkLabel(self.translation_frame,
                                          text = "Translation",
                                          font=("Roboto", 20),
-                                         fg_color = "grey30",
                                          corner_radius=10,
                                          height = 75,
-                                         width = self.section_width
-                                         )
+                                         width = self.section_width)
         
     
         self.translation_start_label = CTkLabel(self.translation_frame,
                                          text = "Starting Point (mm)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         self.translation_end_label = CTkLabel(self.translation_frame,
                                          text = "Ending Point (mm)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
@@ -56,14 +49,12 @@ class SettingsPanel(Panel):
         self.translation_number_of_points_label = CTkLabel(self.translation_frame,
                                          text = "Number of points",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         self.translation_speed_label = CTkLabel(self.translation_frame,
                                          text = "Speed (%)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
@@ -97,52 +88,39 @@ class SettingsPanel(Panel):
         ## Box of the section "Rotation"
 
         self.rotation_frame = CTkFrame(self.settings_frame,
-                                            fg_color = "#2B2B2B",
-                                            bg_color = "#333333",
-                                            corner_radius=10
-                                            )
+                                            corner_radius=10)
 
         self.rotation_frame.grid(row =0, column = 1, padx = 10, sticky = "ns")
 
         self.rotation_label = CTkLabel(self.rotation_frame,
                                          text = "Rotation",
                                          font=("Roboto", 20),
-                                         fg_color = "grey30",
                                          corner_radius=10,
                                          height = 75,
-                                         width = self.section_width
-                                         )
+                                         width = self.section_width)
         
     
         self.rotation_start_label = CTkLabel(self.rotation_frame,
                                          text = "Starting Point (°)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.rotation_end_label = CTkLabel(self.rotation_frame,
                                          text = "Ending Point (°)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         
         self.rotation_number_of_points_label = CTkLabel(self.rotation_frame,
                                          text = "Number of points",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.rotation_speed_label = CTkLabel(self.rotation_frame,
                                          text = "Speed (%)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
 
         self.rotation_start_textbox = CTkTextbox(self.rotation_frame,
                                     width = self.section_width/2*0.6,
@@ -171,45 +149,34 @@ class SettingsPanel(Panel):
     
         ## Box of the section "Timings"
         self.timing_frame = CTkFrame(self.settings_frame,
-                                            fg_color = "#2B2B2B",
-                                            bg_color = "#333333",
-                                            corner_radius=10,
-                                            )
+                                            corner_radius=10)
 
         self.timing_frame.grid(row =0, column = 2, padx = 10, sticky = "ns")
 
         self.timing_label = CTkLabel(self.timing_frame,
                                          text = "Timings",
                                          font=("Roboto", 20),
-                                         fg_color = "grey30",
                                          corner_radius=10,
                                          height = 75,
-                                         width = self.section_width
-                                         )
+                                         width = self.section_width)
         
     
         self.exposure_time_label = CTkLabel(self.timing_frame,
                                          text = "Exposure Time (s)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.saving_time_label = CTkLabel(self.timing_frame,
                                          text = "Saving Time (s)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         
         self.margin_time_label = CTkLabel(self.timing_frame,
                                          text = "Margin Time (s)",
                                          font=("Roboto", 16),
-                                         fg_color = "grey20",
                                          width = self.section_width/2*0.8,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.exposure_time_textbox = CTkTextbox(self.timing_frame,
                                     width = self.section_width/2*0.6,
                                     height = 20)
@@ -249,21 +216,19 @@ class SettingsPanel(Panel):
                                 font = ("Roboto", 20),
                                 height = 50,
                                 width = 400,
-                                fg_color = "#8E0217",
-                                hover_color="#582139",
                                 command = lambda:self.reset_values(False)
                                 )
         
         self.reset_button.place(relx = 0.25, rely = 0.8, anchor = "center")
 
         ## Estimation of time :
-        self.estimated_time_frame = CTkFrame(self)
+        self.estimated_time_frame = CTkFrame(self,
+                                             corner_radius=10)
         self.estimated_time_frame.place(relx = 0.25, rely = 0.7, anchor = "center")
 
         self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
                                     text="Estimated Time :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
                                     width = 100,
                                     height=30,
@@ -278,8 +243,7 @@ class SettingsPanel(Panel):
                                         width = 575,
                                         height = 220,
                                         font=("Roboto", 16),
-                                        state = "disabled"
-                                        )
+                                        state = "disabled")
         self.logs_frame.place(relx = 0.7, rely = 0.8, anchor = "center")
 
         ## Setting the default values
@@ -352,3 +316,61 @@ class SettingsPanel(Panel):
 
         send_command("computeStep")
 
+    def set_theme(self, theme):
+        super().set_theme(theme)
+
+        colors = themes[theme]
+
+        # Frame Settings
+        self.settings_frame.configure(bg_color="transparent", fg_color=colors["panel_bg"])
+
+        # Translation Section
+        self.translation_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.translation_label.configure(text_color=colors["section_title_text_color"], fg_color=colors["section_title"], bg_color="transparent")
+        self.translation_start_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.translation_end_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.translation_number_of_points_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.translation_speed_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+
+        self.translation_start_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.translation_end_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.translation_number_of_points_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.translation_speed_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        # Rotation Section
+        self.rotation_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.rotation_label.configure(text_color=colors["section_title_text_color"], fg_color=colors["section_title"], bg_color="transparent")
+        self.rotation_start_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.rotation_end_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.rotation_number_of_points_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.rotation_speed_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+
+        self.rotation_start_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.rotation_end_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.rotation_number_of_points_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.rotation_speed_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        # Timings Section
+        self.timing_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.timing_label.configure(text_color=colors["section_title_text_color"], fg_color=colors["section_title"], bg_color="transparent")
+        self.exposure_time_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.saving_time_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+        self.margin_time_label.configure(text_color=colors["sub_section_title_text_color"], fg_color=colors["sub_section_title"], bg_color="transparent")
+
+        self.exposure_time_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.saving_time_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+        self.margin_time_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        # Confirmation Button
+        self.confirmation_button.configure(fg_color=colors["blue_button"], bg_color="transparent", hover_color=colors["blue_button_hover"])
+
+        # Reset Button
+        self.reset_button.configure(fg_color = colors["red_button"], bg_color= "transparent", hover_color=colors["red_button_hover"])
+
+        # Estimated Time Section
+        self.estimated_time_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.estimated_time_label.configure(text_color=colors["section_text_color"], fg_color="transparent", bg_color="transparent")
+        self.estimated_time_value.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+        # Logs Panel
+        self.logs_frame.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])

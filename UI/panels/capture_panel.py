@@ -3,13 +3,13 @@ from panels.panel import Panel
 from customtkinter import *
 import tkinter as tk
 from communication import send_command
-
+from const import *
+from color import color
 from PIL import Image
 
 class CapturePanel(Panel):
     def __init__(self, master):
         super().__init__(master)
-
 
         self.total_time = 0
         self.time = 0
@@ -21,19 +21,17 @@ class CapturePanel(Panel):
         ## Box for the section "Control of the capture"
         self.control_frame = CTkFrame(self,
                                         width = 400,
-                                        height = 200,
-                                        )
+                                        height = 200)
         self.control_frame.place(relx = 0.24, rely = 0.22, anchor = "center")
 
         self.control_label = CTkLabel(self.control_frame,
                                          text="Control",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 380,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.control_label.place(relx = 0.5, rely = 0.1, anchor = "center")
 
+        self.transparent_buttons = []
         self.control_buttons = [
             {"name": "Play", "icon": "play_icon.png", "command": self.play},
             {"name": "Pause", "icon": "pause_icon.png", "command": self.pause},
@@ -56,43 +54,34 @@ class CapturePanel(Panel):
                                 image=icon,
                                 compound="top",
                                 command = element["command"],
-                                font=("Roboto", 16),
-                                text_color="#D9D9D9",
-                                fg_color = "#2B2B2B",
-                                hover_color="gray30")
-
+                                font=("Roboto", 16))
+            self.transparent_buttons.append(button)
             button.place(relx = 0.2 + i*0.3, rely = 0.6, anchor = "center")
         
         ## Box for the section "Position and Angle"
         self.position_frame = CTkFrame(self,
                                         width = 400,
-                                        height = 200,
-                                        )
+                                        height = 200)
         self.position_frame.place(relx = 0.24, rely = 0.52, anchor = "center")
 
         self.position_label = CTkLabel(self.position_frame,
                                          text="Position and Angle",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 380,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
         self.position_label.place(relx = 0.5, rely = 0.1, anchor = "center")
 
         self.x_frame = CTkFrame(self.position_frame)
         self.x_label = CTkLabel(self.x_frame, 
                                     text="x :",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         self.x_value = CTkTextbox(self.x_frame,
                                     width = 100,
                                     height=30,
-                                    state = "disabled"
-                                    )
+                                    state = "disabled")
         self.x_label_mm = CTkLabel(self.x_frame, 
                                     text="mm",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
 
         self.x_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.x_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -103,16 +92,14 @@ class CapturePanel(Panel):
         self.theta_frame = CTkFrame(self.position_frame)
         self.theta_label = CTkLabel(self.theta_frame, 
                                     text="Theta :",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
         self.theta_value = CTkTextbox(self.theta_frame,
                                     width = 100,
                                     height=30,
                                     state = "disabled")
         self.theta_label_degree = CTkLabel(self.theta_frame, 
                                     text="°",
-                                     font=("Roboto", 16),
-                                     )
+                                     font=("Roboto", 16))
 
         self.theta_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.theta_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -125,18 +112,14 @@ class CapturePanel(Panel):
         ## Box for the section "Status of the Capture"
         self.status_frame = CTkFrame(self,
                                         width = 550,
-                                        height = 415,
-                                
-        )
+                                        height = 415)
         self.status_frame.place(relx = 0.69, rely = 0.37, anchor = "center")
 
         self.status_label = CTkLabel(self.status_frame,
                                          text="Capture Status",
                                          font=("Roboto", 16),
-                                         fg_color = "grey30",
                                          width = 530,
-                                         corner_radius=10
-                                         )
+                                         corner_radius=10)
 
         self.status_label.place(relx = 0.5, rely = 0.05, anchor = "center")
 
@@ -156,8 +139,7 @@ class CapturePanel(Panel):
 
         self.time_label = CTkLabel(self.time_frame, 
                                     text="Capture Time :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.time_value = CTkTextbox(self.time_frame,
                                     width = 100,
                                     height=30,
@@ -171,8 +153,7 @@ class CapturePanel(Panel):
 
         self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
                                     text="Estimated Time\nLeft :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
                                     width = 100,
                                     height=30,
@@ -186,16 +167,14 @@ class CapturePanel(Panel):
 
         self.nb_pictures_label = CTkLabel(self.nb_pictures_frame, 
                                     text="Total Pictures Taken :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.nb_pictures_value = CTkTextbox(self.nb_pictures_frame,
                                     width = 100,
                                     height=30,
                                     state = "disabled")
         self.total_nb_pictures_label = CTkLabel(self.nb_pictures_frame, 
                                     text="/100",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
 
         self.nb_pictures_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.nb_pictures_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -206,16 +185,14 @@ class CapturePanel(Panel):
 
         self.nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame, 
                                     text="Pictures taken for this angle :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.nb_pictures_angle_value = CTkTextbox(self.nb_pictures_angle_frame,
                                     width = 100,
                                     height=30,
                                     state = "disabled")
         self.total_nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame, 
                                     text="/100",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
 
         self.nb_pictures_angle_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.nb_pictures_angle_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -226,16 +203,14 @@ class CapturePanel(Panel):
 
         self.explored_angles_label = CTkLabel(self.explored_angles_frame, 
                                     text="Number of angles completed :",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
         self.explored_angles_value = CTkTextbox(self.explored_angles_frame,
                                     width = 100,
                                     height=30,
                                     state = "disabled")
         self.total_explored_angles_label = CTkLabel(self.explored_angles_frame, 
                                     text="/100",
-                                     font=("Roboto", 15),
-                                     )
+                                     font=("Roboto", 15))
 
         self.explored_angles_label.grid(row = 0, column = 0, padx = 10, pady = 10)
         self.explored_angles_value.grid(row = 0, column = 1, padx = (10,5), pady = 10)
@@ -247,8 +222,7 @@ class CapturePanel(Panel):
                                     width = 990,
                                     height = 200,
                                     font = ("Roboto", 16),
-                                    state = "disabled"
-                                    )
+                                    state = "disabled")
         self.logs_frame.place(relx = 0.5, rely = 0.82, anchor = "center")
 
         # Setting the default values
@@ -307,3 +281,65 @@ class CapturePanel(Panel):
             self.state = "STOPPED"
             send_command("stop")
 
+
+    def set_theme(self, theme):
+        super().set_theme(theme)
+        colors = themes[theme]
+
+        self.control_frame.configure(bg_color = "transparent", fg_color = colors["section_bg"])
+        self.control_label.configure(bg_color = "transparent", fg_color = colors["section_title"], text_color = colors["section_title_text_color"])
+        self.position_frame.configure(bg_color = "transparent", fg_color = colors["section_bg"])
+        self.position_label.configure(bg_color = "transparent", fg_color = colors["section_title"], text_color = colors["section_title_text_color"])
+        self.x_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.x_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.x_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.x_label_mm.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.theta_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.theta_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.theta_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.theta_label_degree.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.status_frame.configure(bg_color = "transparent", fg_color = colors["section_bg"])
+        self.status_label.configure(bg_color = "transparent", fg_color = colors["section_title"], text_color = colors["section_title_text_color"])
+        self.time_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.time_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.time_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.estimated_time_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.estimated_time_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.estimated_time_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.nb_pictures_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.nb_pictures_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.nb_pictures_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.total_nb_pictures_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.nb_pictures_angle_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.nb_pictures_angle_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.nb_pictures_angle_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.total_nb_pictures_angle_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.explored_angles_frame.configure(bg_color = "transparent", fg_color = colors["sub_section_bg"])
+        self.explored_angles_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.explored_angles_value.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+        self.total_explored_angles_label.configure(bg_color = "transparent", fg_color = "transparent", text_color = colors["sub_section_text_color"])
+        self.logs_frame.configure(bg_color = "transparent", fg_color = colors["textbox_bg"], text_color = colors["textbox_text_color"])
+
+
+        self.control_buttons = [
+            {"name": "Play", "icon": "play_icon.png", "command": self.play},
+            {"name": "Pause", "icon": "pause_icon.png", "command": self.pause},
+            {"name": "Stop", "icon": "stop_icon.png", "command": self.stop}
+            ]
+        
+        for i in range(len(self.control_buttons)):
+            element = self.control_buttons[i]
+            
+            if (i < 2):
+                image = Image.open("./img/"+element["icon"])
+                image = color(image, colors["control_button"])
+                icon = CTkImage(light_image = image,
+                                    dark_image=image,
+                                    size=(75,75))
+                self.transparent_buttons[i].configure(image=icon)
+    
+            self.transparent_buttons[i].configure(bg_color = "transparent", fg_color = "transparent",hover_color = colors["section_button_hover"],text_color=colors["section_text_color"])
+
+
+            self.progress_bar.configure(fg_color = colors["progressbar_fg"], progress_color = colors["progressbar_color"])
+            self.progress_percentage.configure(text_color = colors["section_text_color"])

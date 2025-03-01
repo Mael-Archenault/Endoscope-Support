@@ -12,15 +12,16 @@ from communication import receive_data
 
 import PIL
 
-# screen_width, screen_height = pyautogui.size()
-# print(f"Screen size: {screen_width}x{screen_height}")
 
 
 class App(CTk):
     def __init__(self):
         super().__init__()
-
         self.title("Endoscope Application")
+
+        # Setting all the background colors to transparent (we don't need them, we use foreground color)
+        for widget in self.winfo_children():
+            widget.configure(bg_color="transparent")
 
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -38,7 +39,21 @@ class App(CTk):
         self.sidebar.place(x = 0, y = 0)
 
 
+        
+    
+    def set_theme(self, theme):
+        colors = themes[theme]
+        self.withdraw()
+        self.configure(fg_color=colors["window_bg"])
+        self.panel_container.set_theme(theme)
+        self.sidebar.set_theme(theme)
+        self.deiconify()
+        print("test")
+
+
 def update():
+
+    
     data = receive_data()
     
     if data!=None:
@@ -81,9 +96,8 @@ def update():
 
 
 
-
-
 app = App()
 
 app.after(UPDATE_PERIOD, update)
+app.after(0, lambda : app.set_theme("Dark (default)"))
 app.mainloop()  

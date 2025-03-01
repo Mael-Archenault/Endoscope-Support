@@ -3,7 +3,7 @@ import tkinter as tk
 import time
 
 from const import *
-
+from panels.app_settings_panel import AppSettingsPanel
 from panels.connection_panel  import ConnectionPanel
 from panels.test_panel import TestPanel
 from panels.settings_panel import SettingsPanel
@@ -19,13 +19,19 @@ class PanelContainer(CTkFrame):
         self.height = WINDOW_HEIGHT
         
 
-        self.configure(width = self.width, height = self.height , corner_radius=0)
-        self.grid_columnconfigure(0, weight=1)
-        self.state = "Settings"
+        self.configure(width = self.width,
+                       height = self.height,
+                       corner_radius=0)
+        
+        self.state = "Connection"
         
 
 
-        self.panels = {"Connection": ConnectionPanel(self), "Test": TestPanel(self), "Settings": SettingsPanel(self), "Capture": CapturePanel(self)}
+        self.panels = { "App Settings": AppSettingsPanel(self, self.app),
+                        "Connection": ConnectionPanel(self),
+                        "Test": TestPanel(self),
+                        "Settings": SettingsPanel(self),
+                        "Capture": CapturePanel(self)}
         for panel in self.panels.values():
             panel.place(relx = -1, rely = 0.5, anchor = "center")
             panel.x, panel.y = -self.width, 0
@@ -118,3 +124,9 @@ class PanelContainer(CTkFrame):
             local_time%=60
             seconds = int(local_time)
             self.panels["Settings"].change_value("estimated_time_value", str(hours).zfill(2)+":"+str(minutes).zfill(2)+":"+str(seconds).zfill(2), "disabled")
+
+    def set_theme(self, theme):
+        colors = themes[theme]
+        self.configure(fg_color = colors["window_bg"])
+        for panel in self.panels.values():
+            panel.set_theme(theme)

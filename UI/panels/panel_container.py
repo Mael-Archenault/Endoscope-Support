@@ -9,6 +9,8 @@ from panels.test_panel import TestPanel
 from panels.settings_panel import SettingsPanel
 from panels.capture_panel import CapturePanel
 
+from themes import themes
+
 
 
 class PanelContainer(CTkFrame):
@@ -130,3 +132,7 @@ class PanelContainer(CTkFrame):
         self.configure(fg_color = colors["window_bg"])
         for panel in self.panels.values():
             panel.set_theme(theme)
+
+    def set_language(self, name):
+        for panel in self.panels.values():
+            panel.set_language(name)

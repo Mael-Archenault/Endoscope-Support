@@ -2,13 +2,15 @@ from panels.panel import Panel
 from customtkinter import *
 import tkinter as tk
 from const import *
+from languages import *
+
+from themes import themes
 
 from communication import send_command
 
 class SettingsPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
-        self.title.configure(text="Capture Settings")
 
         self.section_width = 300
         self.section_height = 300
@@ -26,7 +28,6 @@ class SettingsPanel(Panel):
         self.translation_frame.grid(row =0, column = 0, padx = 10, sticky = "ns")
 
         self.translation_label = CTkLabel(self.translation_frame,
-                                         text = "Translation",
                                          font=("Roboto", 20),
                                          corner_radius=10,
                                          height = 75,
@@ -34,26 +35,22 @@ class SettingsPanel(Panel):
         
     
         self.translation_start_label = CTkLabel(self.translation_frame,
-                                         text = "Starting Point (mm)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         self.translation_end_label = CTkLabel(self.translation_frame,
-                                         text = "Ending Point (mm)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         
         self.translation_number_of_points_label = CTkLabel(self.translation_frame,
-                                         text = "Number of points",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
                                          )
         self.translation_speed_label = CTkLabel(self.translation_frame,
-                                         text = "Speed (%)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10
@@ -93,7 +90,6 @@ class SettingsPanel(Panel):
         self.rotation_frame.grid(row =0, column = 1, padx = 10, sticky = "ns")
 
         self.rotation_label = CTkLabel(self.rotation_frame,
-                                         text = "Rotation",
                                          font=("Roboto", 20),
                                          corner_radius=10,
                                          height = 75,
@@ -101,23 +97,19 @@ class SettingsPanel(Panel):
         
     
         self.rotation_start_label = CTkLabel(self.rotation_frame,
-                                         text = "Starting Point (°)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
         self.rotation_end_label = CTkLabel(self.rotation_frame,
-                                         text = "Ending Point (°)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
         
         self.rotation_number_of_points_label = CTkLabel(self.rotation_frame,
-                                         text = "Number of points",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
         self.rotation_speed_label = CTkLabel(self.rotation_frame,
-                                         text = "Speed (%)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
@@ -154,7 +146,6 @@ class SettingsPanel(Panel):
         self.timing_frame.grid(row =0, column = 2, padx = 10, sticky = "ns")
 
         self.timing_label = CTkLabel(self.timing_frame,
-                                         text = "Timings",
                                          font=("Roboto", 20),
                                          corner_radius=10,
                                          height = 75,
@@ -162,18 +153,15 @@ class SettingsPanel(Panel):
         
     
         self.exposure_time_label = CTkLabel(self.timing_frame,
-                                         text = "Exposure Time (s)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
         self.saving_time_label = CTkLabel(self.timing_frame,
-                                         text = "Saving Time (s)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
         
         self.margin_time_label = CTkLabel(self.timing_frame,
-                                         text = "Margin Time (s)",
                                          font=("Roboto", 16),
                                          width = self.section_width/2*0.8,
                                          corner_radius=10)
@@ -201,7 +189,6 @@ class SettingsPanel(Panel):
         ## Validation Button
 
         self.confirmation_button = CTkButton(self,
-                                text="Apply configuration",
                                 font = ("Roboto", 20),
                                 height = 50,
                                 width = 400,
@@ -212,7 +199,6 @@ class SettingsPanel(Panel):
         ## Reset Button
 
         self.reset_button = CTkButton(self,
-                                text="Reset Configuration",
                                 font = ("Roboto", 20),
                                 height = 50,
                                 width = 400,
@@ -226,8 +212,7 @@ class SettingsPanel(Panel):
                                              corner_radius=10)
         self.estimated_time_frame.place(relx = 0.25, rely = 0.7, anchor = "center")
 
-        self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
-                                    text="Estimated Time :",
+        self.estimated_time_label = CTkLabel(self.estimated_time_frame,
                                      font=("Roboto", 15))
         self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
                                     width = 100,
@@ -374,3 +359,34 @@ class SettingsPanel(Panel):
 
         # Logs Panel
         self.logs_frame.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
+
+    def set_language(self, name):
+
+        language = languages[name]
+        self.title.configure(text=language["Capture Settings"])
+
+        self.translation_label.configure(text=language["Translation"])
+        self.translation_start_label.configure(text=language["Starting Point"] + " (mm)")
+        self.translation_end_label.configure(text=language["Ending Point"] + " (mm)")
+        self.translation_number_of_points_label.configure(text=language["Number of Points"])
+        self.translation_speed_label.configure(text=language["Translation Speed"] + " (%)")
+
+        self.rotation_label.configure(text=language["Rotation"])
+        self.rotation_start_label.configure(text=language["Starting Point"] + " (°)")
+        self.rotation_end_label.configure(text=language["Ending Point"] + " (°)")
+        self.rotation_number_of_points_label.configure(text=language["Number of Points"])
+        self.rotation_speed_label.configure(text=language["Rotation Speed"] + " (%)")
+
+        self.timing_label.configure(text=language["Timings"])
+        self.exposure_time_label.configure(text=language["Exposure Time"] +" (s)")
+        self.saving_time_label.configure(text=language["Saving Time"]+ " (s)")
+        self.margin_time_label.configure(text=language["Margin Time"] + " (s)")
+
+        self.confirmation_button.configure(text=language["Apply Configuration"])
+        self.reset_button.configure(text=language["Reset values to default"])
+
+        self.estimated_time_label.configure(text=language["Estimated Time"] + " :")
+
+
+
+

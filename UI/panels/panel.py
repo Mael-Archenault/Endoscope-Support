@@ -2,6 +2,7 @@ from customtkinter import *
 import tkinter as tk
 import time
 from const import *
+from themes import themes
 
 
 class Panel(CTkFrame):

@@ -6,12 +6,17 @@ from const import *
 from color import color
 
 import tkinter as tk
+from languages import *
+
+from themes import themes
 
 
 class ConnectionPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
-        self.title.configure(text="Connection")
+
+        self.connnection_status = ["Disconnected", "Connected"]
+        self.connected = False
 
         ## Box for the section "Connection Status"
 
@@ -22,7 +27,6 @@ class ConnectionPanel(Panel):
         self.connection_status_frame.place(relx = 0.69, rely = 0.32, anchor = "center")
 
         self.connection_status_label = CTkLabel(self.connection_status_frame,
-                                         text = "Connection Status",
                                          font=("Roboto", 16),
                                          width = 580,
                                          corner_radius=10)
@@ -39,17 +43,15 @@ class ConnectionPanel(Panel):
         self.connection_status_indicator.place(relx = 0.4, rely = 0.25, anchor = "center")
     
         self.connection_status_text = CTkLabel(self.connection_status_frame,
-                                         text = "Disconnected",
-                                         font = ("Roboto", 16)
-                                         )
+                                         font = ("Roboto", 16))
+        
         self.connection_status_text.place(relx = 0.55, rely = 0.25, anchor = "center")
 
         
         self.connected_device_frame = CTkFrame(self.connection_status_frame)
         self.connected_device_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
 
-        self.connected_device_label = CTkLabel(self.connected_device_frame, 
-                                     text="Connected Device :",
+        self.connected_device_label = CTkLabel(self.connected_device_frame,
                                      font=("Roboto", 16))
         self.connected_device_value = CTkTextbox(self.connected_device_frame,
                                     width = 300,
@@ -65,8 +67,7 @@ class ConnectionPanel(Panel):
 
         self.firmware_version_frame.place(relx = 0.5, rely = 0.8, anchor = "center")
 
-        self.firmware_version_label = CTkLabel(self.firmware_version_frame, 
-                                    text="Firmware Version :",
+        self.firmware_version_label = CTkLabel(self.firmware_version_frame,
                                     font=("Roboto", 16))
         self.firmware_version_value = CTkTextbox(self.firmware_version_frame,
                                     width = 300,
@@ -80,7 +81,6 @@ class ConnectionPanel(Panel):
 
         self.connection_frame = CTkFrame(self)
         self.connection_label = CTkLabel(self.connection_frame,
-                                          text = "Connection",
                                           font=("Roboto", 16),
                                           width = 400,
                                           corner_radius=10)
@@ -112,7 +112,6 @@ class ConnectionPanel(Panel):
         
         
         self.connect_button = CTkButton(self.connection_frame,
-                                        text = "Connect",
                                         font = ("Roboto", 20),
                                         width = 250,
                                         height = 100,
@@ -121,7 +120,6 @@ class ConnectionPanel(Panel):
         
         
         self.disconnect_button = CTkButton(self.connection_frame,
-                                        text = "Disconnect",
                                         font = ("Roboto", 20),
                                         width = 250,
                                         height = 100,
@@ -141,10 +139,10 @@ class ConnectionPanel(Panel):
 
         # Setting the default values
         self.reset_values()
+
     
     def reset_values(self):
         self.connection_status_indicator.configure(fg_color = "red")
-        self.connection_status_text.configure(text = "Disconnected")
 
         self.connected_device_value.configure(state = "normal")
         self.connected_device_value.delete(1.0, tk.END)
@@ -183,7 +181,8 @@ class ConnectionPanel(Panel):
         
         else:
             self.connection_status_indicator.configure(fg_color = "green")
-            self.connection_status_text.configure(text = "Connected")
+            self.connection_status_text.configure(text = self.connection_status[1])
+            self.connected = True
 
             self.connected_device_value.configure(state = "normal")
             self.connected_device_value.delete(1.0, tk.END)
@@ -198,7 +197,8 @@ class ConnectionPanel(Panel):
             self.display_log(err)
         else:
             self.connection_status_indicator.configure(fg_color = "red")
-            self.connection_status_text.configure(text = "Disconnected")
+            self.connection_status_text.configure(text = self.connection_status[0])
+            self.connected = False
             self.reset_values()
             self.display_log("Disconnected")
 
@@ -243,8 +243,21 @@ class ConnectionPanel(Panel):
                                        
                                         button_hover_color = colors["combobox_button_hover"])
 
+    def set_language(self, name):
+        language = languages[name]
+        self.title.configure(text = language["Connection"])
+        self.connection_label.configure(text=language["Connection"])
+        self.connection_status_label.configure(text=language["Connection Status"])
+        self.connected_device_label.configure(text=language["Connected Device"] + " :")
+        self.firmware_version_label.configure(text=language["Firmware Version"] + " :")
+        self.connect_button.configure(text=language["Connect"])
+        self.disconnect_button.configure(text=language["Disconnect"])
 
-
+        self.connection_status = [language["Disconnected"], language["Connected"]]
+        if self.connected:
+            self.connection_status_text.configure(text = self.connection_status[1])
+        else:
+            self.connection_status_text.configure(text = self.connection_status[0])
         
 
 

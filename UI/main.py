@@ -10,6 +10,8 @@ import time
 from PIL import Image
 from communication import receive_data
 
+from themes import themes
+
 import PIL
 
 
@@ -37,6 +39,9 @@ class App(CTk):
 
         self.sidebar = Sidebar(self, self.panel_container)
         self.sidebar.place(x = 0, y = 0)
+        
+
+        self.language = "Français"
 
 
         
@@ -48,7 +53,11 @@ class App(CTk):
         self.panel_container.set_theme(theme)
         self.sidebar.set_theme(theme)
         self.deiconify()
-        print("test")
+
+    def set_language(self, name):
+        self.language = name
+        self.sidebar.set_language(name)
+        self.panel_container.set_language(name)
 
 
 def update():
@@ -100,4 +109,5 @@ app = App()
 
 app.after(UPDATE_PERIOD, update)
 app.after(0, lambda : app.set_theme("Dark (default)"))
+app.after(0, lambda : app.set_language("English (default)"))
 app.mainloop()  

@@ -1,6 +1,8 @@
 from customtkinter import *
 from const import *
 from color import color
+from languages import *
+from themes import themes
 
 from PIL import Image
 
@@ -21,29 +23,20 @@ class Sidebar(CTkFrame):
     
         
         self.buttons = [
-            {"name": "App\nSettings", "icon": "settings_icon.png", "command" : lambda:self.panel_container.setPanel("App Settings")},
-            {"name": "Connection", "icon": "usb_icon.png", "command": lambda:self.panel_container.setPanel("Connection")},
-            {"name": "Test", "icon": "test_icon.png", "command": lambda:self.panel_container.setPanel("Test")},
-            {"name": "Capture\nSettings", "icon": "capture_settings_icon.png", "command": lambda:self.panel_container.setPanel("Settings")},
-            {"name": "Capture", "icon": "capture_icon.png", "command": lambda:self.panel_container.setPanel("Capture")},
+            {"command" : lambda:self.panel_container.setPanel("App Settings")},
+            {"command": lambda:self.panel_container.setPanel("Connection")},
+            {"command": lambda:self.panel_container.setPanel("Test")},
+            {"command": lambda:self.panel_container.setPanel("Settings")},
+            {"command": lambda:self.panel_container.setPanel("Capture")},
             ]
         
         self.transparent_buttons = []
         for i in range(len(self.buttons)):
             element = self.buttons[i]
-            image = Image.open("./img/"+element["icon"])
-            icon = CTkImage(light_image = image,
-                            dark_image=image,
-                            size=(int(self.button_height*0.6),
-                            int(self.button_height*0.6)))
-            
-
             button = CTkButton(self,
                                width = self.width*0.8,
                                height = self.button_height,
                                corner_radius= 10,
-                               text=element["name"],
-                               image=icon,
                                compound="top",
                                command = element["command"],
                                font=("Roboto", 16))
@@ -57,12 +50,13 @@ class Sidebar(CTkFrame):
         self.configure(bg_color = "transparent",fg_color=colors["window_bg"])
 
         self.buttons = [
-            {"name": "App\nSettings", "icon": "settings_icon.png", "command" : lambda:self.panel_container.setPanel("App Settings")},
-            {"name": "Connection", "icon": "usb_icon.png", "command": lambda:self.panel_container.setPanel("Connection")},
-            {"name": "Test", "icon": "test_icon.png", "command": lambda:self.panel_container.setPanel("Test")},
-            {"name": "Capture\nSettings", "icon": "capture_settings_icon.png", "command": lambda:self.panel_container.setPanel("Settings")},
-            {"name": "Capture", "icon": "capture_icon.png", "command": lambda:self.panel_container.setPanel("Capture")},
+            {"icon": "settings_icon.png"},
+            {"icon": "usb_icon.png"},
+            {"icon": "test_icon.png"},
+            {"icon": "capture_settings_icon.png"},
+            {"icon": "capture_icon.png"},
             ]
+        
         
 
         for i in range(len(self.buttons)):
@@ -74,3 +68,21 @@ class Sidebar(CTkFrame):
                             size=(int(self.button_height*0.6),
                             int(self.button_height*0.6)))
             self.transparent_buttons[i].configure(bg_color = "transparent",text_color=colors["sidebar_text_color"], fg_color = "transparent", hover_color=colors["sidebar_button_hover"], image=icon)
+
+
+    def set_language(self, name):
+        language = languages[name]
+        self.buttons = [
+            {"name": language["App\nSettings"]},
+            {"name": language["Connection"]},
+            {"name": language["Test"]},
+            {"name": language["Capture\nSettings"]},
+            {"name": language["Capture"]},
+            ]
+        
+        
+
+        for i in range(len(self.buttons)):
+            name = self.buttons[i]["name"]
+            self.transparent_buttons[i].configure(text = name)
+

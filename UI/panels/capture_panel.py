@@ -6,6 +6,9 @@ from communication import send_command
 from const import *
 from color import color
 from PIL import Image
+from languages import *
+
+from themes import themes
 
 class CapturePanel(Panel):
     def __init__(self, master):
@@ -15,8 +18,6 @@ class CapturePanel(Panel):
         self.time = 0
         self.state = "STOPPED"
 
-        self.title.configure(text="Capture")
-
         
         ## Box for the section "Control of the capture"
         self.control_frame = CTkFrame(self,
@@ -25,7 +26,6 @@ class CapturePanel(Panel):
         self.control_frame.place(relx = 0.24, rely = 0.22, anchor = "center")
 
         self.control_label = CTkLabel(self.control_frame,
-                                         text="Control",
                                          font=("Roboto", 16),
                                          width = 380,
                                          corner_radius=10)
@@ -65,7 +65,6 @@ class CapturePanel(Panel):
         self.position_frame.place(relx = 0.24, rely = 0.52, anchor = "center")
 
         self.position_label = CTkLabel(self.position_frame,
-                                         text="Position and Angle",
                                          font=("Roboto", 16),
                                          width = 380,
                                          corner_radius=10)
@@ -116,7 +115,6 @@ class CapturePanel(Panel):
         self.status_frame.place(relx = 0.69, rely = 0.37, anchor = "center")
 
         self.status_label = CTkLabel(self.status_frame,
-                                         text="Capture Status",
                                          font=("Roboto", 16),
                                          width = 530,
                                          corner_radius=10)
@@ -128,8 +126,7 @@ class CapturePanel(Panel):
                                             height = 20,
                                             width =400)
         self.progress_percentage = CTkLabel(self.status_frame,
-                                                font = ("Roboto", 15),
-                                                text = "50%")
+                                                font = ("Roboto", 15))
         self.progress_bar.place(relx = 0.45, rely = 0.2, anchor = "center")
         self.progress_percentage.place(relx = 0.9, rely = 0.2, anchor = "center")
 
@@ -137,8 +134,7 @@ class CapturePanel(Panel):
         self.time_frame = CTkFrame(self.status_frame)
         self.time_frame.place(relx = 0.25, rely = 0.35, anchor = "center")
 
-        self.time_label = CTkLabel(self.time_frame, 
-                                    text="Capture Time :",
+        self.time_label = CTkLabel(self.time_frame,
                                      font=("Roboto", 15))
         self.time_value = CTkTextbox(self.time_frame,
                                     width = 100,
@@ -151,8 +147,7 @@ class CapturePanel(Panel):
         self.estimated_time_frame = CTkFrame(self.status_frame)
         self.estimated_time_frame.place(relx = 0.75, rely = 0.35, anchor = "center")
 
-        self.estimated_time_label = CTkLabel(self.estimated_time_frame, 
-                                    text="Estimated Time\nLeft :",
+        self.estimated_time_label = CTkLabel(self.estimated_time_frame,
                                      font=("Roboto", 15))
         self.estimated_time_value = CTkTextbox(self.estimated_time_frame,
                                     width = 100,
@@ -165,8 +160,7 @@ class CapturePanel(Panel):
         self.nb_pictures_frame = CTkFrame(self.status_frame)
         self.nb_pictures_frame.place(relx = 0.5, rely = 0.55, anchor = "center")
 
-        self.nb_pictures_label = CTkLabel(self.nb_pictures_frame, 
-                                    text="Total Pictures Taken :",
+        self.nb_pictures_label = CTkLabel(self.nb_pictures_frame,
                                      font=("Roboto", 15))
         self.nb_pictures_value = CTkTextbox(self.nb_pictures_frame,
                                     width = 100,
@@ -183,8 +177,7 @@ class CapturePanel(Panel):
         self.nb_pictures_angle_frame = CTkFrame(self.status_frame)
         self.nb_pictures_angle_frame.place(relx = 0.5, rely = 0.7, anchor = "center")
 
-        self.nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame, 
-                                    text="Pictures taken for this angle :",
+        self.nb_pictures_angle_label = CTkLabel(self.nb_pictures_angle_frame,
                                      font=("Roboto", 15))
         self.nb_pictures_angle_value = CTkTextbox(self.nb_pictures_angle_frame,
                                     width = 100,
@@ -201,8 +194,7 @@ class CapturePanel(Panel):
         self.explored_angles_frame = CTkFrame(self.status_frame)
         self.explored_angles_frame.place(relx = 0.5, rely = 0.85, anchor = "center")
 
-        self.explored_angles_label = CTkLabel(self.explored_angles_frame, 
-                                    text="Number of angles completed :",
+        self.explored_angles_label = CTkLabel(self.explored_angles_frame,
                                      font=("Roboto", 15))
         self.explored_angles_value = CTkTextbox(self.explored_angles_frame,
                                     width = 100,
@@ -343,3 +335,15 @@ class CapturePanel(Panel):
 
             self.progress_bar.configure(fg_color = colors["progressbar_fg"], progress_color = colors["progressbar_color"])
             self.progress_percentage.configure(text_color = colors["section_text_color"])
+
+    def set_language(self, name):
+        language = languages[name]
+        self.title.configure(text=language["Capture"])
+        self.control_label.configure(text=language["Control"])
+        self.position_label.configure(text=language["Position and Angle"])
+        self.status_label.configure(text=language["Capture Status"])
+        self.time_label.configure(text=language["Capture Time"])
+        self.estimated_time_label.configure(text=language["Estimated Time\nLeft"])
+        self.nb_pictures_label.configure(text=language["Number of Pictures Captured"] + " :")
+        self.nb_pictures_angle_label.configure(text=language["Number of Pictures for this Angle"]+ " :")
+        self.explored_angles_label.configure(text=language["Number of Angles Completed"]+ " :")

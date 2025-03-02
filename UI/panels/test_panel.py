@@ -4,6 +4,8 @@ from customtkinter import *
 import tkinter as tk
 from communication import send_command
 from const import *
+from languages import *
+from themes import themes
 
 from color import color
 
@@ -13,7 +15,7 @@ class TestPanel(Panel):
     def __init__(self, master):
         super().__init__(master)
         self.state = "STOPPED"
-        self.title.configure(text="Test")
+
 
         ## Box for the section "Test of the Movement"
 
@@ -21,21 +23,18 @@ class TestPanel(Panel):
         self.movement_test_frame.place(relx = 0.35, rely = 0.315, anchor = "center")
 
         self.movement_test_label = CTkLabel(self.movement_test_frame,
-                                            text = "Movement Test",
                                             font=("Roboto", 20),
                                             corner_radius=10)
         self.movement_test_label.grid(row = 0, column =0, columnspan = 2, sticky = "ew", padx = 10, pady = 10)
 
         self.translation_frame = CTkFrame(self.movement_test_frame)
         self.translation_label = CTkLabel(self.translation_frame,
-                                         text = "Translation",
                                          font=("Roboto", 16),
                                          width = 300,
                                          corner_radius=10)
         
         self.rotation_frame = CTkFrame(self.movement_test_frame)
         self.rotation_label = CTkLabel(self.rotation_frame,
-                                         text = "Rotation",
                                          font=("Roboto", 16),
                                          width = 300,
                                          corner_radius=10)
@@ -104,7 +103,6 @@ class TestPanel(Panel):
         self.position_frame.place(relx = 0.8, rely = 0.22, anchor = "center")
 
         self.position_label = CTkLabel(self.position_frame,
-                                         text="Position and Angle",
                                          font=("Roboto", 16),
                                          width = 320,
                                          corner_radius=10,)
@@ -147,7 +145,6 @@ class TestPanel(Panel):
         self.move_to_frame.place(relx = 0.35, rely = 0.66, anchor = "center")
 
         self.move_to_label = CTkLabel(self.move_to_frame,
-                                         text="Move to absolute position",
                                          font=("Roboto", 16),
                                          width = 660,
                                          corner_radius=10)
@@ -190,7 +187,6 @@ class TestPanel(Panel):
         self.move_to_theta_frame.place(relx = 0.55, rely = 0.6, anchor = "center")
 
         self.apply_move_to_button = CTkButton(self.move_to_frame,
-                    text = "Apply",
                     font = ("Roboto", 20),
                     width = 75,
                     height = 50,
@@ -208,7 +204,6 @@ class TestPanel(Panel):
         self.control_frame.place(relx = 0.8, rely = 0.47, anchor = "center")
 
         self.sequence_test_label = CTkLabel(self.control_frame,
-                                         text="Sequence Test",
                                          font=("Roboto", 16),
                                          width = 320,
                                          corner_radius=10)
@@ -246,7 +241,6 @@ class TestPanel(Panel):
         ## Button for Photo test
 
         self.photo_test_button = CTkButton(self,
-                    text = "Photo Test",
                     font = ("Roboto", 20),
                     width = 200,
                     height = 50,
@@ -258,7 +252,6 @@ class TestPanel(Panel):
         ## Button for homing translation
 
         self.homing_button = CTkButton(self,
-                    text = "Home motors",
                     font = ("Roboto", 20),
                     width = 200,
                     height = 50,
@@ -395,3 +388,16 @@ class TestPanel(Panel):
                 self.transparent_buttons[i].configure(image=icon)
     
             self.transparent_buttons[i].configure(fg_color = "transparent",hover_color = colors["section_button_hover"], text_color=colors["section_text_color"])
+    
+    def set_language(self, name):
+        language = languages[name]
+        self.title.configure(text=language["Test"])
+        self.movement_test_label.configure(text=language["Movement Test"])
+        self.translation_label.configure(text=language["Translation"])
+        self.rotation_label.configure(text=language["Rotation"])
+        self.position_label.configure(text=language["Position and Angle"])
+        self.move_to_label.configure(text=language["Move to Absolute Position"])
+        self.apply_move_to_button.configure(text = language["Apply"])
+        self.sequence_test_label.configure(text=language["Sequence Test"])
+        self.photo_test_button.configure(text=language["Photo Test"])
+        self.homing_button.configure(text=language["Home Motors"])

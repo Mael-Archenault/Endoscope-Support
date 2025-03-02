@@ -2,6 +2,7 @@
 #include "communication.h"
 #include "main.h"
 #include "init.h"
+#include "drivers.h"
 
 
  
@@ -44,13 +45,13 @@ void init(){
     // Initializing the IR emmition timer
     HAL_TIM_Base_Start(&htim16);
     TIM16->CCR1 = 1000; // setting the compare register to half the period (to generate a square signal)
-    HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+    //HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
    
    
     // Initializing the command buffer and receiving command over UART
     HAL_UART_Receive_IT(&huart2, command, BUFF_SIZE);
    
-    // Initializing all Capture Variables
+    initializeDrivers();
 
 
 }

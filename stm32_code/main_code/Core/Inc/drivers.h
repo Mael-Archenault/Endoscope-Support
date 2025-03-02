@@ -18,6 +18,8 @@ void setMicrosteppingMode(int n);
 int get_translation_time();
 int get_rotation_time();
 
+void initializeDrivers();
+
 
 
 
@@ -38,11 +40,11 @@ int get_rotation_time();
 #define ENABLED 0
 #define DISABLED 1
 
-#define TRANSLATION_MIN_WAITING_TIME 10
-#define TRANSLATION_MAX_WAITING_TIME 100000
+#define TRANSLATION_MIN_WAITING_TIME 1000000
+#define TRANSLATION_MAX_WAITING_TIME 10000000
 
-#define ROTATION_MIN_WAITING_TIME 10
-#define ROTATION_MAX_WAITING_TIME 100000
+#define ROTATION_MIN_WAITING_TIME 1000000
+#define ROTATION_MAX_WAITING_TIME 10000000
 
 
 

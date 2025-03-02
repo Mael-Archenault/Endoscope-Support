@@ -27,7 +27,8 @@ Core/Src/init.o: ../Core/Src/init.c \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Core/Inc/communication.h ../Core/Inc/main.h ../Core/Inc/init.h
+ ../Core/Inc/communication.h ../Core/Inc/main.h ../Core/Inc/init.h \
+ ../Core/Inc/drivers.h
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l4xx.h:
 ../Drivers/CMSIS/Device/ST/STM32L4xx/Include/stm32l476xx.h:
 ../Drivers/CMSIS/Include/core_cm4.h:
@@ -59,3 +60,4 @@ Core/Src/init.o: ../Core/Src/init.c \
 ../Core/Inc/communication.h:
 ../Core/Inc/main.h:
 ../Core/Inc/init.h:
+../Core/Inc/drivers.h:

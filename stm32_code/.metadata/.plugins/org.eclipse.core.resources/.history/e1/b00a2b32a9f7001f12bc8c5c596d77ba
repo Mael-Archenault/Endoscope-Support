@@ -1,0 +1,290 @@
+#include "stm32l4xx.h"
+#include "time.h"
+#include "drivers.h"
+#include <math.h>
+#include "communication.h"
+
+
+int step_time_us = 5; // minimum 1us
+
+int t_wait_between_steps_us = 10;	//variable controlling the speed of the translation
+int r_wait_between_steps_us = 10;	//variable controlling the speed of the rotation
+
+int t_pulse_nb = 1; //number of pulse to move 1mm
+int r_pulse_nb = 1; //number of pulse to move 1°
+
+int current_x = 0;
+int current_theta = 0;
+
+void send1Pulse(int n_driver){
+
+	uint16_t GPIO_PIN;
+	GPIO_PIN = (n_driver==T_MOTOR)?GPIO_PIN_5:GPIO_PIN_7;
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN, 1);
+	delayMicroseconds(step_time_us);
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN, 0);
+	delayMicroseconds(step_time_us);
+
+}
+
+void sendNPulse(int N, int n_driver){
+	for (int i = 0; i<N; i++){
+		send1Pulse(n_driver);
+	}
+}
+
+
+// ------------ Moving functions ---------------------------
+void translate(int dx){
+
+	int coeff;
+	if (dx >= 0){
+        coeff = 1;
+    } else {
+        coeff = -1;
+		setDirection(T_MOTOR, BACKWARD);
+    }
+	
+	int nb_pulses = coeff*dx*t_pulse_nb;
+	sendNPulse(nb_pulses, T_MOTOR);
+	
+	if (dx < 0){
+		setDirection(T_MOTOR, FORWARD);
+	}
+
+	current_x += dx;
+
+}
+
+void rotate(int dtheta){
+	int coeff;
+	if (dtheta >= 0){
+        coeff = 1;
+    } else {
+		coeff = -1;
+		setDirection(R_MOTOR, BACKWARD);
+    }
+	
+	int nb_pulses = coeff*dtheta*r_pulse_nb;
+	sendNPulse(nb_pulses, R_MOTOR);
+	
+	if (dtheta < 0){
+		setDirection(R_MOTOR, FORWARD);
+	}
+
+	current_theta += dtheta;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+
+}
+
+void move(int dx, int dtheta, int capture){
+	translate(dx);
+	rotate(dtheta);
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+	memset(message, 0, BUFF_SIZE);
+	
+	if (capture == 1){
+		snprintf(message, sizeof(message), "logCapture Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	else{
+		snprintf(message, sizeof(message), "logTest Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	
+	
+}
+
+void move_to(int x, int theta, int capture){
+	int dx = x - current_x;
+    int dtheta = theta - current_theta;
+
+    translate(dx);
+    rotate(dtheta);
+
+	current_x = x;
+	current_theta = theta;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+	memset(message, 0, BUFF_SIZE);
+
+	if (capture == 1){
+		snprintf(message, sizeof(message), "logCapture Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+	else{
+		snprintf(message, sizeof(message), "logTest Moved of (%d mm, %d °) | Position : (%d mm, %d °)", dx, dtheta, current_x, current_theta);
+		transmit_to_pc(&message);
+		memset(message, 0, BUFF_SIZE);
+	}
+}
+
+
+// ------------ Mode functions ---------------------------
+
+void setMicrosteppingMode(int stepping_mode){
+
+	// Possible Parameters:
+	//  -FULL_STEP
+	//  -HALF_STEP
+	//  -QUARTER_STEP
+	//  -EIGHT_STEP
+	//  -SIXTEENTH_STEP
+
+	/*
+	   Microstepping Resolution Truth Table
+
+	   | MS1 | MS2 | MS3 | Microstep Resolution | Excitation Mode  |
+	   |-----|-----|-----|----------------------|------------------|
+	   |  L  |  L  |  L  | Full Step            | 2 Phase          |
+	   |  H  |  L  |  L  | Half Step            | 1-2 Phase        |
+	   |  L  |  H  |  L  | Quarter Step         | W1-2 Phase       |
+	   |  H  |  H  |  L  | Eighth Step          | 2W1-2 Phase      |
+	   |  H  |  H  |  H  | Sixteenth Step       | 4W1-2 Phase      |
+
+	   Note: by setting the stepping mode in {0,1,2,3,4}, MSx is just the x-th bits of the stepping mode
+	*/
+	int MS1 = stepping_mode&0x1;
+	int MS2 = (stepping_mode&0x2)>>1;
+	int MS3 = (stepping_mode&0x4)>>2;
+
+	if (stepping_mode==SIXTEENTH_STEP){
+		MS1 = 1;
+		MS2 = 1;
+		MS3 = 1;
+	}
+
+
+	// PA9 -> MS1
+	// PC7 -> MS2
+	// PB6 -> MS3
+
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, MS1);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, MS2);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, MS3);
+
+
+}
+
+void setDirection(int n_driver, int direction){
+
+	if (n_driver==T_MOTOR){
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, direction);
+	}
+
+	else if (n_driver==R_MOTOR){
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, direction);
+	}
+
+	// Required time to wait before sending a step : 200 ns
+	delayMicroseconds(1);
+}
+
+void setEnable(int n_driver, int state){
+	if (n_driver==R_MOTOR){
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, state);
+    }
+
+    else if (n_driver==T_MOTOR){
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, state);
+    }
+}
+
+void setReset(int n_driver, int state){
+	if (n_driver==R_MOTOR){
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, state);
+    }
+
+    else if (n_driver==T_MOTOR){
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, state);
+    }
+
+	// Required time to wait before sending a step : 200 ns
+	delayMicroseconds(1);
+}
+
+void setSleep(int n_driver, int state){
+	if (n_driver==R_MOTOR){
+        HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, state);
+    }
+
+    else if (n_driver==T_MOTOR){
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, state);
+    }
+	
+	// Required time to wait before sending a step : 1 ms
+	delayMicroseconds(2000);
+}
+
+
+// ------------ Initialization functions ---------------------------
+
+void initializeDrivers(){
+	setMicrosteppingMode(SIXTEENTH_STEP);
+
+	setReset(T_MOTOR, DISABLE);
+	setReset(R_MOTOR, ENABLE);
+
+	setSleep(T_MOTOR, DISABLE);
+	setSleep(R_MOTOR, DISABLE);
+
+	setDirection(T_MOTOR, FORWARD);
+	setDirection(R_MOTOR, FORWARD);
+
+	setEnable(T_MOTOR, ENABLE);
+	setEnable(R_MOTOR, ENABLE);
+
+}
+
+void home_motors(){
+	setDirection(T_MOTOR, BACKWARD);
+
+	int flag = 0;
+
+
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 0){
+		send1Pulse(T_MOTOR);
+	}
+
+	current_x = 0;
+	current_theta = 0;
+
+	char message[BUFF_SIZE] = {" "};
+	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+	transmit_to_pc(&message);
+
+}
+
+
+int get_translation_time(int dx){
+	int nb_pulses = t_pulse_nb*dx; // number of pulses to move of dx
+
+	int pulse_time_us = step_time_us + t_wait_between_steps_us;
+
+	return (int)(float)(pulse_time_us*nb_pulses)/(float)(1000000);
+}
+
+int get_rotation_time(int dtheta){
+	int nb_pulses = r_pulse_nb*dtheta; // number of pulses to rotate of dtheta
+
+    int pulse_time_us = step_time_us + r_wait_between_steps_us;
+
+    return (int)(float)(pulse_time_us*nb_pulses)/(float)(1000000);
+}
+
+
+void update_speeds(int t_speed, int r_speed){
+	t_wait_between_steps_us = TRANSLATION_MAX_WAITING_TIME + (float)(t_speed)/(float)(100)*(TRANSLATION_MIN_WAITING_TIME-TRANSLATION_MAX_WAITING_TIME);
+	r_wait_between_steps_us = ROTATION_MAX_WAITING_TIME + (float)(r_speed)/(float)(100)*(ROTATION_MIN_WAITING_TIME-ROTATION_MAX_WAITING_TIME);
+}

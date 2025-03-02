@@ -5,7 +5,7 @@
 #include "communication.h"
 
 
-int step_time_us = 5; // minimum 1us
+int step_time_us = 1000000; // minimum 1us
 
 int t_wait_between_steps_us = 10;	//variable controlling the speed of the translation
 int r_wait_between_steps_us = 10;	//variable controlling the speed of the rotation
@@ -40,17 +40,16 @@ void translate(int dx){
 	int coeff;
 	if (dx >= 0){
         coeff = 1;
-    } else {
+        setDirection(T_MOTOR, FORWARD);
+    }
+	else {
         coeff = -1;
 		setDirection(T_MOTOR, BACKWARD);
     }
 	
 	int nb_pulses = coeff*dx*t_pulse_nb;
 	sendNPulse(nb_pulses, T_MOTOR);
-	
-	if (dx < 0){
-		setDirection(T_MOTOR, FORWARD);
-	}
+
 
 	current_x += dx;
 
@@ -60,6 +59,7 @@ void rotate(int dtheta){
 	int coeff;
 	if (dtheta >= 0){
         coeff = 1;
+        setDirection(R_MOTOR, FORWARD);
     } else {
 		coeff = -1;
 		setDirection(R_MOTOR, BACKWARD);
@@ -67,16 +67,8 @@ void rotate(int dtheta){
 	
 	int nb_pulses = coeff*dtheta*r_pulse_nb;
 	sendNPulse(nb_pulses, R_MOTOR);
-	
-	if (dtheta < 0){
-		setDirection(R_MOTOR, FORWARD);
-	}
 
 	current_theta += dtheta;
-
-	char message[BUFF_SIZE] = {" "};
-	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
-	transmit_to_pc(&message);
 
 }
 
@@ -159,6 +151,12 @@ void setMicrosteppingMode(int stepping_mode){
 	int MS2 = (stepping_mode&0x2)>>1;
 	int MS3 = (stepping_mode&0x4)>>2;
 
+	if (stepping_mode==SIXTEENTH_STEP){
+		MS1 = 1;
+		MS2 = 1;
+		MS3 = 1;
+	}
+
 
 	// PA9 -> MS1
 	// PC7 -> MS2
@@ -227,6 +225,7 @@ void setSleep(int n_driver, int state){
 void initializeDrivers(){
 	setMicrosteppingMode(HALF_STEP);
 
+
 	setReset(T_MOTOR, DISABLE);
 	setReset(R_MOTOR, DISABLE);
 
@@ -247,7 +246,7 @@ void home_motors(){
 	int flag = 0;
 
 
-    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 0){
+    while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) != 0){
 		send1Pulse(T_MOTOR);
 	}
 

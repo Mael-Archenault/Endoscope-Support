@@ -64,3 +64,4 @@ def receive_data():
     if ser.in_waiting >= BUFF_SIZE:  # Check if data is available to read
         data = ser.read(BUFF_SIZE)  # Read a full line of data
         return data.decode('utf-8').strip("\x00")
+    return None

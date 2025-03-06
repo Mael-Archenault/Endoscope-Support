@@ -57,14 +57,6 @@ class AppSettingsPanel(Panel):
         self.language_combobox.place(relx = 0.25, rely = 0.4)
         self.language_apply_button.place(relx = 0.55, rely = 0.4)
 
-        # Setting the default values
-        self.reset_values()
-
-
-    
-
-    def reset_values(self):
-        pass
 
     def set_theme(self, theme):
         super().set_theme(theme)

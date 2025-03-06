@@ -21,7 +21,7 @@ char command[BUFF_SIZE];
 int argc = 0;
 char* argv[10];
 
-char firmware[5] = "1.0.0";
+char firmware[5] = "1.0.2";
 
 
 int state = 0;
@@ -31,6 +31,11 @@ int state = 0;
 extern int current_x;
 extern int current_theta;
 
+int var1;
+int var2;
+int verif1;
+int verif2;
+
 float t_step = 100;
 float r_step = 100;
 
@@ -38,8 +43,8 @@ int total_picture_number = 0;
 int total_time_seconds = 0;
 
 int pictures_taken = 0;
-int pictures_taken_for_this_angle = 0;
-int angles_explored = 0;
+int pictures_taken_for_this_packet = 0;
+int packets_completed = 0;
 
 int translation_index = 0;
 int rotation_index = 0;
@@ -50,23 +55,19 @@ void run(){
         if (state == MOVING_STATE){
             int distance = atoi(argv[1]);
             move(distance, 0, 0);
-            // Notifying pc of the successful translation
-            // char message[BUFF_SIZE] = {" "};
-            // snprintf(message, sizeof(message), "logTest Translated of %d mm", distance);
-            // transmit_to_pc(&message);
 
             state = LISTENING_STATE;
             
         }
       
-        if (state == TURNING_STATE){
+        else if (state == TURNING_STATE){
             int angle = atoi(argv[1]);
             move(0, angle, 0);
 
             state = LISTENING_STATE;
         }
 
-        if (state == VARIABLE_CHANGE_STATE){
+        else if (state == VARIABLE_CHANGE_STATE){
             char unit[64];
             for (int i = 0; i < NB_VAR; i++){
                 if (strcmp(argv[1], variables[i].name) == 0){
@@ -84,34 +85,50 @@ void run(){
             state = LISTENING_STATE;
         }
 
-        if (state == CAPTURING_STATE){
+        else if (state == CAPTURING_STATE){
 
             char message[BUFF_SIZE] = {" "};
-            snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_angle, angles_explored);
+            snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_packet, packets_completed);
             transmit_to_pc(&message);
             memset(message, 0, BUFF_SIZE);
 
             int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
             int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
             move_to(x, theta,1);
-            translation_index ++;
 
+            if (find_value("mode")==TRANSLATION_FIRST){
+                translation_index ++;
+                var1 = current_x;
+                verif1 = find_value("translation_ending_point");
+                var2 = current_theta;
+                verif2 = find_value("rotation_ending_point");
+
+            }
+            else {
+                rotation_index ++;
+                var1 = current_theta;
+                verif1 = find_value("rotation_ending_point");
+                var2 = current_x;
+                verif2 = find_value("translation_ending_point");
+            }
             
+
+            delayMicroseconds(500000); // waiting 0.5s after the movement to take the picture
             takePicture(1);
             pictures_taken++;
-            pictures_taken_for_this_angle++;
+            pictures_taken_for_this_packet++;
 
             // Notifying pc of the progress of the capture
            
-            snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_angle, angles_explored);
+            snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_packet, packets_completed);
             transmit_to_pc(&message);
             memset(message, 0, BUFF_SIZE);
 
             int total_time = find_value("exposure_time")+find_value("saving_time")+find_value("margin_time");
             delayMicroseconds(total_time*1000000);
 
-            if (current_x >= find_value("translation_ending_point")){
-                if (current_theta >= find_value("rotation_ending_point")){
+            if (var1 >= verif1){
+                if (var2 >= verif2){
                     snprintf(message, sizeof(message), "logCapture End of the Capture");
                     transmit_to_pc(&message);
                     memset(message, 0, BUFF_SIZE);
@@ -120,15 +137,15 @@ void run(){
                     transmit_to_pc(&message);
                     memset(message, 0, BUFF_SIZE);
                     
-                    angles_explored ++;
-                    snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_angle, angles_explored);
+                    packets_completed ++;
+                    snprintf(message, sizeof(message), "progress %d %d %d", pictures_taken, pictures_taken_for_this_packet, packets_completed);
                     transmit_to_pc(&message);
                     memset(message, 0, BUFF_SIZE);
 
                     move_to(0,0,1);
-                    angles_explored = 0;
+                    packets_completed = 0;
                     pictures_taken = 0;
-                    pictures_taken_for_this_angle = 0;
+                    pictures_taken_for_this_packet = 0;
 
                     translation_index = 0;
                     rotation_index = 0;
@@ -141,30 +158,51 @@ void run(){
                     state = LISTENING_STATE;
                 }
                 else {
-                    translation_index = 0;
-                    rotation_index++;
 
-                    angles_explored++;
-                    pictures_taken_for_this_angle = 0;
+                    if (find_value("mode")==TRANSLATION_FIRST){
+                        translation_index = 0;
+                        rotation_index++;
+
+                    }
+                    else {
+                        rotation_index = 0;
+                        translation_index++;
+                    }
                 }
             }  
 
         }
 
-        if (state == TESTING_SEQUENCE_STATE){
+        else if (state == TESTING_SEQUENCE_STATE){
 
             int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
             int theta = find_value("rotation_starting_point")+ (int)(rotation_index*t_step);
             move_to(x, theta,0);
-            translation_index ++;
+
+            char message[BUFF_SIZE] = {0};
+
+            if (find_value("mode")==TRANSLATION_FIRST){
+                translation_index ++;
+                var1 = current_x;
+                verif1 = find_value("translation_ending_point");
+                var2 = current_theta;
+                verif2 = find_value("rotation_ending_point");
+
+            }
+            else {
+                rotation_index ++;
+                var1 = current_theta;
+                verif1 = find_value("rotation_ending_point");
+                var2 = current_x;
+                verif2 = find_value("translation_ending_point");
+            }
             
             int total_time = 1;
             delayMicroseconds(total_time*1000000);
 
-            if (current_x >= find_value("translation_ending_point")){
-                if (current_theta >= find_value("rotation_ending_point")){
+            if (var1 >= verif1){
+                if (var2 >= verif2){
                     
-                    char message[BUFF_SIZE] = {0};
                     snprintf(message, sizeof(message), "logTest End of the Sequence Test");
                     transmit_to_pc(&message);
                     memset(message, 0, BUFF_SIZE);
@@ -187,16 +225,23 @@ void run(){
                     state = LISTENING_STATE;
                 }
                 else {
-                    translation_index = 0;
-                    rotation_index++;
+
+                    if (find_value("mode")==TRANSLATION_FIRST){
+                        translation_index = 0;
+                        rotation_index++;
+
+                    }
+                    else {
+                        rotation_index = 0;
+                        translation_index++;
+                    }
 
                 }
             }
 
-
         }
 
-        if (state == HOMING_STATE){
+        else if (state == HOMING_STATE){
             home_motors();
 
             // Notifying pc of the successful homing
@@ -207,7 +252,7 @@ void run(){
             state = LISTENING_STATE;
         }
 
-        if (state == STOPPING_STATE){
+        else if (state == STOPPING_STATE){
             // Notifying pc of the successful homing
             char message[BUFF_SIZE] = {" "};
             snprintf(message, sizeof(message), "logCapture Stopped capture | return to home position");
@@ -222,9 +267,9 @@ void run(){
             transmit_to_pc(&message);
             memset(message, 0, BUFF_SIZE);
 
-            angles_explored = 0;
+            packets_completed = 0;
             pictures_taken = 0;
-            pictures_taken_for_this_angle = 0;
+            pictures_taken_for_this_packet = 0;
 
             translation_index = 0;
             rotation_index = 0;
@@ -232,7 +277,7 @@ void run(){
             state = LISTENING_STATE;
         }
 
-        if (state == STOPPING_SEQUENCE_STATE){
+        else if (state == STOPPING_SEQUENCE_STATE){
             // Notifying pc of the successful homing
             char message[BUFF_SIZE] = {" "};
             snprintf(message, sizeof(message), "logTest Stopped the test of the capture sequence | return to home position");
@@ -254,12 +299,12 @@ void run(){
             state = LISTENING_STATE;
         }
 
-        if (state == PICTURING_STATE) {
+        else if (state == PICTURING_STATE) {
             takePicture(0);
             state = LISTENING_STATE;
         }
 
-        if (state == FIRMWARE_SENDING_STATE) {
+        else if (state == FIRMWARE_SENDING_STATE) {
 
             // Notifying pc of the firmware version
             char message[BUFF_SIZE] = {" "};
@@ -268,14 +313,14 @@ void run(){
             state = LISTENING_STATE;
         }
 
-        if (state == MOVING_TO_STATE) {
+        else if (state == MOVING_TO_STATE) {
 
             move_to(atoi(argv[1]), atoi(argv[2]), 0);
 
             state = LISTENING_STATE;
         }
 
-        if (state == STEP_COMPUTING_STATE){
+        else if (state == STEP_COMPUTING_STATE){
 
             t_step = (float)(find_value("translation_ending_point")-find_value("translation_starting_point"))/(float)(find_value("translation_number_of_points")-1);
             r_step = (float)(find_value("rotation_ending_point")-find_value("rotation_starting_point"))/(float)(find_value("rotation_number_of_points")-1);
@@ -292,7 +337,7 @@ void run(){
             total_time_seconds += 2*get_rotation_time((int)r_step)*(find_value("rotation_number_of_points")-1);
             
             // time of waiting
-            total_time_seconds += (find_value("exposure_time")+find_value("saving_time")+find_value("margin_time"))*total_picture_number;
+            total_time_seconds += (find_value("exposure_time")+find_value("saving_time")+find_value("margin_time")+0.5)*total_picture_number;
 
             // Notifying pc of the change of steps
 

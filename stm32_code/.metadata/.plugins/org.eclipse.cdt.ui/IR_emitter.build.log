@@ -1,0 +1,10 @@
+23:12:24 **** Incremental Build of configuration Debug for project IR_emitter ****
+make -j8 all 
+arm-none-eabi-size  IR_emitter.elf 
+   text	   data	    bss	    dec	    hex	filename
+  32828	    468	   2196	  35492	   8aa4	IR_emitter.elf
+Finished building: default.size.stdout
+ 
+
+23:12:24 Build Finished. 0 errors, 0 warnings. (took 398ms)
+

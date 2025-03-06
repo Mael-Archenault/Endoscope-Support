@@ -13,11 +13,16 @@ class SettingsPanel(Panel):
         super().__init__(master)
 
         self.section_width = 300
-        self.section_height = 300
+        self.section_height = 400
+
+        self.modes = ["Translation First", "Rotation First"]
+        self.current_mode = self.modes[0]
 
 
         ## Box that contains a section "Translation", a section "Rotation", and a section "Timing"
         self.settings_frame = CTkFrame(self)
+        self.settings_frame.configure(width = WINDOW_WIDTH,
+                                      height= self.section_height)
         self.settings_frame.place(relx=0.5, rely=0.35, anchor = "center")
     
 
@@ -25,7 +30,7 @@ class SettingsPanel(Panel):
         self.translation_frame = CTkFrame(self.settings_frame,
                                             corner_radius=10,
                                             )
-        self.translation_frame.grid(row =0, column = 0, padx = 10, sticky = "ns")
+        self.translation_frame.place(relx=0.23, rely=0.38, anchor= "center")
 
         self.translation_label = CTkLabel(self.translation_frame,
                                          font=("Roboto", 20),
@@ -71,15 +76,15 @@ class SettingsPanel(Panel):
 
 
         self.translation_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
-        self.translation_start_label.grid(row = 1, column = 0, padx = 10, pady = (50,10))
-        self.translation_end_label.grid(row = 1, column = 2, padx = 10, pady = (50,10))
-        self.translation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = (0,20))
-        self.translation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = (0,20))
+        self.translation_start_label.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.translation_end_label.grid(row = 1, column = 2, padx = 10, pady = 10)
+        self.translation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.translation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = 10)
 
         self.translation_number_of_points_label.grid(row = 3, column = 0, padx = 10, pady = 10)
         self.translation_speed_label.grid(row = 3, column = 2, padx = 10, pady = 10)
-        self.translation_number_of_points_textbox.grid(row = 4, column = 0, padx = 10, pady = (0,20))
-        self.translation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = (0,20))
+        self.translation_number_of_points_textbox.grid(row = 4, column = 0, padx = 10, pady = 10)
+        self.translation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = 10)
         
 
         ## Box of the section "Rotation"
@@ -87,7 +92,7 @@ class SettingsPanel(Panel):
         self.rotation_frame = CTkFrame(self.settings_frame,
                                             corner_radius=10)
 
-        self.rotation_frame.grid(row =0, column = 1, padx = 10, sticky = "ns")
+        self.rotation_frame.place(relx=0.53, rely=0.38, anchor= "center")
 
         self.rotation_label = CTkLabel(self.rotation_frame,
                                          font=("Roboto", 20),
@@ -128,22 +133,22 @@ class SettingsPanel(Panel):
                                     height = 20)
 
         self.rotation_label.grid(row = 0, column = 0, columnspan = 3, padx = 10, pady = 10)
-        self.rotation_start_label.grid(row = 1, column = 0, padx = 10, pady = (50,10))
-        self.rotation_end_label.grid(row = 1, column = 2, padx = 10, pady = (50,10))
-        self.rotation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = (0,20))
-        self.rotation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = (0,20))
+        self.rotation_start_label.grid(row = 1, column = 0, padx = 10, pady = 10)
+        self.rotation_end_label.grid(row = 1, column = 2, padx = 10, pady = 10)
+        self.rotation_start_textbox.grid(row = 2, column = 0, padx = 10, pady = 10)
+        self.rotation_end_textbox.grid(row = 2, column = 2, padx = 10, pady = 10)
 
         self.rotation_number_of_points_label.grid(row = 3, column = 0, padx = 10, pady = 10)
         self.rotation_speed_label.grid(row = 3, column = 2, padx = 10, pady = 10)
-        self.rotation_number_of_points_textbox.grid(row = 4, column = 0, padx = 10, pady = (0,20))
-        self.rotation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = (0,20))
+        self.rotation_number_of_points_textbox.grid(row = 4, column = 0, padx = 10, pady = 10)
+        self.rotation_speed_textbox.grid(row = 4, column = 2, padx = 10, pady = 10)
 
     
         ## Box of the section "Timings"
         self.timing_frame = CTkFrame(self.settings_frame,
                                             corner_radius=10)
 
-        self.timing_frame.grid(row =0, column = 2, padx = 10, sticky = "ns")
+        self.timing_frame.place(relx=0.8, rely=0.5  , anchor= "center")
 
         self.timing_label = CTkLabel(self.timing_frame,
                                          font=("Roboto", 20),
@@ -185,6 +190,23 @@ class SettingsPanel(Panel):
 
         self.margin_time_label.grid(row = 5, column = 1, padx = 10, pady = 10)
         self.margin_time_textbox.grid(row = 6, column = 1, padx = 10, pady = (0,20))
+
+        ## Box of the section "Mode"
+        self.mode_frame = CTkFrame(self.settings_frame,
+                                            corner_radius=10,
+                                            width = 750,
+                                            height = 85)
+
+        self.mode_frame.place(relx=0.375, rely=0.87  , anchor= "center")
+
+        self.mode_label = CTkLabel(self.mode_frame,
+                                         font=("Roboto", 20),
+                                         corner_radius=10,
+                                         width = 730)
+        self.mode_label.place(relx=0.5, rely = 0.3, anchor= "center")
+        
+        self.mode_combobox = CTkComboBox(self.mode_frame, width = 300)
+        self.mode_combobox.place(relx = 0.5, rely = 0.76, anchor = "center")
 
         ## Validation Button
 
@@ -253,6 +275,9 @@ class SettingsPanel(Panel):
         self.change_value("saving_time_textbox", "1", "normal")
         self.change_value("margin_time_textbox", "1", "normal")
 
+        # Mode
+        self.mode_combobox.set(self.modes[0])
+
         # Estimated time
         self.change_value("estimated_time_value", "00:00:00", "disabled")
 
@@ -298,6 +323,11 @@ class SettingsPanel(Panel):
 
         margin_time = float(self.margin_time_textbox.get("1.0", tk.END).strip())
         send_command("change margin_time " + str(margin_time))
+
+        # Mode
+        mode = self.modes.index(self.mode_combobox.get())
+        print(mode)
+        send_command("change mode " + str(mode))
 
         send_command("computeStep")
 
@@ -346,6 +376,23 @@ class SettingsPanel(Panel):
         self.saving_time_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
         self.margin_time_textbox.configure(bg_color="transparent", fg_color=colors["textbox_bg"], text_color=colors["textbox_text_color"])
 
+        # Mode section
+
+        self.mode_frame.configure(bg_color="transparent", fg_color=colors["section_bg"])
+        self.mode_label.configure(text_color=colors["section_title_text_color"], fg_color=colors["section_title"], bg_color="transparent")
+        self.mode_combobox.configure(
+                                        fg_color = colors["combobox_fg"],
+                                        text_color = colors["combobox_text_color"],
+                                        border_color = colors["combobox_border"],
+                                        button_color = colors["combobox_button"],
+                                        dropdown_fg_color= colors["combobox_dropdown_fg"],
+                                        
+                                        dropdown_text_color= colors["combobox_dropdown_text_color"],
+                                        
+                                        dropdown_hover_color = colors["combobox_dropdown_hover"],
+                                       
+                                        button_hover_color = colors["combobox_button_hover"]
+        )
         # Confirmation Button
         self.confirmation_button.configure(fg_color=colors["blue_button"], bg_color="transparent", hover_color=colors["blue_button_hover"])
 
@@ -381,6 +428,11 @@ class SettingsPanel(Panel):
         self.exposure_time_label.configure(text=language["Exposure Time"] +" (s)")
         self.saving_time_label.configure(text=language["Saving Time"]+ " (s)")
         self.margin_time_label.configure(text=language["Margin Time"] + " (s)")
+
+        self.mode_label.configure(text = language["Mode"])
+        self.modes = [language["Translation First"], language["Rotation First"]]
+        self.mode_combobox.configure(values=self.modes)
+        self.mode_combobox.set(self.modes[0])
 
         self.confirmation_button.configure(text=language["Apply Configuration"])
         self.reset_button.configure(text=language["Reset values to default"])

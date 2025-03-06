@@ -5,10 +5,10 @@
 #include "communication.h"
 
 
-int step_time_us = 1000000; // minimum 1us
+int step_time_us = 5; // minimum 1us
 
-int t_wait_between_steps_us = 10;	//variable controlling the speed of the translation
-int r_wait_between_steps_us = 10;	//variable controlling the speed of the rotation
+int t_wait_between_steps_us = 500;	//variable controlling the speed of the translation
+int r_wait_between_steps_us = 500;	//variable controlling the speed of the rotation
 
 int t_pulse_nb = 1; //number of pulse to move 1mm
 int r_pulse_nb = 1; //number of pulse to move 1°
@@ -23,13 +23,13 @@ void send1Pulse(int n_driver){
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN, 1);
 	delayMicroseconds(step_time_us);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN, 0);
-	delayMicroseconds(step_time_us);
 
 }
 
 void sendNPulse(int N, int n_driver){
 	for (int i = 0; i<N; i++){
 		send1Pulse(n_driver);
+		delayMicroseconds(t_wait_between_steps_us);
 	}
 }
 
@@ -73,8 +73,12 @@ void rotate(int dtheta){
 }
 
 void move(int dx, int dtheta, int capture){
+	setSleep(T_MOTOR, ENABLE);
+	setSleep(R_MOTOR, ENABLE);
 	translate(dx);
 	rotate(dtheta);
+	setSleep(T_MOTOR, DISABLE);
+	setSleep(R_MOTOR, DISABLE);
 
 	char message[BUFF_SIZE] = {" "};
 	snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
@@ -99,8 +103,12 @@ void move_to(int x, int theta, int capture){
 	int dx = x - current_x;
     int dtheta = theta - current_theta;
 
-    translate(dx);
-    rotate(dtheta);
+    setSleep(T_MOTOR, ENABLE);
+	setSleep(R_MOTOR, ENABLE);
+	translate(dx);
+	rotate(dtheta);
+	setSleep(T_MOTOR, DISABLE);
+	setSleep(R_MOTOR, DISABLE);
 
 	current_x = x;
 	current_theta = theta;
@@ -223,11 +231,11 @@ void setSleep(int n_driver, int state){
 // ------------ Initialization functions ---------------------------
 
 void initializeDrivers(){
-	setMicrosteppingMode(HALF_STEP);
+	setMicrosteppingMode(SIXTEENTH_STEP);
 
 
-	setReset(T_MOTOR, DISABLE);
-	setReset(R_MOTOR, DISABLE);
+	setReset(T_MOTOR, ENABLE);
+	setReset(R_MOTOR, ENABLE);
 
 	setSleep(T_MOTOR, DISABLE);
 	setSleep(R_MOTOR, DISABLE);
@@ -235,8 +243,8 @@ void initializeDrivers(){
 	setDirection(T_MOTOR, FORWARD);
 	setDirection(R_MOTOR, FORWARD);
 
-	setEnable(T_MOTOR, ENABLE);
-	setEnable(R_MOTOR, ENABLE);
+	setEnable(T_MOTOR, DISABLE);
+	setEnable(R_MOTOR, DISABLE);
 
 }
 
@@ -245,10 +253,19 @@ void home_motors(){
 
 	int flag = 0;
 
+	setSleep(T_MOTOR, ENABLE);
+	setSleep(R_MOTOR, ENABLE);
+
+
 
     while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) != 0){
 		send1Pulse(T_MOTOR);
+		delayMicroseconds(t_wait_between_steps_us);
 	}
+
+    setSleep(T_MOTOR, DISABLE);
+    setSleep(R_MOTOR, DISABLE);
+
 
 	current_x = 0;
 	current_theta = 0;

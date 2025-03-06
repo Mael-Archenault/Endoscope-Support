@@ -59,6 +59,9 @@ languages = {
         "Apply Configuration": "Apply Configuration",
         "Reset values to default": "Reset values to default",
         "Estimated Time": "Estimated Time",
+        "Mode":"Mode",
+        "Translation First": "Translation First",
+        "Rotation First": "Rotation First",
 
         # Capture panel
 
@@ -134,6 +137,9 @@ languages = {
     "Apply Configuration": "Appliquer la configuration",
     "Reset values to default": "Réinitialiser les valeurs",
     "Estimated Time": "Temps Estimé",
+    "Mode":"Mode",  
+    "Translation First": "Translation d'abord",  
+    "Rotation First": "Rotation d'abord",
 
     # Capture panel
 
@@ -207,6 +213,10 @@ languages = {
         "Apply Configuration": "Konfiguration anwenden",
         "Reset values to default": "Werte auf Standard zurücksetzen",
         "Estimated Time": "Geschätzte Zeit",
+        "Mode": "Modus",  
+        "Translation First": "Translation zuerst",  
+        "Rotation First": "Rotation zuerst",  
+
 
         # Capture panel
         "Control": "Steuerung",
@@ -276,6 +286,9 @@ languages = {
         "Apply Configuration": "Aplicar Configuración",
         "Reset values to default": "Restablecer Valores por Defecto",
         "Estimated Time": "Tiempo Estimado",
+        "Mode": "Modo",  
+        "Translation First": "Traslación Primero",  
+        "Rotation First": "Rotación Primero",
 
         # Capture panel
         "Control": "Control",
@@ -345,6 +358,9 @@ languages = {
         "Apply Configuration": "Applica Configurazione",
         "Reset values to default": "Ripristina Valori Predefiniti",
         "Estimated Time": "Tempo Stimato",
+        "Mode": "Modalità",  
+        "Translation First": "Traslazione Prima",  
+        "Rotation First": "Rotazione Prima",
 
         # Capture panel
         "Control": "Controllo",
@@ -412,6 +428,10 @@ languages = {
         "Apply Configuration": "应用配置",
         "Reset values to default": "重置为默认值",
         "Estimated Time": "预计时间",
+        "Mode": "模式",  
+        "Translation First": "平移优先",  
+        "Rotation First": "旋转优先",  
+
 
         # Capture panel
         "Control": "控制",
@@ -479,6 +499,10 @@ languages = {
         "Apply Configuration": "設定を適用",
         "Reset values to default": "デフォルトにリセット",
         "Estimated Time": "予想時間",
+        "Mode": "モード",  
+        "Translation First": "並進優先",  
+        "Rotation First": "回転優先",  
+
 
         # Capture panel
         "Control": "制御",
@@ -546,6 +570,10 @@ languages = {
         "Apply Configuration": "설정 적용",
         "Reset values to default": "기본값으로 재설정",
         "Estimated Time": "예상 시간",
+        "Mode": "모드",  
+        "Translation First": "이동 우선",  
+        "Rotation First": "회전 우선",  
+
 
         # Capture panel
         "Control": "제어",

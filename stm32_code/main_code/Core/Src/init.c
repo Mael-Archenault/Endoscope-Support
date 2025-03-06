@@ -25,7 +25,8 @@ VAR variables[NB_VAR]= {
         {"rotation_speed",0,"%"},
         {"exposure_time",0, "s"},
         {"saving_time",0, "s"},
-        {"margin_time",0,"s"}
+        {"margin_time",0,"s"},
+        {"mode", 0, ""}
     };
 
 int find_value(char* name){

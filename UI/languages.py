@@ -70,8 +70,8 @@ languages = {
         "Capture Time": "Capture Time",
         "Estimated Time\nLeft": "Estimated Time\nLeft",
         "Number of Pictures Captured": "Number of Pictures Captured",
-        "Number of Angles Completed": "Number of Angles Completed",
-        "Number of Pictures for this Angle": "Number of Pictures for this Angle"
+        "Number of Packets Completed": "Number of Packets Completed",
+        "Number of Pictures for this Packet": "Number of Pictures for this Packet"
 
 
     },
@@ -148,8 +148,8 @@ languages = {
     "Capture Time": "Temps de Capture",
     "Estimated Time\nLeft": "Temps restant Estimé",
     "Number of Pictures Captured": "Nombre de Photos prises",
-    "Number of Angles Completed": "Nombre d'Angles complétés",
-    "Number of Pictures for this Angle": "Nombre de Photos pour cet Angle"
+    "Number of Packets Completed": "Nombre de paquets complétés",
+    "Number of Pictures for this Packet": "Nombre de Photos pour ce paquet"
 
 
 
@@ -224,8 +224,8 @@ languages = {
         "Capture Time": "Aufnahmezeit",
         "Estimated Time\nLeft": "Geschätzte verbleibende Zeit",
         "Number of Pictures Captured": "Anzahl aufgenommener Bilder",
-        "Number of Angles Completed": "Anzahl abgeschlossener Winkel",
-        "Number of Pictures for this Angle": "Anzahl der Bilder für diesen Winkel"
+        "Number of Packets Completed": "Anzahl der abgeschlossenen Pakete",
+        "Number of Pictures for this Packet": "Anzahl der Bilder für dieses Paket"
 
     },
 
@@ -296,8 +296,9 @@ languages = {
         "Capture Time": "Tiempo de Captura",
         "Estimated Time\nLeft": "Tiempo Restante Estimado",
         "Number of Pictures Captured": "Número de Fotos Capturadas",
-        "Number of Angles Completed": "Número de Ángulos Completados",
-        "Number of Pictures for this Angle": "Número de Fotos por Ángulo"
+        "Number of Packets Completed": "Número de paquetes completados",
+        "Number of Pictures for this Packet": "Número de fotos para este paquete"
+
 
     },
 
@@ -368,8 +369,9 @@ languages = {
         "Capture Time": "Tempo di Cattura",
         "Estimated Time\nLeft": "Tempo Stimato Rimanente",
         "Number of Pictures Captured": "Numero di Foto Catturate",
-        "Number of Angles Completed": "Numero di Angoli Completati",
-        "Number of Pictures for this Angle": "Numero di Foto per questo Angolo"
+        "Number of Packets Completed": "Numero di pacchetti completati",
+        "Number of Pictures for this Packet": "Numero di foto per questo pacchetto"
+
 
     },
     "中文": {
@@ -439,8 +441,9 @@ languages = {
         "Capture Time": "捕获时间",
         "Estimated Time\nLeft": "预计剩余时间",
         "Number of Pictures Captured": "已拍照片数",
-        "Number of Angles Completed": "已完成角度数",
-        "Number of Pictures for this Angle": "此角度的照片数"
+        "Number of Packets Completed": "完成的数据包数量",
+        "Number of Pictures for this Packet": "此数据包的图片数量"
+
     },
 
     "日本語": {
@@ -510,8 +513,9 @@ languages = {
         "Capture Time": "キャプチャ時間",
         "Estimated Time\nLeft": "残り推定時間",
         "Number of Pictures Captured": "撮影済み写真数",
-        "Number of Angles Completed": "完了した角度数",
-        "Number of Pictures for this Angle": "この角度の写真数"
+        "Number of Packets Completed": "完了したパケットの数",
+        "Number of Pictures for this Packet": "このパケットの写真の数"
+
     },
 
     "한국어": {
@@ -581,8 +585,9 @@ languages = {
         "Capture Time": "캡처 시간",
         "Estimated Time\nLeft": "남은 예상 시간",
         "Number of Pictures Captured": "촬영된 사진 수",
-        "Number of Angles Completed": "완료된 각도 수",
-        "Number of Pictures for this Angle": "이 각도의 사진 수"
+        "Number of Packets Completed": "완료된 패킷 수",
+        "Number of Pictures for this Packet": "이 패킷의 사진 수"
+
     }
 }
 

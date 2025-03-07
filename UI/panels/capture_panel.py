@@ -345,5 +345,5 @@ class CapturePanel(Panel):
         self.time_label.configure(text=language["Capture Time"])
         self.estimated_time_label.configure(text=language["Estimated Time\nLeft"])
         self.nb_pictures_label.configure(text=language["Number of Pictures Captured"] + " :")
-        self.nb_pictures_angle_label.configure(text=language["Number of Pictures for this Angle"]+ " :")
-        self.explored_angles_label.configure(text=language["Number of Angles Completed"]+ " :")
+        self.nb_pictures_angle_label.configure(text=language["Number of Pictures for this Packet"]+ " :")
+        self.explored_angles_label.configure(text=language["Number of Packets Completed"]+ " :")

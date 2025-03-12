@@ -7,11 +7,11 @@
 
 int step_time_us = 5; // minimum 1us
 
-int t_wait_between_steps_us = 500;	//variable controlling the speed of the translation
-int r_wait_between_steps_us = 500;	//variable controlling the speed of the rotation
+int wait_between_steps_us[2] = {500, 500};	//variable controlling the speed of the {rotation, translation}
 
-int t_pulse_nb = 1; //number of pulse to move 1mm
-int r_pulse_nb = 1; //number of pulse to move 1°
+
+int t_pulse_nb = 100; //number of pulse to move 1mm
+int r_pulse_nb = 1000; //number of pulse to move 1°
 
 int current_x = 0;
 int current_theta = 0;
@@ -29,7 +29,7 @@ void send1Pulse(int n_driver){
 void sendNPulse(int N, int n_driver){
 	for (int i = 0; i<N; i++){
 		send1Pulse(n_driver);
-		delayMicroseconds(t_wait_between_steps_us);
+		delayMicroseconds(wait_between_steps_us[n_driver-1]);
 	}
 }
 
@@ -295,6 +295,7 @@ int get_rotation_time(int dtheta){
 
 
 void update_speeds(int t_speed, int r_speed){
-	t_wait_between_steps_us = TRANSLATION_MAX_WAITING_TIME + (float)(t_speed)/(float)(100)*(TRANSLATION_MIN_WAITING_TIME-TRANSLATION_MAX_WAITING_TIME);
-	r_wait_between_steps_us = ROTATION_MAX_WAITING_TIME + (float)(r_speed)/(float)(100)*(ROTATION_MIN_WAITING_TIME-ROTATION_MAX_WAITING_TIME);
+	wait_between_steps_us[0] = ROTATION_MAX_WAITING_TIME + (float)(r_speed)/(float)(100)*(ROTATION_MIN_WAITING_TIME-ROTATION_MAX_WAITING_TIME);
+	wait_between_steps_us[1] = TRANSLATION_MAX_WAITING_TIME + (float)(t_speed)/(float)(100)*(TRANSLATION_MIN_WAITING_TIME-TRANSLATION_MAX_WAITING_TIME);
+	
 }

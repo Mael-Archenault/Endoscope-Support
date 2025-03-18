@@ -50,7 +50,7 @@ void sendSIRCSData(int data) {
 
 void takePicture(int capture){
 	int data = 0b10110100101110001111;
-	for (int i = 0; i<3; i++){
+	for (int i = 0; i<10; i++){
 	  sendSIRCSData(data);
 	}
 

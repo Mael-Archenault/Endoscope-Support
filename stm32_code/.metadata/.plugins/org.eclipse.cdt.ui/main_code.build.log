@@ -1,59 +1,57 @@
-00:19:46 **** Incremental Build of configuration Debug for project main_code ****
+14:21:06 **** Incremental Build of configuration Debug for project main_code ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/mainloop.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/mainloop.d" -MT"Core/Src/mainloop.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mainloop.o"
-../Core/Src/mainloop.c: In function 'run':
-../Core/Src/mainloop.c:73:21: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
-   73 |                 if (strcmp(argv[1], variables[i].name) == 0){
-      |                     ^~~~~~
-../Core/Src/mainloop.c:14:1: note: include '<string.h>' or provide a declaration of 'strcmp'
-   13 | #include "states.h"
+arm-none-eabi-gcc "../Core/Src/drivers.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/drivers.d" -MT"Core/Src/drivers.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/drivers.o"
+../Core/Src/drivers.c: In function 'move':
+../Core/Src/drivers.c:84:9: warning: implicit declaration of function 'snprintf' [-Wimplicit-function-declaration]
+   84 |         snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+      |         ^~~~~~~~
+../Core/Src/drivers.c:6:1: note: include '<stdio.h>' or provide a declaration of 'snprintf'
+    5 | #include "communication.h"
+  +++ |+#include <stdio.h>
+    6 | 
+../Core/Src/drivers.c:84:9: warning: incompatible implicit declaration of built-in function 'snprintf' [-Wbuiltin-declaration-mismatch]
+   84 |         snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+      |         ^~~~~~~~
+../Core/Src/drivers.c:84:9: note: include '<stdio.h>' or provide a declaration of 'snprintf'
+../Core/Src/drivers.c:86:9: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
+   86 |         memset(message, 0, BUFF_SIZE);
+      |         ^~~~~~
+../Core/Src/drivers.c:6:1: note: include '<string.h>' or provide a declaration of 'memset'
+    5 | #include "communication.h"
   +++ |+#include <string.h>
-   14 | 
-../Core/Src/mainloop.c:75:21: warning: implicit declaration of function 'strncpy' [-Wimplicit-function-declaration]
-   75 |                     strncpy(unit, variables[i].unit, sizeof(unit));
-      |                     ^~~~~~~
-../Core/Src/mainloop.c:75:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:75:21: warning: incompatible implicit declaration of built-in function 'strncpy' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:75:21: note: include '<string.h>' or provide a declaration of 'strncpy'
-../Core/Src/mainloop.c:93:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
-   93 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:93:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:93:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-../Core/Src/mainloop.c:93:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:95:21: warning: implicit declaration of function 'find_value' [-Wimplicit-function-declaration]
-   95 |             int x = find_value("translation_starting_point") + (int)(translation_index*t_step);
-      |                     ^~~~~~~~~~
-../Core/Src/mainloop.c:208:21: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  208 |                     memset(message, 0, BUFF_SIZE);
-      |                     ^~~~~~
-../Core/Src/mainloop.c:208:21: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:260:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  260 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:260:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:285:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  285 |             memset(message, 0, BUFF_SIZE);
-      |             ^~~~~~
-../Core/Src/mainloop.c:285:13: note: include '<string.h>' or provide a declaration of 'memset'
-../Core/Src/mainloop.c:329:13: warning: implicit declaration of function 'update_speeds' [-Wimplicit-function-declaration]
-  329 |             update_speeds(find_value("translation_speed"), find_value("rotation_speed"));
-      |             ^~~~~~~~~~~~~
-../Core/Src/mainloop.c:347:13: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
-  347 |             memset(message, 0, sizeof(message));
-      |             ^~~~~~
-../Core/Src/mainloop.c:347:13: note: include '<string.h>' or provide a declaration of 'memset'
+    6 | 
+../Core/Src/drivers.c:86:9: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+   86 |         memset(message, 0, BUFF_SIZE);
+      |         ^~~~~~
+../Core/Src/drivers.c:86:9: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/drivers.c: In function 'move_to':
+../Core/Src/drivers.c:117:9: warning: incompatible implicit declaration of built-in function 'snprintf' [-Wbuiltin-declaration-mismatch]
+  117 |         snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+      |         ^~~~~~~~
+../Core/Src/drivers.c:117:9: note: include '<stdio.h>' or provide a declaration of 'snprintf'
+../Core/Src/drivers.c:119:9: warning: incompatible implicit declaration of built-in function 'memset' [-Wbuiltin-declaration-mismatch]
+  119 |         memset(message, 0, BUFF_SIZE);
+      |         ^~~~~~
+../Core/Src/drivers.c:119:9: note: include '<string.h>' or provide a declaration of 'memset'
+../Core/Src/drivers.c: In function 'home_motors':
+../Core/Src/drivers.c:274:9: warning: incompatible implicit declaration of built-in function 'snprintf' [-Wbuiltin-declaration-mismatch]
+  274 |         snprintf(message, sizeof(message), "position %d %d", current_x, current_theta);
+      |         ^~~~~~~~
+../Core/Src/drivers.c:274:9: note: include '<stdio.h>' or provide a declaration of 'snprintf'
+../Core/Src/drivers.c:254:13: warning: unused variable 'flag' [-Wunused-variable]
+  254 |         int flag = 0;
+      |             ^~~~
 arm-none-eabi-gcc -o "main_code.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Cloud\Endoscope-Support\stm32_code\main_code\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="main_code.map" -Wl,--gc-sections -static -u _printf_float --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: main_code.elf
  
 arm-none-eabi-size  main_code.elf 
 arm-none-eabi-objdump -h -S main_code.elf  > "main_code.list"
    text	   data	    bss	    dec	    hex	filename
-  45744	   2104	   2576	  50424	   c4f8	main_code.elf
+  45752	   2104	   2576	  50432	   c500	main_code.elf
 Finished building: default.size.stdout
  
 Finished building: main_code.list
  
 
-00:19:48 Build Finished. 0 errors, 11 warnings. (took 1s.540ms)
+14:21:08 Build Finished. 0 errors, 8 warnings. (took 1s.605ms)
 

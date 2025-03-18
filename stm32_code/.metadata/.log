@@ -2233,3 +2233,48 @@ java.lang.Exception: Could not delete metadata for '/drone_main_code'.
 
 !ENTRY org.eclipse.cdt.core 1 0 2025-03-11 15:22:12.292
 !MESSAGE Indexed 'main_code' (31 sources, 130 headers) in 5.48 sec: 14,294 declarations; 75,862 references; 3 unresolved inclusions; 46 syntax errors; 171 unresolved names (0.19%)
+!SESSION 2025-03-17 09:56:21.055 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-17 09:57:04.982
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-17 09:57:04.986
+!MESSAGE Log4j2 initialized with config file C:\Cloud\Endoscope-Support\stm32_code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-17 09:57:14.995
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-03-17 10:14:14.238 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-17 10:14:22.073
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-17 10:14:22.075
+!MESSAGE Log4j2 initialized with config file C:\Cloud\Endoscope-Support\stm32_code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-17 10:14:29.517
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-03-18 13:42:14.003 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-18 13:42:24.085
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-18 13:42:24.088
+!MESSAGE Log4j2 initialized with config file C:\Cloud\Endoscope-Support\stm32_code\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-18 13:42:31.299
+!MESSAGE Started RMI Server, listening on port 41337

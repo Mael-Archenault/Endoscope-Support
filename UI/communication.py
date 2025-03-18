@@ -59,6 +59,7 @@ def send_command(command):
         return (-1, str(e))
    
 def receive_data():
+    global ser
     if ser == None:
         return None
     if ser.in_waiting >= BUFF_SIZE:  # Check if data is available to read
